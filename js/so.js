@@ -27,7 +27,6 @@ $(document).ready(function(){
     let modsOnly = getUrlParameter('modsOnly').trim();
     let useClips = getUrlParameter('useClips').trim();
     let command = getUrlParameter('command').trim();
-    let ref = getUrlParameter('ref').trim();
     let showMsg = getUrlParameter('showMsg').trim();
     let raided = getUrlParameter('raided').trim();
     let raidCount = getUrlParameter('raidCount').trim();
@@ -38,8 +37,6 @@ $(document).ready(function(){
     if (!raidCount) raidCount = "3"; //default
 
     if (!delay)     delay = "10"; //default
-
-    let cmdArray = [];
 
     let client = '';
 
@@ -54,9 +51,9 @@ $(document).ready(function(){
     if (!showMsg)   showMsg = 'false'; // default
 
     // Twitch API get user info for !so command
-    let getStreamerInfo = function (SOChannel, callback) {
+    let getStreamerInfo = function (channel, callback) {
         // Main URL
-        let url = "https://twitchapi.teklynk.com/getuserinfo.php?channel=" + SOChannel; 
+        let url = "https://twitchapi.teklynk.com/getuserinfo.php?channel=" + channel; 
         let xhr = new XMLHttpRequest(); +
         xhr.open("GET", url);
         xhr.onreadystatechange = function () {
@@ -71,10 +68,10 @@ $(document).ready(function(){
     };
 
     // Twitch API get last game played from a Streamer
-    let getStatus = function (SOChannel, callback) {
-        let url = "https://twitchapi.teklynk.com/getuserstatus.php?channel=" + SOChannel + "";
+    let getGame = function (channel, callback) {
+        let url = "https://twitchapi.teklynk.com/getuserstatus.php?channel=" + channel + "";
         let xhrG = new XMLHttpRequest();
-        xhrG.open("GET", urlG);
+        xhrG.open("GET", url);
         xhrG.onreadystatechange = function () {
             if (xhrG.readyState === 4) {
                 callback(JSON.parse(xhrG.responseText));
@@ -137,7 +134,7 @@ $(document).ready(function(){
     }
 
     function doShoutOut(channel) {
-        getChannel(getChannel, function(info){
+        getStreamerInfo(getChannel, function(info){
             if(info.data.length > 0){
                 if(document.getElementById('userMsg') || document.getElementById('streamImg')||document.getElementById('streamName')){
                    return false; 
@@ -152,6 +149,9 @@ $(document).ready(function(){
                     // If no clips are used AND timer is on timeout with the userMsg
                     if(useClips === 'false' && timer == parseInt(timeOut) && document.getElementById("userMsg")){
                         // INSERT ANIMATION AND TEXT USAGES
+                        if(document.getElementById("userMsg")){
+                            document.getElementById(userMsg).classList.remove('')
+                        }
                     }
                     setTimeout(function(){
                         clearData();
@@ -168,7 +168,7 @@ $(document).ready(function(){
                 $("<div class='row'><div class='col-3'><div class='text-center'><img class='img-fluid' id='streamImg' src='"+streamImg+"' alt='Twitch User'></div>/div>").appendTo('#container')
                 $("<div class='row'><div class='col-9'><p class='p-1 rounded'>Lorem, ipsum dolor sit amet consectetur.</p></div></div></div>").appendTo("#container");
 
-                $(userMsg);
+                $("<div id='container' class='slide-left-in'><p>"+userMsg+"</p></div>").appendTo("#container");
             } else {
                 // If streamer is non-existant
                 console.log (getChannel + " where exactly?!")
