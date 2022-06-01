@@ -1,9 +1,27 @@
+body {
+    color: white !important;
+}
 
 h1 {
     text-align: center;
-    color: white;
+    font-size: 3.5rem !important;
+    font-weight: bolder !important;
 }
 
-.textual {
-    background-color: grey;
+img {
+    align-content: center;
+    border-radius: 50%;
 }
+
+.img-fluid {
+    max-width: 50% !important;
+}
+
+p {
+    background-color: grey;
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-align: center;
+    /* border-radius: 50%; */
+}
+
