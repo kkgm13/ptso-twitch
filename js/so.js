@@ -38,6 +38,8 @@ $(document).ready(function(){
 
     if (!delay)     delay = "10"; //default
 
+    let cmdAry = []; // Blank Array for capture
+
     let client = '';
 
     if (!command)   command = 'so'; // default
@@ -93,12 +95,28 @@ $(document).ready(function(){
         channels: [channelName]
     });
 
-    client.connect().catch(console.error); // Start connection to TMIJS
+    client.connect().catch(console.error); // Start connection to Twitch API from TMI.JS
 
+    // Check chat for messages coming through
     client.on('chat', (channel, user, message, self) => {
         if (self) return false; // Ignore echoed messages.
 
-        if(message.startsWith('!'+command) && (modsOnly === 'true' && (user.mod || user.username === channelName))){
+        if(message.startsWith('!'+command)){
+            if(document.getElementById('userMsg')) return false;
+
+            getChannel = message.substr(command.length+1);
+            console.log("Direct:" + getChannel)
+            getChannel = getChannel.replace('@', '');
+            // Trim the channel name
+            getChannel = getChannel.trim();
+            getChannel = getChannel.toLowerCase();
+            console.log("Converted: "+getChannel)
+
+            cmdAry = message.split('@');
+            cmdAry = cmdAry.slice(1);
+        }
+
+        if(modsOnly === 'true' && (user.mod || user.username === channelName)){
              // If is array, then iterate over each channel name. Uses the timeOut value from the URL.
              if (cmdAry.length > 1) {
                 console.log(cmdAry);
@@ -108,12 +126,12 @@ $(document).ready(function(){
                     sec = sec.toLowerCase();    // Lower Case Streamer name
                     console.log(sec + 'Added in array');
                     
-                    doShoutOut(obj); // Start Shoutout Mechanism
+                    doShoutOut(sec); // Start Shoutout Mechanism
                 }, parseInt(timeOut) * 1000 + 1000); // + 1 seconds, just to be sure that elements are completely removed
             } else {
                 console.log(getChannel);
                 // Validate whats should happen here
-                doShoutOut(obj); // Start Shoutout Mechanism
+                doShoutOut(getChannel); // Start Shoutout Mechanism
             }
             // Mods only
         } else if (modsOnly === 'false' || user.username === channelName) {
@@ -133,14 +151,14 @@ $(document).ready(function(){
         }
     }
 
-    function doShoutOut(channel) {
+    function doShoutOut(getChannel) {
         getStreamerInfo(getChannel, function(info){
             if(info.data.length > 0){
                 if(document.getElementById('userMsg') || document.getElementById('streamImg')||document.getElementById('streamName')){
                    return false; 
                 }
 
-                clearData();
+                clearData(); // Clear Data
 
                 let timer = 0; // Start SO idle Timer
                 // Pathway for system
@@ -152,7 +170,9 @@ $(document).ready(function(){
                         if(document.getElementById("userMsg")){
                             document.getElementById(userMsg).classList.remove('')
                         }
+                        // Data Remover for HTML Body cleaning
                     }
+                    // Clear Timeout
                     setTimeout(function(){
                         clearData();
                         timer = 0;
@@ -164,11 +184,11 @@ $(document).ready(function(){
                 let userMsg     = decodeURI(channelMessage);
 
                 // Append HTML Data with the main info to SO Container
-                $("div class='row'><div class='col-12'><h1 id='streamName'>Check out this streamer: "+ streamName +"</h1></div></div>").appendTo('#container')
-                $("<div class='row'><div class='col-3'><div class='text-center'><img class='img-fluid' id='streamImg' src='"+streamImg+"' alt='Twitch User'></div>/div>").appendTo('#container')
-                $("<div class='row'><div class='col-9'><p class='p-1 rounded'>Lorem, ipsum dolor sit amet consectetur.</p></div></div></div>").appendTo("#container");
+                $("<div class='row'><div class='col-12'><h1 id='streamName'>Check out this streamer: "+ streamName +"</h1></div></div>").appendTo('#container')
+                $("<div class='row'><div class='col-3'><div class='text-center'><img class='img-fluid' id='streamImg' src='"+streamImg+"' alt='Twitch User'></div>/div></div>").appendTo('#container')
+                // $("<div class='row'><div class='col-9'><p class='p-1 rounded'>Lorem, ipsum dolor sit amet consectetur.</p></div></div></div>").appendTo("#container");
 
-                $("<div id='container' class='slide-left-in'><p>"+userMsg+"</p></div>").appendTo("#container");
+                // $("<div id='container' class='slide-left-in'><p>"+userMsg+"</p></div>").appendTo("#container");
             } else {
                 // If streamer is non-existant
                 console.log (getChannel + " where exactly?!")

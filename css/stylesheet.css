@@ -13,9 +13,9 @@ img {
     border-radius: 50%;
 }
 
-.img-fluid {
+/* .img-fluid {
     max-width: 50% !important;
-}
+} */
 
 p {
     background-color: grey;
