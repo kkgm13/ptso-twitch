@@ -164,36 +164,58 @@ $(document).ready(function(){
                 // Pathway for system
                 let timeStart = setInterval(function(){
                     timer++;
+
+                    console.log(timer);
+
                     // If no clips are used AND timer is on timeout with the userMsg
                     if(useClips === 'false' && timer == parseInt(timeOut) && document.getElementById("userMsg")){
                         // INSERT ANIMATION AND TEXT USAGES
-                        if(document.getElementById("userMsg")){
-                            document.getElementById(userMsg).classList.remove('')
+                        if (document.getElementById("userMsg")) {
+                            document.getElementById("userMsg").classList.remove("slide-left-in");
+                        }
+                        if (document.getElementById("streamImg")) {
+                            document.getElementById("streamImg").getElementsByClassName("image")[0].classList.remove("fade-in-image");
+                        }
+                        if (document.getElementById("streamName")) {
+                            document.getElementById("streamName").classList.remove("slide-right-in");
+                        }
+
+                        // Slide out animation
+                        if (document.getElementById("userMsg")) {
+                            document.getElementById("userMsg").classList.add("slide-right-out");
+                        }
+                        if (document.getElementById("streamImg")) {
+                            document.getElementById("streamImg").getElementsByClassName("image")[0].classList.add("fade-out-image");
+                        }
+                        if (document.getElementById("streamName")) {
+                            document.getElementById("streamName").classList.add("slide-left-out");
                         }
                         // Data Remover for HTML Body cleaning
+
+                        // Clear Timeout
+                        setTimeout(function(){
+                            clearData();
+                            timer = 0;
+                            clearInterval(timeStart);
+                        }, 500);
                     }
-                    // Clear Timeout
-                    setTimeout(function(){
-                        clearData();
-                        timer = 0;
-                        clearInterval(timeStart);
-                    });
-                }, 500);
+                }, 1000);
                 let streamName  = info.data[0]['display_name'];         // Streamer Name
                 let streamImg   = info.data[0]['profile_image_url'];    // Streamer Image
                 let userMsg     = decodeURI(channelMessage);
 
                 // Append HTML Data with the main info to SO Container
-                $("<div class='row'><div class='col-12'><h1 id='streamName'>Check out this streamer: "+ streamName +"</h1></div></div>").appendTo('#container')
-                $("<div class='row'><div class='col-3'><div class='text-center'><img class='img-fluid' id='streamImg' src='"+streamImg+"' alt='Twitch User'></div></div></div>").appendTo('#container')
-                $("<div class='row'><div class='col-9'><p class='p-1 rounded'>Lorem, ipsum dolor sit amet consectetur.</p></div></div></div>").appendTo("#container");
-
-                $("<div id='container' class='slide-left-in'><p>"+userMsg+"</p></div>").appendTo("#container");
+                // $("<div class='row'><div class='col-12 slide-left-in'><h1 id='streamName'>Check out this streamer: "+ streamName +"</h1></div></div>").appendTo('#container')
+                // $("<div class='row'><div class='col-3'><div class='text-center'><img class='img-fluid fade-in-image' id='streamImg' src='"+streamImg+"' alt='Twitch User'></div></div></div>").appendTo('#container')
+                // $("<div class='row'><div class='col-9' id='userMsg'><p class='p-1 rounded'>Lorem, ipsum dolor sit amet consectetur."+userMsg+"</p></div></div></div>").appendTo("#container");
+                $("<div id='streamName' class='slide-left-in'><h1>Check out this streamer: "+ streamName +"</h1></div>").appendTo('#container')
+                $("<div id='streamImg' class='text-center'><img class='image img-fluid fade-in-image'  src='"+streamImg+"' alt='Twitch User'></div>").appendTo('#container')
+                $("<div class='slide-left-in' id='userMsg'><p class='p-1 rounded'>Lorem, ipsum dolor sit amet consectetur."+userMsg+"</p></div>").appendTo("#container");
             } else {
                 // If streamer is non-existant
                 console.log (getChannel + " where exactly?!")
                 return false;
             }
-        },1000);
+        });
     }
 });

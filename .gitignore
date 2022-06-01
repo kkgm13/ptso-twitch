@@ -1,5 +1,5 @@
 notes.txt
 .env
-node_modules/
 .vscode-test
+.DS_Store
 logs
