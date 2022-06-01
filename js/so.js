@@ -125,15 +125,21 @@ $(document).ready(function(){
     });
 
     function clearData(){
-        document.getElementById('userMsg').remove();
-        document.getElementById('userImage').remove();
-        document.getElementById('streamername').remove();
+        if(document.getElementById('userMsg')){
+            document.getElementById('userMsg').remove();
+        }
+        if(document.getElementById('streamImg')){
+            document.getElementById('streamImg').remove();
+        }
+        if(document.getElementById('streamName')){
+            document.getElementById('streamName').remove();
+        }
     }
 
     function doShoutOut(channel) {
         getChannel(getChannel, function(info){
             if(info.data.length > 0){
-                if(document.getElementById('userMsg') || document.getElementById('userImage')||document.getElementById('streamername')){
+                if(document.getElementById('userMsg') || document.getElementById('streamImg')||document.getElementById('streamName')){
                    return false; 
                 }
 
@@ -143,18 +149,31 @@ $(document).ready(function(){
                 // Pathway for system
                 let timeStart = setInterval(function(){
                     timer++;
+                    // If no clips are used AND timer is on timeout with the userMsg
                     if(useClips === 'false' && timer == parseInt(timeOut) && document.getElementById("userMsg")){
                         // INSERT ANIMATION AND TEXT USAGES
                     }
-
                     setTimeout(function(){
                         clearData();
                         timer = 0;
                         clearInterval(timeStart);
                     });
                 }, 500);
-            }
-        })
-    }
+                let streamName  = info.data[0]['display_name'];         // Streamer Name
+                let streamImg   = info.data[0]['profile_image_url'];    // Streamer Image
+                let userMsg     = decodeURI(channelMessage);
 
+                // Append HTML Data with the main info to SO Container
+                $("div class='row'><div class='col-12'><h1 id='streamName'>Check out this streamer: "+ streamName +"</h1></div></div>").appendTo('#container')
+                $("<div class='row'><div class='col-3'><div class='text-center'><img class='img-fluid' id='streamImg' src='"+streamImg+"' alt='Twitch User'></div>/div>").appendTo('#container')
+                $("<div class='row'><div class='col-9'><p class='p-1 rounded'>Lorem, ipsum dolor sit amet consectetur.</p></div></div></div>").appendTo("#container");
+
+                $(userMsg);
+            } else {
+                // If streamer is non-existant
+                console.log (getChannel + " where exactly?!")
+                return false;
+            }
+        },1000);
+    }
 });
