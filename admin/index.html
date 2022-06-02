@@ -10,6 +10,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/stylesheet.css">
 </head>
 <body>
     <div class="container">
@@ -20,9 +21,9 @@
     </div>
     <div class="container">
         <div class="row">
-            <div class="col-8">
-                <table class="table table-striped table-hover px-2">
-                    <thead>
+            <div class="col-8 fixed-head">
+                <table class="table table-responsive table-striped table-hover px-2">
+                    <thead class="table-dark">
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Streamer name</th>
@@ -45,6 +46,7 @@
                             <td>tesd</td>
                             <td>test</td>
                         </tr>
+                        
                     </tbody>
                 </table>
             </div>
@@ -56,13 +58,13 @@
                     </div>
                     <fieldset>
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="streamerInput" placeholder="Streamer Name" required>
+                            <input type="text" name="streamerInput" class="form-control" id="streamerInput" placeholder="Streamer Name" required>
                             <label for="streamerInput">Streamer Name</label>
                         </div>
                     </fieldset>
                     <fieldset>
                         <div class="form-floating">
-                            <textarea class="form-control" placeholder="Leave a comment here" id="streamerDetail" required></textarea>
+                            <textarea wrap="soft" form="" name="streamerDetail" class="form-control" placeholder="Leave a comment here" id="streamerDetail" required></textarea>
                             <label for="streamerDetail">Details about Streamer</label>
                         </div>
                     </fieldset>

@@ -25,7 +25,6 @@ $(document).ready(function(){
     let channelMessage = getUrlParameter('msg').trim();
     let timeOut = getUrlParameter('timeOut').trim();
     let modsOnly = getUrlParameter('modsOnly').trim();
-    let useClips = getUrlParameter('useClips').trim();
     let command = getUrlParameter('command').trim();
     let showMsg = getUrlParameter('showMsg').trim();
     let raided = getUrlParameter('raided').trim();
@@ -45,8 +44,6 @@ $(document).ready(function(){
     if (!command)   command = 'so'; // default
 
     if (!timeOut)   timeOut = 20; // default
-
-    if (!useClips)  useClips = 'false'; // default
 
     if (!modsOnly)  modsOnly = 'true'; // default
 
@@ -99,11 +96,14 @@ $(document).ready(function(){
 
     // Check chat for messages coming through
     client.on('chat', (channel, user, message, self) => {
-        if (self) return false; // Ignore echoed messages.
+        if (self){
+            return false; // Ignore echoed messages.
+        }
 
-        if(message.startsWith('!'+command)){
-            if(document.getElementById('userMsg')) return false;
-
+        if(message.startsWith('!'+command, 0)){
+            if(document.getElementById('userMsg')){
+                return false;
+            }
             getChannel = message.substr(command.length+1);
             console.log("Direct:" + getChannel)
             getChannel = getChannel.replace('@', '');
@@ -111,9 +111,11 @@ $(document).ready(function(){
             getChannel = getChannel.trim();
             getChannel = getChannel.toLowerCase();
             console.log("Converted: "+getChannel)
-
             cmdAry = message.split('@');
             cmdAry = cmdAry.slice(1);
+        } else {
+            // Bug if removed due to capturing any additional ! outside first string position
+            return null;
         }
 
         if(modsOnly === 'true' && (user.mod || user.username === channelName)){
@@ -154,6 +156,7 @@ $(document).ready(function(){
     function doShoutOut(getChannel) {
         getStreamerInfo(getChannel, function(info){
             if(info.data.length > 0){
+
                 if(document.getElementById('userMsg') || document.getElementById('streamImg')||document.getElementById('streamName')){
                    return false; 
                 }
@@ -168,7 +171,7 @@ $(document).ready(function(){
                     console.log(timer);
 
                     // If no clips are used AND timer is on timeout with the userMsg
-                    if(useClips === 'false' && timer == parseInt(timeOut) && document.getElementById("userMsg")){
+                    if(timer == parseInt(timeOut) && document.getElementById("userMsg")){
                         // INSERT ANIMATION AND TEXT USAGES
                         if (document.getElementById("userMsg")) {
                             document.getElementById("userMsg").classList.remove("slide-left-in");
@@ -189,14 +192,15 @@ $(document).ready(function(){
                         }
                         if (document.getElementById("streamName")) {
                             document.getElementById("streamName").classList.add("slide-left-out");
-                        }
-                        // Data Remover for HTML Body cleaning
-
+                        }                       
                         // Clear Timeout
                         setTimeout(function(){
                             clearData();
                             timer = 0;
                             clearInterval(timeStart);
+                            // Data Remover for HTML Body cleaning
+                            document.getElementById('container').innerHTML="";
+                            getChannel = "" // Nuller
                         }, 500);
                     }
                 }, 1000);
@@ -207,7 +211,7 @@ $(document).ready(function(){
                 // Append HTML Data with the main info to SO Container
                 $("<div class='row'><div id='streamName' class='col-12 slide-left-in'><h1>Check out: "+ streamName +"</h1></div></div>").appendTo('#container')
                 //Needs to merge tother as for some reason div count is a pain (Div internal required to )
-                $("<div class='row'><div class='col-3'><div class='text-center' id='streamImg'><img class='image img-fluid fade-in-image' id='strmAvtr' src='"+streamImg+"' alt='Twitch User'></div></div><div class='slide-right-in col-9'><div id='userMsg' class='holder'><p class='p-1 rounded'>Lorem, ipsum dolor sit amet consectetur."+userMsg+"</p></div></div></div>").appendTo("#container");
+                $("<div class='row'><div class='col-3'><div class='pl-3 pr-2 text-center' id='streamImg'><img class='image img-fluid fade-in-image' id='strmAvtr' src='"+streamImg+"' alt='Twitch User'></div></div><div class='slide-right-in col-9'><div id='userMsg' class='holder pr-3 pl-2'><p class='p-1 rounded'>Lorem, ipsum dolor sit amet consectetur."+userMsg+"</p></div></div></div>").appendTo("#container");
             } else {
                 // If streamer is non-existant
                 console.log (getChannel + " where exactly?!")
