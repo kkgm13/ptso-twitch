@@ -127,7 +127,7 @@ $(document).ready(function(){
                     sec = sec.trim();           // Grab Username
                     sec = sec.toLowerCase();    // Lower Case Streamer name
                     console.log(sec + 'Added in array');
-                    
+                    findInAdmin(sec) // Locate if a relevant streamer in record is found
                     doShoutOut(sec); // Start Shoutout Mechanism
                 }, parseInt(timeOut) * 1000 + 1000); // + 1 seconds, just to be sure that elements are completely removed
             } else {
@@ -151,6 +151,10 @@ $(document).ready(function(){
         if(document.getElementById('streamName')){
             document.getElementById('streamName').remove();
         }
+    }
+    
+    function findInAdmin(getChannel){
+
     }
 
     function doShoutOut(getChannel) {

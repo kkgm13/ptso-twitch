@@ -1,27 +1,9 @@
 // my-component.js
 export default {
+    template:'<form action="../admin" method="post"><div class="mb-1"><h4 class="text-center">Add New Streamer Info</h4><hr></div><fieldset><div class="form-floating mb-3"><input type="text" name="streamerInput" class="form-control" id="streamerInput" placeholder="Streamer Name" required><label for="streamerInput">Streamer Name</label></div><div class="form-floating"><textarea wrap="soft" name="streamerDetail" class="form-control" placeholder="Leave a comment here" id="streamerDetail" required></textarea><label for="streamerDetail">Details about Streamer</label></div><div id="streamerDetailHelp" class="form-text">Please use semicolons (;) to separate dedicated information.</div></fieldset><hr><div class="row form-group"><div class="col-6 py-1"><input type="submit" value="Create Entry" class="btn btn-success"></div><div class="col-6 py-1"><input type="reset" value="Reset" class="btn btn-danger"></div></div></form>',
     data() {
         return {
-            fields: [
-                {
-                    key: 'id',
-                    label: '#'
-                },
-                {
-                    key: 'streamerName',
-                    label:'Streamer Name'
-                },
-                {
-                    key: 'streamerDetails',
-                    label: 'Details about Streamer'
-                }
-            ], 
-            items: [
-                { 'id': 1, 'streamerName':kkgm13, 'streamerDetails': "Test1;Test2:test3:test4"},
-                { 'id': 2, 'streamerName':farahino, 'streamerDetails': "Test1;Test2:test3:test4"},
-                { 'id': 3, 'streamerName':diamondzbeard, 'streamerDetails': "Test1;Test2:test3:test4"},
-            ]
         }
-    }
+    },
 }
 
