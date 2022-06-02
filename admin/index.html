@@ -54,7 +54,7 @@
                     </table>
                 </div>
                 <div class="d-grid gap-2">
-                    <button class="btn btn-primary" type="button" @click="saveInfo"><i class="bi bi-save-fill"></i> Save document</button>
+                    <button class="btn btn-primary" type="button" @click="saveData"><i class="bi bi-save-fill"></i> Save document</button>
                 </div>
             </div>
             <div class="col-md-4 py-1" id="appform">
@@ -91,7 +91,9 @@
             </div>
         </div>
     </div>
-    <!-- <script src="https://unpkg.com/vue@3"></script> -->
+    <!-- <script src="https://unpkg.com/vue@3"></script>
+    <script type="module" src="js/new-streamer-info.js"></script>
+    <script type="module" src="js/streamer-table.js"></script> -->
     <!-- VueJS related stuff -->
     <script type="importmap">
         {
@@ -101,12 +103,15 @@
         }
     </script>
     <script type="module">
-        import { createApp } from 'vue'
+        import {createApp} from 'vue'
         import NewStreamerInfo from './js/new-streamer-info.js'
         import StreamerTableInfo from './js/streamer-table.js'
+        
 
-        createApp(NewStreamerInfo).mount('#appform')
-        createApp(StreamerTableInfo).mount('#apptable')
+        createApp(NewStreamerInfo).mount('#appform');
+        createApp(StreamerTableInfo).mount('#apptable');
     </script>
+    
+
 </body>
 </html>

@@ -1,5 +1,5 @@
 import json from '../streamerData.json' assert { type: "json" };
-import table from '../js/streamer-table.js';
+// import table from '../js/streamer-table.js';
 
 export default {
     mounted(){
