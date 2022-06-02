@@ -1,4 +1,5 @@
 import json from '../testData.json' assert { type: "json" };
+import json2 from '../streamerData.json' assert { type: "json" };
 
 export default {
     mounted(){
@@ -15,7 +16,22 @@ export default {
             console.log(item)
         },
         loadData(){
-            this.items = json
+            // this.items = json2;
+            this.items = json;
+        },
+        saveData() {
+            console.log(this.items);
+            alert('Derp, im supposed to work');
+            localStorage.setItem()
+
+            // function download(content, fileName, contentType) {
+            //     var a = document.createElement("a");
+            //     var file = new Blob([content], {type: contentType});
+            //     a.href = URL.createObjectURL(file);
+            //     a.download = fileName;
+            //     a.click();
+            // }
+            // download(jsonData, 'json.txt', 'text/plain');
         }
     },
     data() {
