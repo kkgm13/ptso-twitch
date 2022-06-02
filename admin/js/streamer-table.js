@@ -49,7 +49,6 @@ export default {
                     label: 'Details about Streamer'
                 }
             ], 
-            // Requires a full local File I/O
             items: null
         }
     }
