@@ -37,16 +37,16 @@
                             <td>ptsoTwitch</td>
                             <td>Personal Shouout for Twitch; Overlay System;</td>
                             <td><div class="btn-group" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-warning"><i class="bi bi-pencil-fill"></i></button>
-                                <button type="button" class="btn btn-danger"><i class="bi bi-trash-fill"></i></button>
+                                <button type="button" class="btn btn-warning" disabled><i class="bi bi-pencil-fill"></i></button>
+                                <button type="button" class="btn btn-danger" disabled><i class="bi bi-trash-fill"></i></button>
                               </div></td>
                         <tr v-for="item in items">
                             <th scope="row">{{item.id}}</th>
                             <td>{{item.streamerName}}</td>
                             <td>{{item.streamerDetails}}</td>
                             <td><div class="btn-group" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-warning"><i class="bi bi-pencil-fill"></i></button>
-                                <button type="button" class="btn btn-danger"><i class="bi bi-trash-fill"></i></button>
+                                <button type="button" class="btn btn-warning" @click="edit(item)"><i class="bi bi-pencil-fill"></i></button>
+                                <button type="button" class="btn btn-danger" @click="deleteStreamer(item)"><i class="bi bi-trash-fill"></i></button>
                               </div></td>
                         </tr>
                     </tbody>

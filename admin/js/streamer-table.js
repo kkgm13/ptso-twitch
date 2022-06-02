@@ -2,6 +2,15 @@ export default {
     mounted(){
         console.log("Table Data mounted successfully")
     },
+    methods: {
+        edit(item) {
+            document.getElementById('streamerInput').value = item.streamerName;
+            document.getElementById('streamerDetails').value = item.streamerDetails;
+        },
+        deleteStreamer(item){
+            alert('Derp, im supposed to work');
+        }
+    },
     data() {
         return {
             fields: [
