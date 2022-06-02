@@ -207,7 +207,7 @@ $(document).ready(function(){
                 // Append HTML Data with the main info to SO Container
                 $("<div class='row'><div id='streamName' class='col-12 slide-left-in'><h1>Check out: "+ streamName +"</h1></div></div>").appendTo('#container')
                 //Needs to merge tother as for some reason div count is a pain (Div internal required to )
-                $("<div class='row'><div class='col-3'><div class='text-center' id='streamImg'><img class='image img-fluid fade-in-image' id='strmAvtr' src='"+streamImg+"' alt='Twitch User'></div></div><div class='slide-right-in col-9'><div id='userMsg'><p class='p-1 rounded'>Lorem, ipsum dolor sit amet consectetur."+userMsg+"</p></div></div></div>").appendTo("#container");
+                $("<div class='row'><div class='col-3'><div class='text-center' id='streamImg'><img class='image img-fluid fade-in-image' id='strmAvtr' src='"+streamImg+"' alt='Twitch User'></div></div><div class='slide-right-in col-9'><div id='userMsg' class='holder'><p class='p-1 rounded'>Lorem, ipsum dolor sit amet consectetur."+userMsg+"</p></div></div></div>").appendTo("#container");
             } else {
                 // If streamer is non-existant
                 console.log (getChannel + " where exactly?!")
