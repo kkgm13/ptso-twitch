@@ -1,5 +1,8 @@
+import json from '../testData.json' assert { type: "json" };
+
 export default {
     mounted(){
+        this.loadData()
         console.log("Table Data mounted successfully")
     },
     methods: {
@@ -9,6 +12,12 @@ export default {
         },
         deleteStreamer(item){
             alert('Derp, im supposed to work');
+            console.log(item)
+        },
+        loadData(){
+            json.forEach(x => {
+                console.log(x)
+            });
         }
     },
     data() {
