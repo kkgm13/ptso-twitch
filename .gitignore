@@ -3,3 +3,4 @@ notes.txt
 .vscode-test
 .DS_Store
 logs
+node_modules/

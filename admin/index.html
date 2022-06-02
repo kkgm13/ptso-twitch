@@ -11,9 +11,10 @@
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/stylesheet.css">
+
 </head>
 <body>
-    <div class="container">
+    <div class="container" >
         <div class="row">
             <h1 class="text-center">PTSO Admin</h1>
             <hr>
@@ -21,7 +22,7 @@
     </div>
     <div class="container">
         <div class="row">
-            <div class="col-8 fixed-head">
+            <div class="col-md-8 fixed-head">
                 <table class="table table-responsive table-striped table-hover px-2">
                     <thead class="table-dark">
                         <tr>
@@ -50,8 +51,8 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-4">
-                <form action="" method="post">
+            <div class="col-md-4 py-1" id="appform">
+                <form action="../admin" method="post">
                     <div class="mb-1">
                         <h4 class="text-center">Add New Streamer Info</h4>
                         <hr>
@@ -61,25 +62,48 @@
                             <input type="text" name="streamerInput" class="form-control" id="streamerInput" placeholder="Streamer Name" required>
                             <label for="streamerInput">Streamer Name</label>
                         </div>
-                    </fieldset>
-                    <fieldset>
                         <div class="form-floating">
-                            <textarea wrap="soft" form="" name="streamerDetail" class="form-control" placeholder="Leave a comment here" id="streamerDetail" required></textarea>
+                            <textarea wrap="soft" name="streamerDetail" class="form-control" placeholder="Leave a comment here" id="streamerDetail" required></textarea>
                             <label for="streamerDetail">Details about Streamer</label>
                         </div>
+                        <div id="streamerDetailHelp" class="form-text">Please use semicolons (;) to separate dedicated information.</div>
                     </fieldset>
                     <hr>
                     <div class="row form-group">
                         <div class="col-6 py-1">
-                            <input type="submit" value="Create Entry" class="btn btn-success btn-block">
+                            <input type="submit" value="Create Entry" class="btn btn-success">
                         </div>
                         <div class="col-6 py-1">
-                            <input type="reset" value="Reset" class="btn btn-danger btn-block">
+                            <input type="reset" value="Reset" class="btn btn-danger">
                         </div>
                     </div>
                 </form>
+                <new-form></new-form>
             </div>
         </div>
     </div>
+    <!-- <script src="https://unpkg.com/vue@3"></script>
+    <script>
+        Vue.component('new-forms',{
+            template: '<p>Hello World</p>'
+        })
+        var app = new Vue({
+            el: '#appform'
+        })
+    </script> -->
+    <!-- VueJS related stuff -->
+    <script type="importmap">
+        {
+          "imports": {
+            "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
+          }
+        }
+      </script>
+    <script type="module">
+        import { createApp } from 'vue'
+        import NewStreamerInfo from './js/new-streamer-info.js'
+        
+        createApp(NewStreamerInfo).mount('#app')
+    </script>
 </body>
 </html>
