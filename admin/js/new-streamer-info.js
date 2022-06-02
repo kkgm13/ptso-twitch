@@ -1,5 +1,5 @@
 import json from '../streamerData.json' assert { type: "json" };
-// import table from '../js/streamer-table.js';
+import table from '../js/streamer-table.js';
 
 export default {
     mounted(){
@@ -15,14 +15,11 @@ export default {
         }
     },
     methods: {
-        saveInfo() {
+        saveInfo(addInfo) {
             // Incrementor Here
-            json.push(this.addInfo)
-            console.log(JSON.stringify(json[0]))
-            alert('Hello World');
-            // table.methods.loadData()
-            
-        }
+            json.push(addInfo)
+            table.methods.saveData(json)
+        },
     }
 }
 

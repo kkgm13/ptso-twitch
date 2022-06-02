@@ -54,11 +54,11 @@
                     </table>
                 </div>
                 <div class="d-grid gap-2">
-                    <button class="btn btn-primary" type="button" @click="saveData"><i class="bi bi-save-fill"></i> Save document</button>
+                    <button class="btn btn-primary" type="button" @click="saveData(items)"><i class="bi bi-save-fill"></i> Save document</button>
                 </div>
             </div>
             <div class="col-md-4 py-1" id="appform">
-                <form action="../admin" method="post" @submit="saveInfo">
+                <form action="../admin" method="post" @submit="saveInfo(addInfo)">
                     <div class="mb-1">
                         <h4 class="text-center">Add New Streamer Info</h4>
                         <hr>

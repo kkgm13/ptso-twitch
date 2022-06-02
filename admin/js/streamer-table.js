@@ -1,5 +1,5 @@
-import json from '../testData.json' assert { type: "json" };
-// import json2 from '../streamerData.json' assert { type: "json" };
+// import json from '../testData.json' assert { type: "json" };
+import json2 from '../streamerData.json' assert { type: "json" };
 
 export default {
     mounted(){
@@ -18,19 +18,23 @@ export default {
             console.log(item)
         },
         loadData(){
-            // this.items = json2;
-            this.items = json;
+            this.items = json2;
+            // this.items = json;
         },
-        saveData() {
+        saveData(items) {
             function download(content, fileName, contentType) {
                 var a = document.createElement("a");
                 var file = new Blob([content], {type: contentType});
+                alert("This is not fully complete... Please save JSON file inside the ptso-twitch/admin folder for it to continue working.")
                 a.href = URL.createObjectURL(file);
                 a.download = fileName;
                 a.click();
+                alert("Save Complete")
+                this.loadData()
+                alert("acjneca")
             }
             // Fix Absolute path to keep file synergy
-            download(JSON.stringify(this.items, null, 2), 'streamerData.json', 'application/json');
+            download(JSON.stringify(items, null, 2), 'streamerData.json', 'application/json');
         }
     },
     data() {
