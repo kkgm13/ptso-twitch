@@ -18,10 +18,8 @@ export default {
         saveInfo(addInfo) {
             // Incrementor Here
             addInfo.id = parseInt(document.getElementsByClassName('count').length ) + 1
-
-            json.push(addInfo)
-            console.log(JSON.stringify(json))
-            // table.methods.saveData(json)
+            json.push(addInfo)  // Add ID to the number
+            table.methods.saveData(json)
         },
     }
 }
