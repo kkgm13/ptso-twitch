@@ -17,8 +17,11 @@ export default {
     methods: {
         saveInfo(addInfo) {
             // Incrementor Here
+            addInfo.id = parseInt(document.getElementsByClassName('count').length ) + 1
+
             json.push(addInfo)
-            table.methods.saveData(json)
+            console.log(JSON.stringify(json))
+            // table.methods.saveData(json)
         },
     }
 }

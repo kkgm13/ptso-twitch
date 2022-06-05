@@ -23,17 +23,12 @@ $(document).ready(function(){
     let getChannel;
     let channelName = getUrlParameter('channel').toLowerCase();
     let channelMessage = getUrlParameter('msg').trim();
-    let timeOut = getUrlParameter('timeOut').trim();
     let modsOnly = getUrlParameter('modsOnly').trim();
     let command = getUrlParameter('command').trim();
     let showMsg = getUrlParameter('showMsg').trim();
     let raided = getUrlParameter('raided').trim();
     let raidCount = getUrlParameter('raidCount').trim();
     let delay = getUrlParameter('delay').trim();
-
-    if (!raided)    raided = "false"; //default
-
-    if (!raidCount) raidCount = "3"; //default
 
     if (!delay)     delay = "10"; //default
 
@@ -43,11 +38,13 @@ $(document).ready(function(){
 
     if (!command)   command = 'so'; // default
 
-    if (!timeOut)   timeOut = 20; // default
-
     if (!modsOnly)  modsOnly = 'true'; // default
 
     if (!showMsg)   showMsg = 'false'; // default
+
+    // Raid Consideration
+    if (!raided)    raided = "false";   // If a raid has come through
+    if (!raidCount) raidCount = "3";    // Raid Count limiter
 
     // Twitch API get user info for !so command
     let getStreamerInfo = function (channel, callback) {
@@ -100,26 +97,26 @@ $(document).ready(function(){
             return false; // Ignore echoed messages.
         }
 
-        if(message.startsWith('!'+command, 0)){
+        // Ensures the first thing it detects is the "!" then the SO command
+        if(message.startsWith('!'+command, 0)){ 
             if(document.getElementById('userMsg')){
                 return false;
             }
             getChannel = message.substr(command.length+1);
-            console.log("Direct:" + getChannel)
             getChannel = getChannel.replace('@', '');
             // Trim the channel name
             getChannel = getChannel.trim();
             getChannel = getChannel.toLowerCase();
-            console.log("Converted: "+getChannel)
             cmdAry = message.split('@');
             cmdAry = cmdAry.slice(1);
         } else {
             // Bug if removed due to capturing any additional ! outside first string position
             return null;
         }
-
+        // Twitch Channel Moderators ONLY Actions
         if(modsOnly === 'true' && (user.mod || user.username === channelName)){
              // If is array, then iterate over each channel name. Uses the timeOut value from the URL.
+             console.log("hit")
              if (cmdAry.length > 1) {
                 console.log(cmdAry);
                 arrayPlusDelay(cmdAry, function (sec) {
@@ -131,16 +128,15 @@ $(document).ready(function(){
                     doShoutOut(sec); // Start Shoutout Mechanism
                 }, parseInt(timeOut) * 1000 + 1000); // + 1 seconds, just to be sure that elements are completely removed
             } else {
-                console.log(getChannel);
-                // Validate whats should happen here
                 doShoutOut(getChannel); // Start Shoutout Mechanism
             }
-            // Mods only
-        } else if (modsOnly === 'false' || user.username === channelName) {
-            doShoutOut(getChannel); // Everyone
+        // ANYONE NOT A TWITCH CHANNEL MOD TO DO THIS... 
+        } else {
+            console.log("Unable to Shoutout!")
         }
     });
 
+    // Reset the Data of the HTML elements by ID
     function clearData(){
         if(document.getElementById('userMsg')){
             document.getElementById('userMsg').remove();
@@ -153,14 +149,16 @@ $(document).ready(function(){
         }
     }
     
-    function findInAdmin(getChannel){
+    // function findInAdmin(getChannel){
 
-    }
+    // }
 
     function doShoutOut(getChannel) {
+        // Get the streamer Info based on the parameter to a new function
         getStreamerInfo(getChannel, function(info){
             if(info.data.length > 0){
 
+                // If any HTML is found with this information, should be false
                 if(document.getElementById('userMsg') || document.getElementById('streamImg')||document.getElementById('streamName')){
                    return false; 
                 }
@@ -170,9 +168,8 @@ $(document).ready(function(){
                 let timer = 0; // Start SO idle Timer
                 // Pathway for system
                 let timeStart = setInterval(function(){
-                    timer++;
-
-                    console.log(timer);
+                    timer++; // Increment
+                    // console.log(timer); // Dev checking
 
                     // If no clips are used AND timer is on timeout with the userMsg
                     if(timer == parseInt(timeOut) && document.getElementById("userMsg")){
@@ -208,6 +205,7 @@ $(document).ready(function(){
                         }, 500);
                     }
                 }, 1000);
+
                 let streamName  = info.data[0]['display_name'];         // Streamer Name
                 let streamImg   = info.data[0]['profile_image_url'];    // Streamer Image
                 let userMsg     = decodeURI(channelMessage);
@@ -215,7 +213,7 @@ $(document).ready(function(){
                 // Append HTML Data with the main info to SO Container
                 $("<div class='row'><div id='streamName' class='col-12 slide-left-in'><h1>Check out: "+ streamName +"</h1></div></div>").appendTo('#container')
                 //Needs to merge tother as for some reason div count is a pain (Div internal required to )
-                $("<div class='row'><div class='col-3'><div class='pl-3 pr-2 text-center' id='streamImg'><img class='image img-fluid fade-in-image' id='strmAvtr' src='"+streamImg+"' alt='Twitch User'></div></div><div class='slide-right-in col-9'><div id='userMsg' class='holder pr-3 pl-2'><p class='p-1 rounded'>Amazing Streamer!"+userMsg+"</p></div></div></div>").appendTo("#container");
+                $("<div class='row'><div class='col-3'><div class='pl-3 pr-2 text-center' id='streamImg'><img class='image img-fluid fade-in-image' id='strmAvtr' src='"+streamImg+"' alt='Twitch User'></div></div><div class='slide-right-in col-9'><div id='userMsg' class='holder pr-3 pl-2'><p class='p-1 rounded'>"+"Amazing Streamer!"+userMsg+"</p></div></div></div>").appendTo("#container");
                 // $("<div class='row'><div class='col-3'><div class='pl-3 pr-2 text-center' id='streamImg'><img class='image img-fluid fade-in-image' id='strmAvtr' src='"+streamImg+"' alt='Twitch User'></div></div><div class='slide-right-in col-9'><div id='userMsg' class='holder pr-3 pl-2'><p class='p-1 rounded'>Lorem, ipsum dolor sit amet consectetur."+userMsg+"</p></div></div></div>").appendTo("#container");
             } else {
                 // If streamer is non-existant

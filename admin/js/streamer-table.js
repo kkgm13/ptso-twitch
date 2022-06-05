@@ -1,5 +1,5 @@
-// import json from '../testData.json' assert { type: "json" };
-import json2 from '../streamerData.json' assert { type: "json" };
+import json from '../testData.json' assert { type: "json" };
+// import json2 from '../streamerData.json' assert { type: "json" };
 
 export default {
     mounted(){
@@ -18,8 +18,8 @@ export default {
             console.log(item)
         },
         loadData(){
-            this.items = json2;
-            // this.items = json;
+            // this.items = json2;
+            this.items = json;
         },
         saveData(items) {
             function download(content, fileName, contentType) {
@@ -31,7 +31,6 @@ export default {
                 a.click();
                 alert("Save Complete")
                 this.loadData()
-                alert("acjneca")
             }
             // Fix Absolute path to keep file synergy
             download(JSON.stringify(items, null, 2), 'streamerData.json', 'application/json');
