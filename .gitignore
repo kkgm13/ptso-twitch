@@ -3,4 +3,4 @@ notes.txt
 .vscode-test
 .DS_Store
 logs
-admin/streamerData.json
+admin/streamData.json

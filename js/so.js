@@ -29,6 +29,9 @@ $(document).ready(function(){
     let raided = getUrlParameter('raided').trim();
     let raidCount = getUrlParameter('raidCount').trim();
     let delay = getUrlParameter('delay').trim();
+    let timeOut = 8;
+
+    if (!timeOut)   timeOut = 20; // default
 
     if (!delay)     delay = "10"; //default
 
@@ -166,6 +169,7 @@ $(document).ready(function(){
                 clearData(); // Clear Data
 
                 let timer = 0; // Start SO idle Timer
+
                 // Pathway for system
                 let timeStart = setInterval(function(){
                     timer++; // Increment

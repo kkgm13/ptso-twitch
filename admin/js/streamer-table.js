@@ -1,5 +1,5 @@
 // import json from '../testData.json' assert { type: "json" };
-import json from '../streamerData.json' assert { type: "json" };
+import json from '../streamData.json' assert { type: "json" };
 
 export default {
     mounted(){
@@ -24,7 +24,8 @@ export default {
             function download(content, fileName, contentType) {
                 var a = document.createElement("a");
                 var file = new Blob([content], {type: contentType});
-                alert("This is not fully complete... Please save JSON file inside the ptso-twitch/admin folder for it to continue working.")
+                // New Save
+                alert("This is not fully automated... Please save JSON file inside the \"ptso-twitch/admin\" folder for it to continue working.")
                 a.href = URL.createObjectURL(file);
                 a.download = fileName;
                 a.click();
