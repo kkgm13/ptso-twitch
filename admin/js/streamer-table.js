@@ -6,6 +6,8 @@ export default {
         console.log("Table Data mounted successfully")
     },
     created(){
+        // allViableStreamers
+        // location.reload()
         this.loadData()
     },
     methods: {
@@ -14,8 +16,20 @@ export default {
             document.getElementById('streamerDetails').value = item.streamerDetails;
         },
         deleteStreamer(item){
-            alert('Derp, im supposed to work');
-            console.log(item)
+            // alert('Derp, im supposed to work');
+            if(confirm("Do you wish to delete details about "+item['streamerName']+"?") === true){
+            var lstTxt = item['streamerName']
+            console.log("Old List"+JSON.stringify(json))
+            json.forEach(function(value,idx){
+                console.log(value)
+                let dataTxt = value['streamerName']
+                if(dataTxt.toLowerCase() === lstTxt.toLowerCase()){
+                    json.splice(idx,1)
+                    // console.log("Returning Data: "+JSON.stringify(json.splice(idx,1)))
+                }
+            })
+            this.saveData(json)
+            }
         },
         loadData(){
             this.items = json;
@@ -33,7 +47,7 @@ export default {
                 this.loadData()
             }
             // Fix Absolute path to keep file synergy
-            download(JSON.stringify(items, null, 2), 'streamerData.json', 'application/json');
+            download(JSON.stringify(items, null, 2), 'streamData.json', 'application/json');
         }
     },
     data() {

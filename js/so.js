@@ -14,7 +14,6 @@ $(document).ready(function(){
             setTimeout(function () {
                 // each loop, call passed in function
                 delegate(array[i]);
-
                 // stagger the timeout for each loop by the index
             }, i * delay);
         })
@@ -152,9 +151,9 @@ $(document).ready(function(){
         }
     }
     
-    // function findInAdmin(getChannel){
-
-    // }
+    function findInAdmin(getChannel){
+        
+    }
 
     function doShoutOut(getChannel) {
         // Get the streamer Info based on the parameter to a new function
