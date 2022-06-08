@@ -248,17 +248,14 @@ $(document).ready(function(){
 
                 let streamName  = info.data[0]['display_name'];         // Streamer Name
                 let streamImg   = info.data[0]['profile_image_url'];    // Streamer Image
-                let userMsg     = decodeURI(channelMessage);
-                
-                let streamDetail = returnData
-
-                // let streamDetail = findInAdmin(info.data[0]);
-                console.log(streamDetail)
+                let streamDetail = Object.values(returnData[0]) // Personalized Streamer Info
+                console.log(returnData)
+                // console.log(streamDetail.split(',').filter(Boolean))
 
                 // Append HTML Data with the main info to SO Container
                 $("<div class='row'><div id='streamName' class='col-12 slide-left-in'><h1>Check out: "+ streamName +"</h1></div></div>").appendTo('#container')
                 //Needs to merge tother as for some reason div count is a pain (Div internal required to )
-                $("<div class='row'><div class='col-3'><div class='pl-3 pr-2 text-center' id='streamImg'><img class='image img-fluid fade-in-image' id='strmAvtr' src='"+streamImg+"' alt='Twitch User'></div></div><div class='slide-right-in col-9'><div id='userMsg' class='holder pr-3 pl-2'><p class='p-1 rounded'>"+streamDetail+"</p></div></div></div>").appendTo("#container");
+                $("<div class='row'><div class='col-3'><div class='pl-3 pr-2 text-center' id='streamImg'><img class='image img-fluid fade-in-image' id='strmAvtr' src='"+streamImg+"' alt='Twitch User'></div></div><div class='slide-right-in col-9'><div id='userMsg' class='holder pr-3 pl-2'><p class='p-1 rounded'>"+streamDetail[0]+"</p></div></div></div>").appendTo("#container");
                 // $("<div class='row'><div class='col-3'><div class='pl-3 pr-2 text-center' id='streamImg'><img class='image img-fluid fade-in-image' id='strmAvtr' src='"+streamImg+"' alt='Twitch User'></div></div><div class='slide-right-in col-9'><div id='userMsg' class='holder pr-3 pl-2'><p class='p-1 rounded'>Lorem, ipsum dolor sit amet consectetur."+userMsg+"</p></div></div></div>").appendTo("#container");
                 returnData = []
             } else {
