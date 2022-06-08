@@ -111,7 +111,7 @@ $(document).ready(function(){
 
     client.connect().catch(console.error); // Start connection to Twitch API from TMI.JS
 
-    // Check chat for messages coming through
+    // Check chat for incoming Twitch chat messgaes
     client.on('chat', (channel, user, message, self) => {
         if (self){
             return false; // Ignore echoed messages.
@@ -136,7 +136,6 @@ $(document).ready(function(){
         // Twitch Channel Moderators ONLY Actions
         if(modsOnly === 'true' && (user.mod || user.username === channelName)){
              // If is array, then iterate over each channel name. Uses the timeOut value from the URL.
-
              if (cmdAry.length > 1) {
                 console.log(cmdAry);
                 arrayPlusDelay(cmdAry, function (sec) {
@@ -182,12 +181,13 @@ $(document).ready(function(){
                         let x = info[idx]['streamerDetails']
                         let x2 = x.split(';').filter(Boolean)
                         returnData.push(x2)
-                        console.log("After Push: "+returnData)
+                        // console.log("After Push: "+returnData)
                     }
-                } else {
-                    console.log("NONE")
                 }
             })
+            if(check === false){
+                returnData.push(["Amazing Streamer!"]);
+            }
         });
         return returnData;
     }
@@ -196,14 +196,11 @@ $(document).ready(function(){
         // Get the streamer Info based on the parameter to a new function
         getStreamerInfo(getChannel, function(info){
             if(info.data.length > 0){
-
                 // If any HTML is found with this information, should be false
                 if(document.getElementById('userMsg') || document.getElementById('streamImg')||document.getElementById('streamName')){
                    return false; 
                 }
-
                 clearData(); // Clear Data
-
                 let timer = 0; // Start SO idle Timer
                 
                 // Pathway for system
