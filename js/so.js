@@ -79,20 +79,18 @@ $(document).ready(function(){
             }
         };
         xhrG.send();
-
-        let checkFileInAdmin = function (file, callback){
-            let folder = window.location.pathname.split("/")
-            let url = window.location.origin+"/"+folder[1]+"/admin/";
-            let xhrAdmin = new XMLHttpRequest();
-            xhrAdmin.open('GET', 'streamData.json');
-            xhrAdmin.onreadystatechange = function () {
-                if(xhrAdmin.readyState === 4){
-                    callback(JSON.parse(xhrAdmin.responseText))
-                    return true
-                } else { 
-                    console.log("Error");
-                    return false
-                }
+    };
+    let checkFileInAdmin = function (file, callback){
+        let folder = window.location.pathname.split("/")
+        let url = window.location.origin+"/"+folder[1]+"/admin/";
+        let xhrAdmin = new XMLHttpRequest();
+        xhrAdmin.open('GET', url+'streamData.json');
+        xhrAdmin.onreadystatechange = function () {
+            if(xhrAdmin.readyState === 4){
+                callback(xhrAdmin.responseText)
+                return true
+            } else { 
+                return false
             }
         }
         xhrAdmin.send()
@@ -135,7 +133,7 @@ $(document).ready(function(){
         // Twitch Channel Moderators ONLY Actions
         if(modsOnly === 'true' && (user.mod || user.username === channelName)){
              // If is array, then iterate over each channel name. Uses the timeOut value from the URL.
-             console.log("hit")
+
              if (cmdAry.length > 1) {
                 console.log(cmdAry);
                 arrayPlusDelay(cmdAry, function (sec) {
@@ -169,20 +167,24 @@ $(document).ready(function(){
     }
     
     function findInAdmin(data){
-        // console.log("Data Grabbed: "+ JSON.stringify(data))
         let strmName = data['login']
         checkFileInAdmin(strmName, function(info){
-            console.log(info)
-        })
-        // fetch(window.location+"/admin/streamData.json")
-        // .then(
-        //     response => {
-        //         console.log(response.json())
-        //     }
-        // )
-        // .error(error => {console.log("Error: "+error.json)});
-        // getJSON('../admin/streamData.json', )
-        // return []
+            var check = false;
+            var index = 0;
+            info = JSON.parse(info)
+            Object.keys(info).forEach(function(idx){
+                if(!check){
+                    let dataTxt = info[idx]['streamerName']
+                    console.log(dataTxt)
+                    if(dataTxt.toLowerCase() === strmName){
+                        console.log("Yup")
+                    } else {
+                        console.log("Nope")
+                    }
+                }
+            })
+            return [check, index]
+        });
     }
 
     function doShoutOut(getChannel) {
