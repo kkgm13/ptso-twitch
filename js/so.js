@@ -79,6 +79,23 @@ $(document).ready(function(){
             }
         };
         xhrG.send();
+
+        let checkFileInAdmin = function (file, callback){
+            let folder = window.location.pathname.split("/")
+            let url = window.location.origin+"/"+folder[1]+"/admin/";
+            let xhrAdmin = new XMLHttpRequest();
+            xhrAdmin.open('GET', 'streamData.json');
+            xhrAdmin.onreadystatechange = function () {
+                if(xhrAdmin.readyState === 4){
+                    callback(JSON.parse(xhrAdmin.responseText))
+                    return true
+                } else { 
+                    console.log("Error");
+                    return false
+                }
+            }
+        }
+        xhrAdmin.send()
     };
 
     // Connect to the client
@@ -151,8 +168,21 @@ $(document).ready(function(){
         }
     }
     
-    function findInAdmin(getChannel){
-        
+    function findInAdmin(data){
+        // console.log("Data Grabbed: "+ JSON.stringify(data))
+        let strmName = data['login']
+        checkFileInAdmin(strmName, function(info){
+            console.log(info)
+        })
+        // fetch(window.location+"/admin/streamData.json")
+        // .then(
+        //     response => {
+        //         console.log(response.json())
+        //     }
+        // )
+        // .error(error => {console.log("Error: "+error.json)});
+        // getJSON('../admin/streamData.json', )
+        // return []
     }
 
     function doShoutOut(getChannel) {
@@ -212,6 +242,9 @@ $(document).ready(function(){
                 let streamName  = info.data[0]['display_name'];         // Streamer Name
                 let streamImg   = info.data[0]['profile_image_url'];    // Streamer Image
                 let userMsg     = decodeURI(channelMessage);
+
+                // console.log(info.data[0])
+                let streamDetail = findInAdmin(info.data[0]);
 
                 // Append HTML Data with the main info to SO Container
                 $("<div class='row'><div id='streamName' class='col-12 slide-left-in'><h1>Check out: "+ streamName +"</h1></div></div>").appendTo('#container')
