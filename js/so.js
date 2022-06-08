@@ -48,6 +48,8 @@ $(document).ready(function(){
     if (!raided)    raided = "false";   // If a raid has come through
     if (!raidCount) raidCount = "3";    // Raid Count limiter
 
+    let returnData = []
+
     // Twitch API get user info for !so command
     let getStreamerInfo = function (channel, callback) {
         // Main URL
@@ -80,11 +82,12 @@ $(document).ready(function(){
         };
         xhrG.send();
     };
+
     let checkFileInAdmin = function (file, callback){
         let folder = window.location.pathname.split("/")
         let url = window.location.origin+"/"+folder[1]+"/admin/";
         let xhrAdmin = new XMLHttpRequest();
-        xhrAdmin.open('GET', url+'streamData.json');
+        xhrAdmin.open('GET', url+'streamData.json', true);
         xhrAdmin.onreadystatechange = function () {
             if(xhrAdmin.readyState === 4){
                 callback(xhrAdmin.responseText)
@@ -145,6 +148,7 @@ $(document).ready(function(){
                     doShoutOut(sec); // Start Shoutout Mechanism
                 }, parseInt(timeOut) * 1000 + 1000); // + 1 seconds, just to be sure that elements are completely removed
             } else {
+                findInAdmin(getChannel); // Locate if a relevant streamer in record is found
                 doShoutOut(getChannel); // Start Shoutout Mechanism
             }
         // ANYONE NOT A TWITCH CHANNEL MOD TO DO THIS... 
@@ -167,24 +171,25 @@ $(document).ready(function(){
     }
     
     function findInAdmin(data){
-        let strmName = data['login']
+        let strmName = data; // Direct Name
         checkFileInAdmin(strmName, function(info){
             var check = false;
-            var index = 0;
             info = JSON.parse(info)
             Object.keys(info).forEach(function(idx){
                 if(!check){
                     let dataTxt = info[idx]['streamerName']
-                    console.log(dataTxt)
                     if(dataTxt.toLowerCase() === strmName){
-                        console.log("Yup")
-                    } else {
-                        console.log("Nope")
+                        let x = info[idx]['streamerDetails']
+                        let x2 = x.split(';').filter(Boolean)
+                        returnData.push(x2)
+                        console.log("After Push: "+returnData)
                     }
+                } else {
+                    console.log("NONE")
                 }
             })
-            return [check, index]
         });
+        return returnData;
     }
 
     function doShoutOut(getChannel) {
@@ -200,7 +205,7 @@ $(document).ready(function(){
                 clearData(); // Clear Data
 
                 let timer = 0; // Start SO idle Timer
-
+                
                 // Pathway for system
                 let timeStart = setInterval(function(){
                     timer++; // Increment
@@ -244,15 +249,18 @@ $(document).ready(function(){
                 let streamName  = info.data[0]['display_name'];         // Streamer Name
                 let streamImg   = info.data[0]['profile_image_url'];    // Streamer Image
                 let userMsg     = decodeURI(channelMessage);
+                
+                let streamDetail = returnData
 
-                // console.log(info.data[0])
-                let streamDetail = findInAdmin(info.data[0]);
+                // let streamDetail = findInAdmin(info.data[0]);
+                console.log(streamDetail)
 
                 // Append HTML Data with the main info to SO Container
                 $("<div class='row'><div id='streamName' class='col-12 slide-left-in'><h1>Check out: "+ streamName +"</h1></div></div>").appendTo('#container')
                 //Needs to merge tother as for some reason div count is a pain (Div internal required to )
-                $("<div class='row'><div class='col-3'><div class='pl-3 pr-2 text-center' id='streamImg'><img class='image img-fluid fade-in-image' id='strmAvtr' src='"+streamImg+"' alt='Twitch User'></div></div><div class='slide-right-in col-9'><div id='userMsg' class='holder pr-3 pl-2'><p class='p-1 rounded'>"+"Amazing Streamer!"+userMsg+"</p></div></div></div>").appendTo("#container");
+                $("<div class='row'><div class='col-3'><div class='pl-3 pr-2 text-center' id='streamImg'><img class='image img-fluid fade-in-image' id='strmAvtr' src='"+streamImg+"' alt='Twitch User'></div></div><div class='slide-right-in col-9'><div id='userMsg' class='holder pr-3 pl-2'><p class='p-1 rounded'>"+streamDetail+"</p></div></div></div>").appendTo("#container");
                 // $("<div class='row'><div class='col-3'><div class='pl-3 pr-2 text-center' id='streamImg'><img class='image img-fluid fade-in-image' id='strmAvtr' src='"+streamImg+"' alt='Twitch User'></div></div><div class='slide-right-in col-9'><div id='userMsg' class='holder pr-3 pl-2'><p class='p-1 rounded'>Lorem, ipsum dolor sit amet consectetur."+userMsg+"</p></div></div></div>").appendTo("#container");
+                returnData = []
             } else {
                 // If streamer is non-existant
                 console.log (getChannel + " where exactly?!")
