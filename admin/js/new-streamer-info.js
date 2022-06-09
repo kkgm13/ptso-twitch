@@ -9,8 +9,8 @@ export default {
         return {
             addInfo: {
                 id: '', // Duplicate ID's found
-                streamerName: '',
-                streamerDetails: '',
+                streamerName: null,
+                streamerDetails: null,
             }
         }
     },
