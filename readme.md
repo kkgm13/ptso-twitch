@@ -24,7 +24,8 @@ A LocalHosted Shoutout Overlay system for Streamers, with personalized streamer-
     - Ensure Twitch Account is connected
 
 ## Setup ⚙️
-🚨Ensure that the localhost system is running correctly
+#### Overlay Setup
+🚨Ensure that the localhost system is **running** correctly
 
 Add this link to an OBS Browser - http://domain:port/ptso-twitch/so.html?channel=CHANNELNAME&msg=&showMsg=false&modsOnly=true&raided=false&delay=10r&raidCount=2&command=&timeOut=8&ref=
 
@@ -33,6 +34,9 @@ Add this link to an OBS Browser - http://domain:port/ptso-twitch/so.html?channel
 ❗Recommended OBS Browser Dimension Sizes❗
 - Width: 800
 - Height: 350
+
+#### PTSO Admin controls
+Head over to ptso-twitch/admin on your browser 
 
 ### Notes 📝
 1) Please ensure to clear OBS Browser cache **before and after** stream for safety, especially with working with Admin Section

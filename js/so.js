@@ -28,26 +28,18 @@ $(document).ready(function(){
     let raidCount = getUrlParameter('raidCount').trim();
     let delay = getUrlParameter('delay').trim();
     let timeOut = 8;
+    let returnData = [] // Get Streamer Detail info from PTSO Admin
 
-    if (!timeOut)   timeOut = 20; // default
-
-    if (!delay)     delay = "10"; //default
-
-    let cmdAry = []; // Blank Array for capture
-
+    if (!timeOut)   timeOut = 20;   // Default timer for TimeOut
+    if (!delay)     delay = "10";   // Default timer for Delay
+    let cmdAry = [];                // Blank Array for Multi-list capture
     let client = '';
-
-    if (!command)   command = 'so'; // default
-
-    if (!modsOnly)  modsOnly = 'true'; // default
-
-    if (!showMsg)   showMsg = 'false'; // default
-
+    if (!command)   command = 'so'; // Default for SO commands
+    if (!modsOnly)  modsOnly = 'true'; // Default for Twitch Mods only
+    if (!showMsg)   showMsg = 'false';
     // Raid Consideration
     if (!raided)    raided = "false";   // If a raid has come through
     if (!raidCount) raidCount = "3";    // Raid Count limiter
-
-    let returnData = []
 
     // Twitch API get user info for !so command
     let getStreamerInfo = function (channel, callback) {
@@ -118,11 +110,15 @@ $(document).ready(function(){
 
         // Ensures the first thing it detects is the "!" then the SO command
         if(message.startsWith('!'+command, 0)){ 
+            console.log("Message: "+message)
             if(document.getElementById('userMsg')){
                 return false;
             }
             getChannel = message.substr(command.length+1);
             getChannel = getChannel.replace('@', '');
+            // Split to grab name if anything after name is grabbed
+            getChannel = getChannel.split(' ')
+            getChannel = getChannel[1]
             // Trim the channel name
             getChannel = getChannel.trim();
             getChannel = getChannel.toLowerCase();

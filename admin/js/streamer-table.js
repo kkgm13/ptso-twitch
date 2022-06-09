@@ -10,6 +10,7 @@ export default {
     },
     methods: {
         edit(item) {
+            alert("This is still in Beta due to complexity of data.\nBut ensure to copy/paste requried info to edit to ensure it's captured.")
             document.getElementById('streamerName').value = item.streamerName;
             document.getElementById('streamerDetails').value = item.streamerDetails;
         },
