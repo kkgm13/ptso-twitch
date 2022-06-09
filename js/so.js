@@ -192,20 +192,20 @@ $(document).ready(function(){
     }
 
     function fillHTMLData(streamDetail){
+        let htmldata = "<div class='slide-right-in col-8 pr-3 pl-2 holder'>"
+        /**
+         * CRITICAL ISSUE: Text not shifting over
+         */
+        // htmldata += "<div id='userMsg' class='carousel slide textshift' data-bs-ride='carousel'><div class='carousel-inner texthold'>"
         // for (let index = 0; index < streamDetail.length; index++) {
         //     if(index === 0){
-        //         htmldata += "<div class='item active'><div class='carousel-caption'><p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p></div></div>";
-        //     } else {
-        //         // htmldata += "<div class='item'><div class='carousel-caption'><p>"+streamerDetail[index]+"</p></div></div>";
-        //         htmldata += "<div class='item'><div class='carousel-caption'><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p></div></div>";
+        //         htmldata += "<div class='carousel-item active' data-bs-interval='500'><p>"+streamDetail[index]+"</p></div>";
+        //     } else {;
+        //         htmldata += "<div class='carousel-item' data-bs-interval='2000'><p>"+streamDetail[index]+"</p></div>";
         //     }
         // }
-
-        let htmldata = "<div class='slide-right-in col-8 pr-3 pl-2 holder'>"
-
-        htmldata += "<div id='userMsg' class='carousel slide textshift' data-bs-ride='carousel'><div class='carousel-inner texthold'><div class='carousel-item active' data-bs-interval='500'><p>"+streamDetail+"</p></div></div></div>"
+        htmldata += "<div id='userMsg' class='carousel slide textshift' data-bs-ride='carousel'><div class='carousel-inner texthold'><div class='carousel-item active' data-bs-interval='500'><p>"+streamDetail+"</p></div></div></div></div>"
         // htmldata += '</div></div>'
-        htmldata += '</div>'
         return htmldata;
     }
 
