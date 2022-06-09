@@ -13,25 +13,24 @@ img {
     border-radius: 50%;
 }
 
-/* .img-fluid {
-    max-width: 50% !important;
-} */
 
 p {
     font-size: 1.8rem;
     font-weight: bold;
     text-align: center;
-    /* border-radius: 50%; */
 }
 
 .holder {
     background-color: grey;
 }
 
-.carousel {
-    /* max-width: 960px; */
-    margin: auto;
-    /* width: 90%; */
+.textshift {
+    height: 200px;
+}
+
+.texthold {
+    position: absolute;
+    top: 35%;
 }
 
 .carousel-control {

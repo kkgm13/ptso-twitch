@@ -1,5 +1,4 @@
 $(document).ready(function(){
-
     // Get values from URL string
     function getUrlParameter(name) {
         name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
@@ -102,7 +101,7 @@ $(document).ready(function(){
     // Connect to the client
     client = new tmi.Client({
         options: {
-            debug: false,
+            debug: true,
             skipUpdatingEmotesets: true
         },
         connection: {reconnect: true},
@@ -193,20 +192,20 @@ $(document).ready(function(){
     }
 
     function fillHTMLData(streamDetail){
-        let htmldata = "<div class='slide-right-in col-9'><div id='userMsg' class='holder pr-3 pl-2 carousel-inner' role=''listbox>";
-        for (let index = 0; index < streamDetail.length; index++) {
-            if(index === 0){
-                console.log("Test 1: "+streamDetail[index])
-                htmldata += "<div class='item active'><p class='p-1 rounded'>"+streamDetail[index]+"</p></div>";
-                console.log(htmldata)
-            } else {
-                console.log("Test 3: "+streamDetail[index])
-                htmldata += "<div class='item'><p class='p-1 rounded'>"+streamDetail[index]+"</p></div>";
-                console.log(htmldata)
-            }
-        }
-        htmldata += "</div></div>";
-        
+        // for (let index = 0; index < streamDetail.length; index++) {
+        //     if(index === 0){
+        //         htmldata += "<div class='item active'><div class='carousel-caption'><p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p></div></div>";
+        //     } else {
+        //         // htmldata += "<div class='item'><div class='carousel-caption'><p>"+streamerDetail[index]+"</p></div></div>";
+        //         htmldata += "<div class='item'><div class='carousel-caption'><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p></div></div>";
+        //     }
+        // }
+
+        let htmldata = "<div class='slide-right-in col-8 pr-3 pl-2 holder'>"
+
+        htmldata += "<div id='userMsg' class='carousel slide textshift' data-bs-ride='carousel'><div class='carousel-inner texthold'><div class='carousel-item active' data-bs-interval='500'><p>"+streamDetail+"</p></div></div></div>"
+        // htmldata += '</div></div>'
+        htmldata += '</div>'
         return htmldata;
     }
 
@@ -224,20 +223,23 @@ $(document).ready(function(){
                 // Pathway for system
                 let timeStart = setInterval(function(){
                     timer++; // Increment
-                    // console.log(timer); // Dev checking
+                    console.log(timer); // Dev checking
 
                     // If no clips are used AND timer is on timeout with the userMsg
                     if(timer == parseInt(timeOut) && document.getElementById("userMsg")){
                         // INSERT ANIMATION AND TEXT USAGES
-                        if (document.getElementById("userMsg")) {
-                            document.getElementById("userMsg").classList.remove("slide-left-in");
-                        }
-                        if (document.getElementById("streamImg")) {
-                            document.getElementById("streamImg").getElementsByClassName("image")[0].classList.remove("fade-in-image");
-                        }
-                        if (document.getElementById("streamName")) {
-                            document.getElementById("streamName").classList.remove("slide-right-in");
-                        }
+                        setTimeout(function(){
+                            if (document.getElementById("userMsg")) {
+                                document.getElementById("userMsg").classList.remove("slide-left-in");
+                            }
+                            if (document.getElementById("streamImg")) {
+                                document.getElementById("streamImg").getElementsByClassName("image")[0].classList.remove("fade-in-image");
+                            }
+                            if (document.getElementById("streamName")) {
+                                document.getElementById("streamName").classList.remove("slide-right-in");
+                            }
+                        },7000);
+                        
 
                         // Slide out animation
                         if (document.getElementById("userMsg")) {
@@ -266,12 +268,11 @@ $(document).ready(function(){
                 let streamDetail = Object.values(returnData[0]) // Personalized Streamer Info
                 // console.log(returnData)
                 streamDetail = fillHTMLData(streamDetail)
-                console.log(streamDetail)
 
                 // Append HTML Data with the main info to SO Container
                 $("<div class='row'><div id='streamName' class='col-12 slide-left-in'><h1>Check out: "+ streamName +"</h1></div></div>").appendTo('#container')
                 //Needs to merge tother as for some reason div count is a pain (Div internal required to )
-                $("<div class='row'><div class='col-3'><div class='pl-3 pr-2 text-center' id='streamImg'><img class='image img-fluid fade-in-image' id='strmAvtr' src='"+streamImg+"' alt='Twitch User'></div></div>"+streamDetail+"</div>").appendTo("#container");
+                $("<div class='row'><div class='col-4'><div class='pl-3 pr-2 text-center' id='streamImg'><img class='image img-fluid fade-in-image' id='strmAvtr' src='"+streamImg+"' alt='Twitch User'></div></div>"+streamDetail+"</div>").appendTo("#container");
                 // $("<div class='row'><div class='col-3'><div class='pl-3 pr-2 text-center' id='streamImg'><img class='image img-fluid fade-in-image' id='strmAvtr' src='"+streamImg+"' alt='Twitch User'></div></div><div class='slide-right-in col-9'><div id='userMsg' class='holder pr-3 pl-2'><p class='p-1 rounded'>Lorem, ipsum dolor sit amet consectetur."+userMsg+"</p></div></div></div>").appendTo("#container");
                 returnData = []
             } else {

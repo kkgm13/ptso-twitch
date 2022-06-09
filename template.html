@@ -8,38 +8,34 @@
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 </head>
-<body onload="onInit()">
+<body>
     <h1 class="text-center">Shoutout Template Skeleton</h1>
     <div class="container">
         <div class="row">
-            <div class="col-12">
+            <div id="streamName" class="col-12">
                 <h1>Check out this streamer</h1>
             </div>
         </div>
-        <!-- <div class="row">
-            <div class="col-12" style="">
-                <div class="p-3 text-center">
-                    <img class="img-fluid" id="strmAvtr" src="default.jpeg" alt="Twitch User">
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <p class="p-1 rounded">Lorem, ipsum dolor sit amet consectetur.</p>
-                </div>
-            </div>
-        </div> -->
         <div class="row">
-            <div class="col-3 pl-3 pr-2">
-                <div class="text-center">
+            <div class="col-3">
+                <div class="pl-3 pr-2 text-center" id="streamImg">
                     <img class="img-fluid" id="strmAvtr" src="default.jpeg" alt="Twitch User">
                 </div>
             </div>
-            <div class="col-9 pr-3 pl-2">
-                <div class="holder">
-                    <p class="p-1 rounded">Lorem, ipsum dolor sit amet consectetur.</p>
-                </div>
+            <div class="col-9 pr-3 pl-2 holder">
+                <div id='userMsg' class='carousel slide textshift' data-bs-ride='carousel'>
+                    <div class='carousel-inner texthold'>
+                       <div class='carousel-item active' data-bs-interval='2000'>
+                          <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                       </div>
+                       <div class='carousel-item' data-bs-interval='2000'>
+                          <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                       </div>
+                       <div class='carousel-item' data-bs-interval='2000'>
+                          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                       </div>
+                    </div>
+                 </div>
             </div>
         </div>
     </div>
