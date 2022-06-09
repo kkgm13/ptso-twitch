@@ -8,7 +8,7 @@ export default {
     data() {
         return {
             addInfo: {
-                id: '', // ?????
+                id: '', // Duplicate ID's found
                 streamerName: '',
                 streamerDetails: '',
             }
@@ -17,7 +17,7 @@ export default {
     methods: {
         saveInfo(addInfo) {
             let finder = this.findStreamerInFile(addInfo, json)
-            console.log(finder)
+            // console.log(finder)
             if( finder[0]=== true){
                 if(alert('Data Duplicate found for '+ JSON.stringify(json[finder[1]].streamerName) + ". Replace Data?") == true){
                     json[finder[1]].streamerName = addInfo.streamerName
@@ -25,7 +25,7 @@ export default {
                 }
             } else {
                 addInfo.id = parseInt(document.getElementsByClassName('count').length ) + 1
-                json.push(addInfo)  // Add ID to the number
+                json.push(addInfo)
                 console.log(addInfo)
             }
             table.methods.saveData(json)
@@ -38,7 +38,7 @@ export default {
                     let dataTxt = json[idx]['streamerName']
                     let formTxt = addInfo.streamerName
                     if(dataTxt.toLowerCase() === formTxt.toLowerCase()){
-                        console.log('Data Check: ' + (json[idx]['streamerName'] === addInfo.streamerName))
+                        // console.log('Data Check: ' + (json[idx]['streamerName'] === addInfo.streamerName))
                         check = true
                         index = idx
                     } else {

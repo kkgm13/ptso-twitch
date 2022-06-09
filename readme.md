@@ -13,6 +13,7 @@ A LocalHosted Shoutout Overlay system for Streamers, with personalized streamer-
 |Admin: Finish Edit System from Streamer Table| High |
 |Admin: Automatic Saving|Mid|
 |System: Refactor and/or PHP variation|Low|
+|Admin: Proper Database Calling via MongoDB or MySQL|TBC|
 
 -----
 ## Prerequisites❗

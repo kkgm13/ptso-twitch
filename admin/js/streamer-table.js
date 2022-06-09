@@ -6,8 +6,6 @@ export default {
         console.log("Table Data mounted successfully")
     },
     created(){
-        // allViableStreamers
-        // location.reload()
         this.loadData()
     },
     methods: {
@@ -25,7 +23,6 @@ export default {
                 let dataTxt = value['streamerName']
                 if(dataTxt.toLowerCase() === lstTxt.toLowerCase()){
                     json.splice(idx,1)
-                    // console.log("Returning Data: "+JSON.stringify(json.splice(idx,1)))
                 }
             })
             this.saveData(json)
@@ -43,8 +40,12 @@ export default {
                 a.href = URL.createObjectURL(file);
                 a.download = fileName;
                 a.click();
-                alert("Save Complete")
-                this.loadData()
+                // Required for autoloading info again
+                if(alert("Save Complete")){
+                    location.reload();
+                } else {
+                    location.reload();
+                }  
             }
             // Fix Absolute path to keep file synergy
             download(JSON.stringify(items, null, 2), 'streamData.json', 'application/json');
