@@ -101,7 +101,7 @@ $(document).ready(function(){
     // Connect to the client
     client = new tmi.Client({
         options: {
-            debug: true,
+            debug: false,
             skipUpdatingEmotesets: true
         },
         connection: {reconnect: true},
