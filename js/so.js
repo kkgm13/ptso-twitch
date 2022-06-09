@@ -217,31 +217,27 @@ $(document).ready(function(){
                 if(document.getElementById('userMsg') || document.getElementById('streamImg')||document.getElementById('streamName')){
                    return false; 
                 }
-                clearData(); // Clear Data
-                let timer = 0; // Start SO idle Timer
+                clearData();
+                let timer = 0
 
                 // Pathway for system
                 let timeStart = setInterval(function(){
-                    timer++; // Increment
-                    console.log(timer); // Dev checking
+                    timer++;
+                    // console.log(timer); // Dev checking
 
-                    // If no clips are used AND timer is on timeout with the userMsg
                     if(timer == parseInt(timeOut) && document.getElementById("userMsg")){
                         // INSERT ANIMATION AND TEXT USAGES
-                        setTimeout(function(){
-                            if (document.getElementById("userMsg")) {
-                                document.getElementById("userMsg").classList.remove("slide-left-in");
-                            }
-                            if (document.getElementById("streamImg")) {
-                                document.getElementById("streamImg").getElementsByClassName("image")[0].classList.remove("fade-in-image");
-                            }
-                            if (document.getElementById("streamName")) {
-                                document.getElementById("streamName").classList.remove("slide-right-in");
-                            }
-                        },7000);
+                        if (document.getElementById("userMsg")) {
+                            document.getElementById("userMsg").classList.remove("slide-left-in");
+                        }
+                        if (document.getElementById("streamImg")) {
+                            document.getElementById("streamImg").getElementsByClassName("image")[0].classList.remove("fade-in-image");
+                        }
+                        if (document.getElementById("streamName")) {
+                            document.getElementById("streamName").classList.remove("slide-right-in");
+                        }
                         
-
-                        // Slide out animation
+                        
                         if (document.getElementById("userMsg")) {
                             document.getElementById("userMsg").classList.add("slide-right-out");
                         }
@@ -258,22 +254,20 @@ $(document).ready(function(){
                             clearInterval(timeStart);
                             // Data Remover for HTML Body cleaning
                             document.getElementById('container').innerHTML="";
-                            getChannel = "" // Nuller
+                            getChannel = ""
                         }, 500);
                     }
                 }, 1000);
 
-                let streamName  = info.data[0]['display_name'];         // Streamer Name
-                let streamImg   = info.data[0]['profile_image_url'];    // Streamer Image
-                let streamDetail = Object.values(returnData[0]) // Personalized Streamer Info
-                // console.log(returnData)
+                let streamName  = info.data[0]['display_name'];
+                let streamImg   = info.data[0]['profile_image_url'];
+                let streamDetail = Object.values(returnData[0]) 
                 streamDetail = fillHTMLData(streamDetail)
 
                 // Append HTML Data with the main info to SO Container
                 $("<div class='row'><div id='streamName' class='col-12 slide-left-in'><h1>Check out: "+ streamName +"</h1></div></div>").appendTo('#container')
                 //Needs to merge tother as for some reason div count is a pain (Div internal required to )
                 $("<div class='row'><div class='col-4'><div class='pl-3 pr-2 text-center' id='streamImg'><img class='image img-fluid fade-in-image' id='strmAvtr' src='"+streamImg+"' alt='Twitch User'></div></div>"+streamDetail+"</div>").appendTo("#container");
-                // $("<div class='row'><div class='col-3'><div class='pl-3 pr-2 text-center' id='streamImg'><img class='image img-fluid fade-in-image' id='strmAvtr' src='"+streamImg+"' alt='Twitch User'></div></div><div class='slide-right-in col-9'><div id='userMsg' class='holder pr-3 pl-2'><p class='p-1 rounded'>Lorem, ipsum dolor sit amet consectetur."+userMsg+"</p></div></div></div>").appendTo("#container");
                 returnData = []
             } else {
                 // If streamer is non-existant
