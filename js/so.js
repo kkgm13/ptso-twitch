@@ -110,7 +110,7 @@ $(document).ready(function(){
 
         // Ensures the first thing it detects is the "!" then the SO command
         if(message.startsWith('!'+command, 0)){ 
-            console.log("Message: "+message)
+            // console.log("Message: "+message)
             if(document.getElementById('userMsg')){
                 return false;
             }
