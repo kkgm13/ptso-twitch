@@ -14,6 +14,7 @@ A LocalHosted Shoutout Overlay system for Streamers, with personalized streamer-
 |Admin: Automatic Saving|Mid|
 |System: Refactor and/or PHP variation|Low|
 |Admin: Proper Database Calling via MongoDB or MySQL|TBC|
+|Admin?: User Customization under request of some Twitch Streamers (eg: Box Color, Font Family, etc...)|TBD|
 
 -----
 ## Prerequisites❗

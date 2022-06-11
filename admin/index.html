@@ -77,8 +77,13 @@
                         </div>
                         <div class="form-floating">
                             <textarea v-model="addInfo.streamerDetails" wrap="soft" name="streamerDetails" class="form-control" placeholder="Leave a comment here" id="streamerDetails" required></textarea>
-                            <label for="streamerDetails">Details about Streamer</label></div>
-                            <div id="streamerDetails" class="form-text">Please use semicolons (;) to separate dedicated information.</div>
+                            <label for="streamerDetails">Details about Streamer</label>
+                        </div>
+                        <div id="streamerDetails" class="form-text">Please use semicolons (;) to separate dedicated information.</div>
+                        <div class="form-floating">
+                            <input type="color" name="streamerColor" id="streamerColor" class="form-control" v-model="addInfo.streamerColor" value="#666666">
+                            <label for="streamerColor" >Color Association</label>
+                        </div>
                     </fieldset>
                     <hr>
                     <div class="row form-group">
