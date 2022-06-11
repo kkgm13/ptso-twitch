@@ -11,6 +11,7 @@ export default {
                 id: '', // Duplicate ID's found
                 streamerName: '',
                 streamerDetails: '',
+                streamerColor: '',
             }
         }
     },
@@ -22,11 +23,11 @@ export default {
                 if(alert('Data Duplicate found for '+ JSON.stringify(json[finder[1]].streamerName) + ". Replace Data?") == true){
                     json[finder[1]].streamerName = addInfo.streamerName
                     json[finder[1]].streamerDetails = addInfo.streamerDetails
+                    json[finder[1]].streamerColor = addInfo.streamerColor
                 }
             } else {
                 addInfo.id = parseInt(document.getElementsByClassName('count').length ) + 1
                 json.push(addInfo)
-                console.log(addInfo)
             }
             table.methods.saveData(json)
         },
@@ -42,7 +43,7 @@ export default {
                         check = true
                         index = idx
                     } else {
-                        console.log("Nope")
+                        console.log("No Associated Streamer in List")
                     }
                 }
             })

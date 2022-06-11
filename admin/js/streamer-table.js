@@ -13,14 +13,13 @@ export default {
             alert("This is still in Beta due to complexity of data.\nBut ensure to copy/paste requried info to edit to ensure it's captured.")
             document.getElementById('streamerName').value = item.streamerName;
             document.getElementById('streamerDetails').value = item.streamerDetails;
+            document.getElementById('streamerColor').value = item.streamerColor;
         },
         deleteStreamer(item){
             // alert('Derp, im supposed to work');
             if(confirm("Do you wish to delete details about "+item['streamerName']+"?") === true){
             var lstTxt = item['streamerName']
-            console.log("Old List"+JSON.stringify(json))
             json.forEach(function(value,idx){
-                console.log(value)
                 let dataTxt = value['streamerName']
                 if(dataTxt.toLowerCase() === lstTxt.toLowerCase()){
                     json.splice(idx,1)
@@ -66,6 +65,10 @@ export default {
                 {
                     key: 'streamerDetails',
                     label: 'Details about Streamer'
+                },
+                {
+                    key: 'streamerColor',
+                    label: 'Associated Streamer Color'
                 }
             ], 
             items: null

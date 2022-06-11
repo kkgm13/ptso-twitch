@@ -11,10 +11,11 @@ A LocalHosted Shoutout Overlay system for Streamers, with personalized streamer-
 |------|-------|
 |SO.html: Single Line Carousel during activation| CRITICAL FEATURE | 
 |Admin: Finish Edit System from Streamer Table| High |
+|⭐️ System: Use Twitch ID instead as a reference system due to potential username changes over time|Mid|
 |Admin: Automatic Saving|Mid|
 |System: Refactor and/or PHP variation|Low|
 |Admin: Proper Database Calling via MongoDB or MySQL|TBC|
-|Admin?: User Customization under request of some Twitch Streamers (eg: Box Color, Font Family, etc...)|TBD|
+|📌 Admin?: User Customization under request of some Twitch Streamers (eg: Box Color, Font Family, etc...)|In progress|
 
 -----
 ## Prerequisites❗

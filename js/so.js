@@ -191,7 +191,11 @@ $(document).ready(function(){
     }
 
     function fillHTMLData(streamDetail){
-        let htmldata = "<div class='slide-right-in col-8 pr-3 pl-2' style='background-color:"+returnData[1]+";' >"
+        // Compatibility Color Bypasser
+        let colorStream = returnData[1][0]
+        colorStream = colorStream.split('#')
+        //Set HTML Data
+        let htmldata = "<div class='slide-right-in col-8 pr-3 pl-2' style='background-color:#"+colorStream[1]+";' >"
         /**
          * CRITICAL ISSUE: Text not shifting over
          */
@@ -224,7 +228,7 @@ $(document).ready(function(){
                     timer++;
                     // console.log(timer); // Dev checking
 
-                    if(timer == parseInt(timeOut)*8 && document.getElementById("userMsg")){
+                    if(timer == parseInt(timeOut) && document.getElementById("userMsg")){
                         // INSERT ANIMATION AND TEXT USAGES
                         if (document.getElementById("userMsg")) {
                             document.getElementById("userMsg").classList.remove("slide-left-in");
