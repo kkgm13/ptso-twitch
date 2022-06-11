@@ -110,7 +110,6 @@ $(document).ready(function(){
 
         // Ensures the first thing it detects is the "!" then the SO command
         if(message.startsWith('!'+command, 0)){ 
-            // console.log("Message: "+message)
             if(document.getElementById('userMsg')){
                 return false;
             }
@@ -173,10 +172,14 @@ $(document).ready(function(){
                 if(!check){
                     let dataTxt = info[idx]['streamerName']
                     if(dataTxt.toLowerCase() === strmName){
+                        // Get streamer Details
                         let x = info[idx]['streamerDetails']
                         let x2 = x.split(';').filter(Boolean)
                         returnData.push(x2)
-                        // console.log("After Push: "+returnData)
+                        // Get Streamer Color
+                        let y = info[idx]['streamerColor']
+                        returnData.push([y])
+                        // console.log(returnData)
                     }
                 }
             })
@@ -188,7 +191,11 @@ $(document).ready(function(){
     }
 
     function fillHTMLData(streamDetail){
-        let htmldata = "<div class='slide-right-in col-8 pr-3 pl-2 holder'>"
+        // Compatibility Color Bypasser
+        let colorStream = returnData[1][0]
+        colorStream = colorStream.split('#')
+        //Set HTML Data
+        let htmldata = "<div class='slide-right-in col-8 pr-3 pl-2' style='background-color:#"+colorStream[1]+";' >"
         /**
          * CRITICAL ISSUE: Text not shifting over
          */
