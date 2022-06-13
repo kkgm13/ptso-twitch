@@ -94,7 +94,7 @@ $(document).ready(function(){
     // Connect to the client
     client = new tmi.Client({
         options: {
-            debug: false,
+            debug: true,
             skipUpdatingEmotesets: true
         },
         connection: {reconnect: true},
@@ -179,13 +179,20 @@ $(document).ready(function(){
                         returnData.push(x2)
                         // Get Streamer Color
                         let y = info[idx]['streamerColor']
-                        returnData.push([y])
+                        console.log(y)
+                        if (y != ''){
+                            returnData.push([y])
+                        } else {
+                            returnData.push(["#676767"])
+                        }
+                        
                         // console.log(returnData)
                     }
                 }
             })
             if(check === false){
                 returnData.push(["Amazing Streamer!"]);
+                returnData.push(["#676767"]);
             }
         });
         return returnData;
@@ -193,6 +200,7 @@ $(document).ready(function(){
 
     function fillHTMLData(streamDetail){
         // Compatibility Color Bypasser
+        console.log(returnData)
         let colorStream = returnData[1][0]
         colorStream = colorStream.split('#')
         //Set HTML Data
