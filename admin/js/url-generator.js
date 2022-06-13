@@ -10,15 +10,12 @@ export default{
                 alert('NO Twitch username is set');
             } else {
                 let timeout = document.getElementById('timeoutSize').value
-                console.log("TimeOut: "+timeout)
                 let delay = document.getElementById('delaySize').value
-                console.log("Delay: "+delay)
                 let command = document.getElementById('commands').value
-
                 let raided = document.getElementById('isRaid').value
                 let raidCount = document.getElementById('raidNumber').value
 
-                fullUrl += window.location.protocol + "//" + window.location.host + window.location.pathname.split('admin/')[0] + "so.html?channel=" + mainAccount.toLowerCase()+ "&showMsg=&modsOnly=true&"
+                fullUrl += window.location.protocol + "//" + window.location.host + window.location.pathname.split('admin/')[0] + "so.html?channel=" + mainAccount.toLowerCase()+ "&showMsg=false&modsOnly=true"
                 // console.log("1: "+fullUrl)
                 if(parseInt(delay) != 0){
                     fullUrl += "&delay=" + delay
@@ -35,7 +32,7 @@ export default{
                 }
                 // If Channel Raiding Is considered
                 if(raided === true){
-                    fullUrl += "raided=" + raided + "&raidCount=" + raidCount
+                    fullUrl += "&raided=" + raided + "&raidCount=" + raidCount
                     // console.log("5: "+fullUrl)
                 }
                 fullUrl += "&ref=";
