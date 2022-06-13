@@ -33,7 +33,6 @@ export default{
                     fullUrl += "&command=" + command;
                     // console.log("4: "+fullUrl)
                 }
-
                 // If Channel Raiding Is considered
                 if(raided === true){
                     fullUrl += "raided=" + raided + "&raidCount=" + raidCount

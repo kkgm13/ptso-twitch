@@ -104,7 +104,7 @@
         <hr>
         <div class="row">
             <div class="col-12" id="appurlgen">
-                <h3>Browser Overlay Generator</h3>
+                <h3>Browser Overlay URL Generator</h3>
                 <div class="row">
                     <div class="col-6">
                         <fieldset>
@@ -123,13 +123,13 @@
                             </div>
                             <div class="input-group mb-3">
                                 <span class="input-group-text">!</span>
-                                <input type="text" class="form-control" placeholder="Custom SO Commands" aria-label="commands" id="commands" aria-describedby="commands">
+                                <input type="text" class="form-control" placeholder="Custom SO Command" aria-label="commands" id="commands" aria-describedby="commands">
                             </div>
                         </fieldset>
                     </div>
                     <div class="col-6">
                         <fieldset disabled="disabled">
-                            <legend>Channel Raids</legend>
+                            <legend>Channel Raids (Under Revision)</legend>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="isRaid" name="isRaid">
                                 <label class="form-check-label" for="isRaid">
@@ -148,7 +148,7 @@
                     <!-- <p id="browserURL" style="  text-decoration: underline;">Your Browser Overlay Link: {{urlData}} </p> -->
                     <p class="p-1" id="browserURL"></p>
                     <div class="d-grid gap-2">
-                        <button class="btn btn-primary" type="button" @click="urlGenerate">Generate Overlay Link</button>
+                        <button class="btn btn-warning" type="button" @click="urlGenerate">Generate Overlay Link</button>
                       </div>
                 </div>
             </div>
