@@ -74,6 +74,7 @@ $(document).ready(function(){
         xhrG.send();
     };
 
+    // File Reader Call for local streamData.JSON file
     let checkFileInAdmin = function (file, callback){
         let folder = window.location.pathname.split("/")
         let url = window.location.origin+"/"+folder[1]+"/admin/";

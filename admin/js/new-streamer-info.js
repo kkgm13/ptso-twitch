@@ -11,7 +11,7 @@ export default {
                 id: '', // Duplicate ID's found
                 streamerName: '',
                 streamerDetails: '',
-                streamerColor: '',
+                streamerColor: '#666666',
             }
         }
     },
