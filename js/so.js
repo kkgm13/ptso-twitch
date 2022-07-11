@@ -58,21 +58,21 @@ $(document).ready(function(){
         xhr.send();
     };
 
-    // Twitch API get last game played from a Streamer
-    let getGame = function (channel, callback) {
-        let url = "https://twitchapi.teklynk.com/getuserstatus.php?channel=" + channel + "";
-        let xhrG = new XMLHttpRequest();
-        xhrG.open("GET", url);
-        xhrG.onreadystatechange = function () {
-            if (xhrG.readyState === 4) {
-                callback(JSON.parse(xhrG.responseText));
-                return true;
-            } else {
-                return false;
-            }
-        };
-        xhrG.send();
-    };
+    // // Twitch API get last game played from a Streamer
+    // let getGame = function (channel, callback) {
+    //     let url = "https://twitchapi.teklynk.com/getuserstatus.php?channel=" + channel + "";
+    //     let xhrG = new XMLHttpRequest();
+    //     xhrG.open("GET", url);
+    //     xhrG.onreadystatechange = function () {
+    //         if (xhrG.readyState === 4) {
+    //             callback(JSON.parse(xhrG.responseText));
+    //             return true;
+    //         } else {
+    //             return false;
+    //         }
+    //     };
+    //     xhrG.send();
+    // };
 
     // File Reader Call for local streamData.JSON file
     let checkFileInAdmin = function (file, callback){

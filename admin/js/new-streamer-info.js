@@ -1,5 +1,6 @@
 import json from '../streamData.json' assert { type: "json" };
 import table from '../js/streamer-table.js';
+// import locateStreamer from '../../js/so.js';
 
 export default {
     mounted(){
@@ -19,17 +20,19 @@ export default {
         saveInfo(addInfo) {
             let finder = this.findStreamerInFile(addInfo, json)
             // console.log(finder)
-            if( finder[0]=== true){
+            if( finder[0] === true){
                 if(alert('Data Duplicate found for '+ JSON.stringify(json[finder[1]].streamerName) + ". Replace Data?") == true){
                     json[finder[1]].streamerName = addInfo.streamerName
                     json[finder[1]].streamerDetails = addInfo.streamerDetails
                     json[finder[1]].streamerColor = addInfo.streamerColor
                 }
             } else {
-                addInfo.id = parseInt(document.getElementsByClassName('count').length ) + 1
-                json.push(addInfo)
+                let streamID = this.getStreamID((addInfo.streamerName).toLowerCase());
+                console.log("Data Collected:" + streamID)
+                // addInfo.id = parseInt(document.getElementsByClassName('count').length ) + 1
+                // json.push(addInfo)
             }
-            table.methods.saveData(json)
+            // table.methods.saveData(json)
         },
         findStreamerInFile(addInfo, json){
             var check = false;
@@ -48,7 +51,57 @@ export default {
                 }
             })
             return [check, index]
+        }, 
+        getStreamID(streamerName) {
+            if(streamerName != "") {
+                axios.get('https://twitchapi.teklynk.com/getuserinfo.php',{
+                    headers: {'X-Requested-With': 'XMLHttpRequest'},
+                    params: {
+                        channel: streamerName
+                    },
+                    responseType: 'json'
+                }).then(function (response){
+                    console.log("Data Grabbed", response)
+                }).catch(function (error){
+                    console.log('Error', error.message)
+                    console.log('Error', error.request)
+                })
+            } else {
+                console.log("WTF")
+            }
+             //https://stackoverflow.com/questions/59340977/how-to-write-this-xhr-request-in-axios
+
+            // let url = "https://twitchapi.teklynk.com/getuserinfo.php?channel=" + streamerName; 
+            // let xhr = new XMLHttpRequest(); +
+            // xhr.open("GET", url);
+            // xhr.onreadystatechange = function () {
+            //     if (xhr.readyState === 4) {
+            //         callback(JSON.parse(xhr.responseText));
+            //         return true;
+            //     } else {
+            //         return false;
+            //     }
+            // };
+            // xhr.send();
+
+            // console.log(xhr)
         }
+
+        // let getStreamerInfo = function (channel, callback) {
+        //     // Main URL
+        //     let url = "https://twitchapi.teklynk.com/getuserinfo.php?channel=" + channel; 
+        //     let xhr = new XMLHttpRequest(); +
+        //     xhr.open("GET", url);
+        //     xhr.onreadystatechange = function () {
+        //         if (xhr.readyState === 4) {
+        //             callback(JSON.parse(xhr.responseText));
+        //             return true;
+        //         } else {
+        //             return false;
+        //         }
+        //     };
+        //     xhr.send();
+        // };
     }
 }
 

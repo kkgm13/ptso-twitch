@@ -26,6 +26,16 @@
             <hr>
         </div>
     </div>
+    <ul class="nav nav-tabs" id="mainNav" role="tablist">
+        <li class="nav-item active">
+            <div class="container">
+                
+            </div>
+        </li>
+        <li class="nav-item">
+            
+        </li>
+    </ul>
     <div class="container">
         <div class="row">
             <div class="col-md-8" id="apptable">
@@ -70,11 +80,19 @@
                         <hr>
                     </div>
                     <fieldset>
-                        <div class="form-floating mb-3">
-                            <input 
-                           v-model="addInfo.streamerName" type="text" name="streamerName" class="form-control" id="streamerName" placeholder="Streamer Name" required>
-                            <label for="streamerName">Streamer Name</label>
-                        </div>
+                        <!-- <div class="container"> -->
+                            <div class="row">
+                                <div class="col-9">
+                                    <div class="form-floating mb-3">
+                                        <input v-model="addInfo.streamerName" type="text" name="streamerName" class="form-control" id="streamerName" placeholder="Streamer Name" required>
+                                        <label for="streamerName">Stream Name</label>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <button type="button" class="btn btn-primary" @click="getStreamID(addInfo.streamerName)"><i class="bi bi-search"></i></button>
+                                </div>
+                            </div>
+                        <!-- </div> -->
                         <div class="form-floating">
                             <textarea v-model="addInfo.streamerDetails" wrap="soft" name="streamerDetails" class="form-control" placeholder="Leave a comment here" id="streamerDetails" required></textarea>
                             <label for="streamerDetails">Details about Streamer</label>
@@ -183,5 +201,6 @@
         createApp(StreamerTableInfo).mount('#apptable');
         createApp(URLGenerateInfo).mount('#appurlgen');
     </script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </body>
 </html>

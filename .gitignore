@@ -6,3 +6,4 @@ logs
 admin/streamData.json
 test.html
 admin/testData.json
+admin/node_modules

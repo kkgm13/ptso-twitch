@@ -1,0 +1,22 @@
+{
+  "name": "ptso-admin",
+  "version": "1.0.0",
+  "description": "Personal Textual Shoutout Overlay System for Twitch - Admin Area",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kkgm13/ptso-twitch.git"
+  },
+  "author": "KKGM13",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kkgm13/ptso-twitch/issues"
+  },
+  "homepage": "https://github.com/kkgm13/ptso-twitch#readme",
+  "dependencies": {
+    "sanitize-html": "^2.7.0"
+  }
+}
