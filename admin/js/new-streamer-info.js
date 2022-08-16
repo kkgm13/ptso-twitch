@@ -1,6 +1,8 @@
 import json from '../streamData.json' assert { type: "json" };
 import table from '../js/streamer-table.js';
 // import locateStreamer from '../../js/so.js';
+import sanitizeHtml from '../node_modules/sanitize-html/index.js';
+// const sanitizeHtml = require('sanitize-html');
 
 export default {
     mounted(){
@@ -28,8 +30,11 @@ export default {
                 }
             } else {
                 let streamID = this.getStreamID((addInfo.streamerName).toLowerCase());
-                console.log("Data Collected:" + streamID)
-                // addInfo.id = parseInt(document.getElementsByClassName('count').length ) + 1
+                // console.log("Data Collected:" + streamID)
+                addInfo.id = parseInt(document.getElementsByClassName('count').length ) + 1
+                const text = addInfo.streamerDetails
+                console.log(addInfo.streamerDetails)
+                console.log(sanitizeHtml(addInfo.streamerDetails))
                 // json.push(addInfo)
             }
             // table.methods.saveData(json)
@@ -45,8 +50,6 @@ export default {
                         // console.log('Data Check: ' + (json[idx]['streamerName'] === addInfo.streamerName))
                         check = true
                         index = idx
-                    } else {
-                        console.log("No Associated Streamer in List")
                     }
                 }
             })
