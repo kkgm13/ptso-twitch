@@ -35,6 +35,7 @@ $(document).ready(function(){
     let cmdAry = [];                // Blank Array for Multi-list capture
     let client = '';
     if (!command)   command = 'so'; // Default for SO commands
+    // if (!command)   command = ['so','shoutout']; // Default for SO commands
     if (!modsOnly)  modsOnly = 'true'; // Default for Twitch Mods only
     if (!showMsg)   showMsg = 'false';
     // Raid Consideration
@@ -108,9 +109,19 @@ $(document).ready(function(){
         if (self){
             return false; // Ignore echoed messages.
         }
+        checker = message.split(' ')
+        checker = checker[0]
+        if(checker.startsWith('!')){
+            checker = checker.split('!')
+        } else if(checker.startsWith('/')) {
+            checker = checker.split('/')
+        }
+        console.log(checker)
+        
 
         // Ensures the first thing it detects is the "!" then the SO command
         if(message.startsWith('!'+command, 0)){ 
+        // if(message.startsWith('!'+command.includes(checker[1]), 0)||message.startsWith('/'+command.includes(checker[1]), 0)){ 
             if(document.getElementById('userMsg')){
                 return false;
             }
