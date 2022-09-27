@@ -182,24 +182,24 @@
         </div>
     </div>
     <!-- VueJS related stuff -->
-    <script type="importmap">
+    <!-- <script type="importmap">
         {
             "imports": {
                 "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
             }
         }
-    </script>
+    </script> -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script type="module">
         import {createApp} from 'vue'
-        // import TabsInfo from './js/tabs.js'
+        // import TabsInfo from 'js/tabs.js'
         import NewStreamerInfo from './js/new-streamer-info.js'
         import StreamerTableInfo from './js/streamer-table.js'
         import URLGenerateInfo from './js/url-generator.js'
         
-        createApp
         createApp(NewStreamerInfo).mount('#appform');
-        createApp(StreamerTableInfo).mount('#apptable');
-        createApp(URLGenerateInfo).mount('#appurlgen');
+        // createApp(StreamerTableInfo).mount('#apptable');
+        // createApp(URLGenerateInfo).mount('#appurlgen');
     </script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </body>

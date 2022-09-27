@@ -1,3 +1,5 @@
+const axios = require('axios').default;
+
 axios.get('https://twitchapi.teklynk.com/getuserinfo.php',{
     params: {
         channel: "kkgm13"

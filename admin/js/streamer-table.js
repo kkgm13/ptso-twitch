@@ -1,12 +1,11 @@
-// import json from '../testData.json' assert { type: "json" };
-import json from '../streamData.json' assert { type: "json" };
+import datahandler from "./datagrabber"
 
 export default {
     mounted(){
         console.log("Table Data mounted successfully")
     },
     created(){
-        this.loadData()
+        datahandler.loadData()
     },
     methods: {
         edit(item) {
@@ -27,9 +26,6 @@ export default {
             })
             this.saveData(json)
             }
-        },
-        loadData(){
-            this.items = json;
         },
         saveData(items) {
             function download(content, fileName, contentType) {

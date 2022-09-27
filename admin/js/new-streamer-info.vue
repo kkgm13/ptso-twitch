@@ -1,4 +1,5 @@
-import json from '../streamData.json' assert { type: "json" };
+<script>
+import json from '../streamData.json';
 import table from '../js/streamer-table.js';
 // import locateStreamer from '../../js/so.js';
 import sanitizeHtml from '../node_modules/sanitize-html/index.js';
@@ -31,13 +32,13 @@ export default {
             } else {
                 let streamID = this.getStreamID((addInfo.streamerName).toLowerCase());
                 // console.log("Data Collected:" + streamID)
-                addInfo.id = parseInt(document.getElementsByClassName('count').length ) + 1
+                addInfo.id = parseInt()
                 const text = addInfo.streamerDetails
                 console.log(addInfo.streamerDetails)
                 console.log(sanitizeHtml(addInfo.streamerDetails))
-                // json.push(addInfo)
+                json.push(addInfo)
             }
-            // table.methods.saveData(json)
+            table.methods.saveData(json)
         },
         findStreamerInFile(addInfo, json){
             var check = false;
@@ -107,4 +108,4 @@ export default {
         // };
     }
 }
-
+</script>
