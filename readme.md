@@ -2,7 +2,10 @@
 
 ![PTSO Twitch (Alpha V0.3)](ptso-twitch-alphaV0.3.gif)
 
-**Not final version**
+
+**~~Not final version~~**
+
+**In Line for Archiving by Jan 2023 by [Twitch IRC Deprecation](https://discuss.dev.twitch.tv/t/deprecation-of-chat-commands-through-irc/40486)**
 
 A LocalHosted Shoutout Overlay system for Streamers, with personalized streamer-tailored liners about the streamer via ADMIN section. System accessible to Twitch Moderators and Channel Streamer only. *Example shown in template.html as visual aspect for Version 1.0*
 
