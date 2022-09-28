@@ -74,6 +74,7 @@
                 </div>
             </div>
             <div class="col-md-4 py-1" id="appform">
+                <!-- <NewStreamerInfo></NewStreamerInfo> -->
                 <form action="../admin" method="post" @submit="saveInfo(addInfo)">
                     <div class="mb-1">
                         <h4 class="text-center">Streamer Info</h4>
@@ -197,8 +198,8 @@
         import StreamerTableInfo from './js/streamer-table.js'
         import URLGenerateInfo from './js/url-generator.js'
         
-        createApp(NewStreamerInfo).mount('#appform');
-        // createApp(StreamerTableInfo).mount('#apptable');
+        // createApp(NewStreamerInfo).mount('#appform');
+        createApp(StreamerTableInfo).mount('#apptable');
         // createApp(URLGenerateInfo).mount('#appurlgen');
     </script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>

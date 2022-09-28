@@ -1,9 +1,7 @@
-<script>
 import json from '../streamData.json';
-import table from '../js/streamer-table.js';
+import table from './streamer-table.js';
 // import locateStreamer from '../../js/so.js';
 import sanitizeHtml from '../node_modules/sanitize-html/index.js';
-// const sanitizeHtml = require('sanitize-html');
 
 export default {
     mounted(){
@@ -108,4 +106,7 @@ export default {
         // };
     }
 }
-</script>
+
+{/* <template>
+    
+</template> */}
