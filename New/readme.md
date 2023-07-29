@@ -1,7 +1,7 @@
 # Updated Personalized Textual Shoutout Overlay for Twitch (PTSO)
 
 
-A LocalHosted Shoutout Overlay system for Streamers, with personalized streamer-tailored liners about the streamer via ADMIN section. System accessible to Twitch Moderators and Channel Streamer only. Using the new Twitch Helix API system
+A LocalHosted Twitch Shoutout Overlay system for Streamers, with personalized streamer-tailored liners about the streamer via ADMIN section. System accessible to Twitch Moderators and Channel Streamer only. Using the new Twitch Helix API system.
 
 -----
 ## Prerequisites❗
