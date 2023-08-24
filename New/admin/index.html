@@ -6,7 +6,6 @@
     <link rel="apple-touch-icon" sizes="76x76" href="assets/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
-    <link rel="manifest" href="assets/favicon/site.webmanifest">
     <link rel="mask-icon" href="assets/favicon/safari-pinned-tab.svg" color="#5bbad5">
     <meta http-equiv="Cache-Control" content="no-cache, no-store" />
     <title>PTSO Admin 2.0</title>
@@ -15,7 +14,7 @@
     <link rel="stylesheet" href="assets/css/stylesheets.css">
 </head>
 <body>
-    <div class="container">
+    <div class="container">        
         <header>
             <h1 class="text-center">PTSO Admin V2</h1>
             <hr>
@@ -29,7 +28,7 @@
                   <a class="nav-link" data-bs-toggle="tab" href="#urlGenTab">Browser Overlay Generator</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                  <a class="nav-link disabled" aria-disabled="true">Version Log</a>
                 </li>
             </ul>
         </div>
@@ -38,44 +37,38 @@
             <div class="tab-pane container active" id="streamDbTab">
                 <div class="row py-3">
                     <div class="col-7">
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus vel asperiores consequuntur, necessitatibus, recusandae rem sequi expedita repellendus, quasi accusantium officia adipisci eveniet qui iste modi quisquam mollitia non cum.</p>
+                        <div id="streamerList">
+                            <table class=" table-responsive table-striped table-hover px-2">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Streamer Name</th>
+                                        <th scope="col">Streamer Details</th>
+                                        <th scope="col">Options</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">ptsoTwitch</td>
+                                        <td>Personal Shoutout for Twitch; Overlay System;This is a sample to see how this works;</td>
+                                        <td><div class="btn-group" role="group" aria-label="Basic example">
+                                            <button type="button" class="btn btn-warning" disabled><i class="bi bi-pencil-fill"></i></button>
+                                            <button type="button" class="btn btn-danger" disabled><i class="bi bi-trash-fill"></i></button>
+                                        </div></td>
+                                    </tr>
+                                    <tr v-for="item in items">
+                                        <th scope="row">{{item.streamerName}}</th>
+                                        <td>{{item.streamerDetails}}</td>
+                                        <td><div class="btn-group" role="group" aria-label="Basic example">
+                                            <button type="button" class="btn btn-warning" @click="editStreamer(item)"><i class="bi bi-pencil-fill"></i></button>
+                                            <button type="button" class="btn btn-danger" @click="deleteStreamer(item)"><i class="bi bi-trash-fill"></i></button>
+                                        </div></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     <div class="col-5">
-                        <form action="#" method="post">
-                            <div class="mb-1">
-                                <h5 class="text-center">New Streamer Info</h5>
-                            </div>
-                            <hr>
-                            <fieldset>
-                                <div class="input-group mb-3">
-                                    <input type="text" class="form-control" placeholder="Streamer Name" aria-label="Streamer Name" aria-describedby="streamerName" id="streamerName" name="streamerName">
-                                    <button class="btn btn-outline-primary " type="button" id="streamerName"><i class="bi bi-search"></i></button>
-                                    <div class="form-text" id="streamerName">Use the Search Button to dictate the exact unique Twitch ID, in the event of Streamer Name Changes</div>
-                                </div>
-                                <div class="form-floating">
-                                    <textarea class="form-control" placeholder="Streamer Details" name="streamerDetails" id="streamerDetails"></textarea>
-                                    <label for="streamerDetails">Details of Streamer</label>
-                                </div>
-                                <div id="streamerDetails" class="form-text">Please <strong>USE</strong> semicolons (;) to separate dedicated information.</div>
-                                <div class="form-floating mt-2">
-                                    <input type="color" class="form-control " id="streamerColor" name="streamerColor" title="Choose the Streamer Color" value="#666666">
-                                    <label for="streamerColor" class="form-label">Color Association</label>
-                                </div>
-                            </fieldset>
-                            <hr>
-                            <div class="row form-group">
-                                <div class="col-6 pt-1">
-                                    <div class="d-grid gap-2">
-                                        <input type="submit" value="Add/Update" class="btn btn-success">
-                                    </div>
-                                </div>
-                                <div class="col-6 pt-1">
-                                    <div class="d-grid gap-2">
-                                        <input type="reset" value="Clear" class="btn btn-danger">
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                        <div id="streamerForm"></div>
                     </div>
                 </div>
             </div>
@@ -93,7 +86,7 @@
                                 </div>
                                 <div class="col-2">
                                     <div class="d-grid mb-3">
-                                        <button class="btn twitch" type="button" onclick="alert('Work In Progress')"><i class="bi bi-twitch"></i>
+                                        <button class="btn twitch" type="button" onclick="alert('Work In Progress')" disabled><i class="bi bi-twitch"></i>
                                     </div>
                                 </div>
                             </div>
@@ -132,13 +125,14 @@
                     </div>
                 </div>                
                 <div>
-                    <label for="browserURL" style="  text-decoration: underline;">Your Browser Overlay Link: </label>
+                    <label for="browserURL" style="text-decoration: underline;">Your Browser Overlay Link: </label>
                     <p class="p-1" id="browserURL"></p>
                     <div class="d-grid gap-2">
                         <button class="btn btn-warning" type="button" @click="urlGenerate">Generate Overlay Link</button>
                       </div>
                 </div>
             </div>
+            <!-- Extra -->
             <div class="tab-pane container fade" id="menu2">...</div>
         </div>
         <footer>
@@ -149,5 +143,9 @@
         </footer>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="./assets/js/vue/url-generator.js"></script>
+    <script src="./assets/js/vue/new-streamer.js"></script>
+    <script src="./assets/js/vue/streamer-list.js"></script>
 </body>
 </html>

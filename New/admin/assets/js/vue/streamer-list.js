@@ -1,21 +1,15 @@
-import datahandler from "./datagrabber"
-
-export default {
+const appList = Vue.createApp({
     mounted(){
-        console.log("Table Data mounted successfully")
+        console.log("Streamer List Data mounted successfully")
     },
-    created(){
-        datahandler.loadData()
+    created() {
+        // Data Fetcher Handler here
     },
     methods: {
-        edit(item) {
+        editStreamer(item) {
             alert("This is still in Beta due to complexity of internal data passing.\nBut ensure to copy/paste requried info to edit to ensure it's captured.")
-            document.getElementById('streamerName').value = item.streamerName;
-            document.getElementById('streamerDetails').value = item.streamerDetails;
-            document.getElementById('streamerColor').value = item.streamerColor;
         },
         deleteStreamer(item){
-            // alert('Derp, im supposed to work');
             if(confirm("Do you wish to delete details about "+item['streamerName']+"?") === true){
                 var lstTxt = item['streamerName']
                 json.forEach(function(value,idx){
@@ -27,7 +21,7 @@ export default {
                 this.saveData(json)
             }
         },
-        saveData(items) {
+        addStreamer(items) {
             function download(content, fileName, contentType) {
                 var a = document.createElement("a");
                 var file = new Blob([content], {type: contentType});
@@ -44,19 +38,19 @@ export default {
                 }  
             }
             // Fix Absolute path to keep file synergy
-            download(JSON.stringify(items, null, 2), 'streamData.json', 'application/json');
+            // download(JSON.stringify(items, null, 2), 'streamData.json', 'application/json');
         }
     },
     data() {
         return {
             fields: [
                 {
-                    key: 'id',
+                    key: 'streamerID',
                     label: '#'
                 },
                 {
                     key: 'streamerName',
-                    label:'Streamer Name'
+                    label: 'Streamer Name'
                 },
                 {
                     key: 'streamerDetails',
@@ -66,8 +60,9 @@ export default {
                     key: 'streamerColor',
                     label: 'Associated Streamer Color'
                 }
-            ], 
+            ],
             items: null
         }
     }
-}
+});
+appList.mount('#streamerList');
