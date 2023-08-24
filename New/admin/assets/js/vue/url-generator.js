@@ -25,7 +25,8 @@ const appURL = Vue.createApp({
                     // console.log("3: "+fullUrl)
                 }
                 // If other command for SO is used
-                if(command.includes("so")|| !command === ""){
+                    // TODO: Figure out /shoutout ASAP
+                if(command.includes("so") || !command === ""){
                     fullUrl += "&command=" + command;
                     // console.log("4: "+fullUrl)
                 }
