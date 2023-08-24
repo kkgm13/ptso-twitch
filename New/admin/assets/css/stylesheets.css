@@ -1,0 +1,12 @@
+textarea {
+    height: 120px !important;
+    resize: none;
+}
+
+.twitch{
+    background-color: #9146ff !important;
+}
+
+body{
+    background-color: azure;
+}
