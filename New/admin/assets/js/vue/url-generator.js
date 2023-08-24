@@ -14,7 +14,7 @@ const appURL = Vue.createApp({
                 let raided = document.getElementById('isRaid').value
                 let raidCount = document.getElementById('raidNumber').value
 
-                fullUrl += window.location.protocol + "//" + window.location.host + window.location.pathname.split('admin/')[0] + "so.html?channel=" + mainAccount.toLowerCase()+ "&showMsg=false&modsOnly=true"
+                fullUrl += window.location.protocol + "//" + window.location.host + window.location.pathname.split('admin/')[0] + "so.html?channel=" + document.getElementById('mainAccount').value.toLowerCase()+ "&showMsg=false&modsOnly=true"
                 // console.log("1: "+fullUrl)
                 if(parseInt(delay) != 0){
                     fullUrl += "&delay=" + delay

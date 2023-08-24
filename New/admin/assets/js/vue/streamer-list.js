@@ -3,7 +3,7 @@ const appList = Vue.createApp({
         console.log("Streamer List Data mounted successfully")
     },
     created() {
-        // Data Fetcher Handler here
+        // Streamer Data Fetcher Handler here
     },
     methods: {
         editStreamer(item) {
@@ -11,15 +11,20 @@ const appList = Vue.createApp({
         },
         deleteStreamer(item){
             if(confirm("Do you wish to delete details about "+item['streamerName']+"?") === true){
-                //Get Streamer Details
-                //Delete Streamer from list
+                //Get Streamer Details from data
+                //Delete Streamer from Data list
                 // Save via saveData()
             }
         },
         saveData() {
             // Save Data
             // Reload Data
-        }
+        },
+        resetForm() {
+            this.streamerName = '';
+            this.streamerDetails = '';
+            this.streamerColor = '#666666';
+          }
     },
     data() {
         return {
