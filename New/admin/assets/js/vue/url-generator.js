@@ -5,8 +5,7 @@ const appURL = Vue.createApp({
     methods: {
         urlGenerate(){
             let fullUrl = ''
-            let mainAccount = document.getElementById('mainAccount').value
-            if (!mainAccount) {
+            if (!document.getElementById('mainAccount').value) {
                 alert('Your Twitch Username is not set');
             } else {
                 let timeout = document.getElementById('timeoutSize').value
