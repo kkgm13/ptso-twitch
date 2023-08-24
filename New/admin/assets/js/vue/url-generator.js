@@ -37,11 +37,11 @@ const appURL = Vue.createApp({
                 fullUrl += "&ref=";
                 // console.log("Final: "+fullUrl)
                 document.getElementById('browserURL').innerHTML = fullUrl
+                setTimeout(1000)
+                navigator.clipboard.writeText(fullUrl)
+                alert("Browser Overlay URL has been copied to clipboard")
             }
         },
-        urlCopy() {
-            navigator.clipboard.writeText(doocument.getElementById('browserURL'))
-        }
     }
 });
 appURL.mount('#urlGenTab');
