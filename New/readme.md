@@ -19,6 +19,13 @@
 - [Axios-HTTP](http://axios-http.com)
 - [dotenv](https://www.npmjs.com/package/dotenv)
 - [Santatize-HTMl] (TBC)
+
+## First Time Running
+0) Login to [Twitch Dev](https://dev.twitch.tv) and get your Client ID after creating your own Localhost Application
+1) Save a copy of the .env.example as .env, and add your Twitch Username & ClientID  (DO NOT DELETE UNDER ANY CIRCUMSTANCE for stable usage) 
+2) After running ```npm update``` on a Command Prompt/Terminal to start up dependencies, run ```npm run setup-env <Your Twitch UserName>``` to setup the newly created dotenv (.env) file with the extra related information
+    - *Note: There maybe a scenario that you will need to rerun```npm run setup-env``` without the extra username argument, now and then if not working correctly.*
+
 ## Notes 📝
 1) Use the .env.example to provide your personal information **AND SAVE A COPY** as an ".env" file. 
 2) Please ensure to clear OBS Browser cache **before and after** stream for safety, especially with extensive data work with Admin Section

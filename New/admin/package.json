@@ -3,7 +3,8 @@
   "version": "1.2.0",
   "description": "Personal Textual Shoutout Overlay System for Twitch - Admin Area",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "setup-env": "node assets/js/dotenv.js"
   },
   "repository": {
     "type": "git",
