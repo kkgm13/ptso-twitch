@@ -1,9 +1,9 @@
 const path = require('path')
 
 const dotenvPath = path.join(__dirname, '../../../.env')
+require('dotenv').config({path: dotenvPath})
 const fs = require('fs')
 const axios = require('axios').default
-require('dotenv').config({path: dotenvPath})
 
 const args = process.argv.slice(2);
 let streamerUserName = null
