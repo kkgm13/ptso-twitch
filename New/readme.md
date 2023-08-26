@@ -17,7 +17,7 @@
 - [Twitch Helix API](https://dev.twitch.tv/docs/api/)
 - [VueJS](https://vuejs.org)
 - [Axios-HTTP](http://axios-http.com)
-- [dotenv](https://www.npmjs.com/package/dotenv)
+- [dotenv](https://www.npmjs.com/package/dotenv) (TBD)
 - [Santatize-HTMl] (TBC)
 
 ## First Time Running
@@ -27,7 +27,7 @@
 
 ## Notes 📝
 1) Please ensure to clear OBS Browser cache **before and after** stream for safety, especially with extensive data work with Admin Section
-3) To have unique lines for a streamer, load up the server and checkout the Admin page on a browser to add unique statements about them.
+3) To have unique lines for a streamer, load up the localhost server and checkout the Admin page on a browser to add unique statements about them.
 
 ## 🛠️ Future Updates to Fix
 |Task| Critcality |
