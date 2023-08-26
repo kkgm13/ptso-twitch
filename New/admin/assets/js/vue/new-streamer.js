@@ -48,7 +48,7 @@ const appNewStreamer = Vue.createApp({
                 params: {
                     login: streamSearch
                 },
-                headers: {
+                                headers: {
                     'Client-Id': process.env.TWITCH_CLIENT_ID,
                     'Authorization': `Bearer ${process.env.TWITCH_ACCESS_TOKEN}`
                 }
@@ -60,9 +60,13 @@ const appNewStreamer = Vue.createApp({
                     alert('No Twitch User found with that name')
                 } else {
                     // Set Twitch ID
-                    alert('Found Twitch User: ' + streamSearch + "\nAttaching Twitch ID to form... Locking Streamer Name to complete form. \n Use the reset button to reset the form")
+                    alert('Found Twitch User: ' + streamSearch + "\nAttaching Twitch ID to form... Locking Streamer Name to complete form. \nUse the reset button to reset the form.")
                     document.getElementById('twitchID').value = response.data.data[0].id
                     document.getElementById('streamerName').setAttribute("readonly","readonly")
+                    // if(response.data.data[0].login !== this.streamer.streamerName){
+                    //     alert("Name Change Detection found! Updating the Streamer Name!")
+                    //     document.getElementById('streamerName').value = response.data.data[0].login
+                    // }
                 }
             })
             .catch(function (error) {

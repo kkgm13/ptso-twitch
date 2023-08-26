@@ -7,8 +7,9 @@ const axios = require('axios').default
 
 const args = process.argv.slice(2);
 let streamerUserName = null
+console.log("Arguments Found: "+args)
 
-if (args.length === 0) {
+if (args.length === 0 || args.length === 2) {
     if(!process.env.TWITCH_USER){
         console.error("Please provide your Twitch Username.");
         process.exit(1); // Exit with an error code
@@ -19,7 +20,7 @@ if (args.length === 0) {
 } else {
     streamerUserName = args[0];
     console.log("Provided argument:", streamerUserName);
-    setToDotEnv(TWITCH_USER, streamerUserName)
+    // setToDotEnv(TWITCH_USER, streamerUserName)
     setup()
 }
 
