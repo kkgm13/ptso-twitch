@@ -18,26 +18,17 @@ const appNewStreamer = Vue.createApp({
             this.streamer.streamerName = '';
             this.streamer.streamerDetails = '';
             this.streamer.streamerColor = '#666666';
-            document.getElementById('streamerName').removeAttribute("readonly","readonly")
         },
         async submitForm(streamer) {
-            // let finder = this.findStreamerInRecord(streamer)
-            // console.log(finder)
-            // if( finder[0] === true){
-            //     if(alert('Data Duplicate found for '+ JSON.stringify(json[finder[1]].streamerName) + ". Replace Data?") == true){
-            //         json[finder[1]].streamerName = streamer.streamerName
-            //         json[finder[1]].streamerDetails = streamer.streamerDetails
-            //         json[finder[1]].streamerColor = streamer.streamerColor
-            //     }
-            // } else {
-                // let streamID = this.findStreamerID((streamer.streamerName).toLowerCase());
-                // console.log("Data Collected:" + streamID)
-                // json.push(streamer)
-                const id = await this.findStreamerID()
-                this.streamer.twitchID = id
-                console.log(this.streamer.target)
-            // }
-            // console.log('Submitting form...');
+            console.log('Submitting form...');
+            // Get the Twitch ID of the Streamer
+            const response = await this.findStreamerID()                
+            streamer.twitchID = response.id     
+            console.log(streamer)
+            //Save to a Database???
+
+            // Reset The Form
+            this.resetForm();
         },
         findStreamerInRecord(streamerName){ // Change json to proper Database System
             console.log('Searching for streamer:', this.streamer.streamerName);
@@ -56,9 +47,8 @@ const appNewStreamer = Vue.createApp({
                         'Client-Id': process.env.TWITCH_CLIENT_ID,
                         'Authorization': `Bearer ${process.env.TWITCH_ACCESS_TOKEN}`
                     }
-                    
                 })
-                return response.data.data[0].id
+                return response.data.data[0]
             } catch (error){
                 console.log(error)
             }
