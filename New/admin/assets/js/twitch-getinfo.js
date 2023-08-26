@@ -14,15 +14,15 @@ let clientid = null
 let clientsecret = null
 let access_token = null
 
-readline.question('Your Twitch Username? ', (twitchUser) => {
-    console.log(`You entered: ${twitchUser}`);
+readline.question('Your Twitch Username? > ', (twitchUser) => {
+    // console.log(`You entered: ${twitchUser}`);
     streamerUserName = twitchUser
 
-    readline.question('Add Your Twitch Client ID: ', (clientID) => {
+    readline.question('Add Your Twitch Client ID: >  ', (clientID) => {
         // console.log(`You entered: ${clientID}`);
         clientid = clientID
 
-        readline.question('Add Your Twitch Client Secret: ', (clientSecret) => {
+        readline.question('Add Your Twitch Client Secret >  ', (clientSecret) => {
             // console.log(`You entered: ${clientSecret}`);
             clientsecret = clientSecret            
             setup()
@@ -47,6 +47,7 @@ function setup(){
                 login: streamerUserName
             },
             headers: {
+                'Access-Control-Allow-Origin': '*',
                 'Authorization': `Bearer ${access_token}`,
                 'Client-Id': clientid
             }
@@ -56,9 +57,10 @@ function setup(){
             console.log("--------------------------")
             console.warn("Parameters for Twitch User: " + streamerUserName + ` (Twitch ID: ${response.data.data[0].id})`)
             console.log("--------------------------")
-            
-            console.warn("Note: Please immediate populate assets/js/vue/new-streamer.js with the information below")
+            console.warn("Please IMMEDIATELY populate assets/js/vue/new-streamer.js with the critical information below: ")
+            console.log("")  
             console.log("Twitch Client Access Token: "+access_token)
+            console.log("")  
         })
         .catch(function (error) {
             console.log("ERROR - " + error);
@@ -69,7 +71,6 @@ function setup(){
     });
 }
  
-
 function setToDotEnv( keyName, valueName){
     // Read the content of the dotenv file
     const content = fs.readFileSync(dotenvPath, 'utf-8');

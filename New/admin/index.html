@@ -82,25 +82,28 @@
                             <fieldset>
                                 <legend>General Info</legend>
                                 <div class="row">
-                                    <div class="col-10">
+                                    <div class="input-group mb-3">
+                                        <input type="text" class="form-control" 
+                                        id="mainAccount" name="mainAccount" placeholder="Streamer Channel Name"
+                                        aria-label="Recipient's username" aria-describedby="button-streamer">
+                                        <button class="btn btn-outline-secondary twitch" type="button" id="button-streamer" onclick="alert('Work In Progress')" disabled><i class="bi bi-twitch"></i></button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
                                         <div class="input-group mb-3">
-                                            <input type="text" class="form-control" id="mainAccount" name="mainAccount" placeholder="Streamer Channel Name">
+                                            <span class="input-group-text">Alert Duration (sec)</span>
+                                            <input type="number" class="form-control" id="timeoutSize" aria-label="timeoutSize" aria-describedby="timeoutSize" step="1" min="0" value="10">
                                         </div>
                                     </div>
-                                    <div class="col-2">
-                                        <div class="d-grid mb-3">
-                                            <button class="btn twitch" type="button" onclick="alert('Work In Progress')" disabled><i class="bi bi-twitch"></i>
+                                    <div class="col-6">
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text" >SO Delay (sec)</span>
+                                            <input type="number" class="form-control" aria-label="delaySize" aria-describedby="delaySize" id="delaySize" step="1" min="0" value="10">
                                         </div>
                                     </div>
                                 </div>
-                                <div class="input-group mb-3">
-                                    <span class="input-group-text">Alert Duration (sec)</span>
-                                    <input type="number" class="form-control" id="timeoutSize" aria-label="timeoutSize" aria-describedby="timeoutSize" step="1" min="0" value="10">
-                                </div>
-                                <div class="input-group mb-3">
-                                    <span class="input-group-text" >SO Delay (sec)</span>
-                                    <input type="number" class="form-control" aria-label="delaySize" aria-describedby="delaySize" id="delaySize" step="1" min="0" value="10">
-                                </div>
+                                
                                 <div class="input-group mb-1">
                                     <span class="input-group-text">!</span>
                                     <input type="text" class="form-control" placeholder="Custom SO Command" aria-label="commands" id="commands" aria-describedby="commands">

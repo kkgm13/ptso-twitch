@@ -5,7 +5,8 @@
 
 ## Prerequisites❗
 - A LocalHost system running (LAMP/WAMP Stack)
-- [NodeJS](https://nodejs.org/en/download) (MacOS use [Homebrew](https://brew.sh)]!) & [NodeJS Package Manager](https://npmjs.com)
+- [NodeJS](https://nodejs.org/en/download) (MacOS use [Homebrew](https://brew.sh)!) & [NodeJS Package Manager](https://npmjs.com)
+    - Specifically For ```npm run setup```
 - [OBS Studio](https://obsproject.com) (Will work with StreamLabs [BUT Not Recommended])
     - Ensure Twitch Account is connected and Linked! 
 ### Example usage:
