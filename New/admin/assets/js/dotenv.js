@@ -19,6 +19,7 @@ if (args.length === 0) {
 } else {
     streamerUserName = args[0];
     console.log("Provided argument:", streamerUserName);
+    setToDotEnv(TWITCH_USER, streamerUserName)
     setup()
 }
 
