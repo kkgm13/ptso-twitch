@@ -26,7 +26,33 @@ const appNewStreamer = Vue.createApp({
             streamer.twitchID = response.id     
             console.log(streamer)
             //Save to a Database???
+            fetch('assets/streamers.db')
+                .then(response => response.arrayBuffer())
+                .then(data => {
+                    // var sqlite = window.SQL;
+                    // Create a new Uint8Array from the arrayBuffer
+                    var uInt8Array = new Uint8Array(data);
 
+                    // Open the database
+                    var db = new window.SQL.Database(uInt8Array);
+                    console.log("Connected to Database")
+                    db.run('CREATE TABLE IF NOT EXISTS streamers (twitchID INTEGER PRIMARY KEY, streamerName TEXT NOT NULL, streamerDetails TEXT NOT NULL, streamerColor TEXT NOT NULL)');
+
+                    // insert
+                    const stmt = db.prepare("INSERT INTO streamers (twitchID,streamerName,streamerDetails,streamerColor) VALUES (?,?,?,?)")
+                    stmt.run([streamer.twitchID, streamer.streamerName,streamer.streamerDetails,streamer.streamerColor]);
+                    stmt.free();
+                    db.close((err) => {
+                        if (err) {
+                            console.error('Error closing the database:', err);
+                        } else {
+                            console.log('Database closed successfully');
+                        }
+                    })
+                }
+                ).catch(error => {
+                    console.log("ERROR - "+error);
+                });
             // Reset The Form
             this.resetForm();
         },
@@ -50,7 +76,7 @@ const appNewStreamer = Vue.createApp({
                 })
                 return response.data.data[0]
             } catch (error){
-                console.log(error)
+                console.log("Error" + error)
             }
         }
     }, 
