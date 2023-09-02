@@ -18,8 +18,6 @@
 - [Twitch Helix API](https://dev.twitch.tv/docs/api/)
 - [VueJS](https://vuejs.org)
 - [Axios-HTTP](http://axios-http.com)
-- [dotenv](https://www.npmjs.com/package/dotenv) (TBD)
-- [Santatize-HTMl] (TBC)
 
 ## First Time Running
 0) Login to [Twitch Dev](https://dev.twitch.tv) and get your Client ID & Client Secret after creating your own Localhost Application

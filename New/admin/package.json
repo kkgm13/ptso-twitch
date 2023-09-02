@@ -4,7 +4,7 @@
   "description": "Personal Textual Shoutout Overlay System for Twitch - Admin Area",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "setup": "node assets/js/twitch-getinfo.js"
+    "setup": "node assets/js/setup-script.js"
   },
   "repository": {
     "type": "git",

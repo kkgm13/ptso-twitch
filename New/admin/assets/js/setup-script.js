@@ -1,8 +1,8 @@
-// const path = require('path')
+const path = require('path')
 
 // const dotenvPath = path.join(__dirname, '../../../.env')
 // require('dotenv').config({path: dotenvPath})
-// const fs = require('fs')
+const fs = require('fs')
 const axios = require('axios').default
 const readline = require('readline').createInterface({
     input: process.stdin,
@@ -26,10 +26,10 @@ readline.question('Your Twitch Username? > ', (twitchUser) => {
             // console.log(`You entered: ${clientSecret}`);
             clientsecret = clientSecret            
             setup()
+            dbCreation()
             readline.close();
         });
     });
-    
 });
 
 function setup(){
@@ -39,7 +39,6 @@ function setup(){
         grant_type: 'client_credentials'
     })
     .then(function (response) {
-        // setToDotEnv('TWITCH_ACCESS_TOKEN', response.data.access_token)
         access_token = response.data.access_token
     
         axios.get('https://api.twitch.tv/helix/users', {
@@ -71,6 +70,24 @@ function setup(){
     });
 }
  
+function dbCreation(){
+    // Path file of db
+    const dbFile = path.join(__dirname, '../../streamers.db');
+    fs.access(dbFile, fs.constants.F_OK, error => {
+        if (error){
+            console.log("Error Found: "+error)
+            return;
+        } else {
+            fs.writeFile(dbFile, "",(error) =>{
+                console.log("Error Creating Database", error)
+                return;
+            })
+            console.log("Database has been created successfully!")
+            console.warn("WARN: Deleting/Moving this database file will have issues with backing up in future updates", )
+        }
+    })
+}
+
 function setToDotEnv( keyName, valueName){
     // Read the content of the dotenv file
     const content = fs.readFileSync(dotenvPath, 'utf-8');

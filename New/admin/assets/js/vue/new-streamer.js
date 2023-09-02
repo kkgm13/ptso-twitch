@@ -1,3 +1,5 @@
+var dbRequest = indexedDB.open('streamers', 1.0);
+
 const appNewStreamer = Vue.createApp({
     mounted() {
         console.log("Form Mounted Correctly");
@@ -26,33 +28,34 @@ const appNewStreamer = Vue.createApp({
             streamer.twitchID = response.id     
             console.log(streamer)
             //Save to a Database???
-            fetch('assets/streamers.db')
-                .then(response => response.arrayBuffer())
-                .then(data => {
-                    // var sqlite = window.SQL;
-                    // Create a new Uint8Array from the arrayBuffer
-                    var uInt8Array = new Uint8Array(data);
 
-                    // Open the database
-                    var db = new window.SQL.Database(uInt8Array);
-                    console.log("Connected to Database")
-                    db.run('CREATE TABLE IF NOT EXISTS streamers (twitchID INTEGER PRIMARY KEY, streamerName TEXT NOT NULL, streamerDetails TEXT NOT NULL, streamerColor TEXT NOT NULL)');
+            // Event handler for database upgrade or creation
+            dbRequest.onupgradeneeded = function(event) {
+                // Database is being created or upgraded
+                console.log("Creating or upgrading database...");
+                
+                var db = event.target.result;
 
-                    // insert
-                    const stmt = db.prepare("INSERT INTO streamers (twitchID,streamerName,streamerDetails,streamerColor) VALUES (?,?,?,?)")
-                    stmt.run([streamer.twitchID, streamer.streamerName,streamer.streamerDetails,streamer.streamerColor]);
-                    stmt.free();
-                    db.close((err) => {
-                        if (err) {
-                            console.error('Error closing the database:', err);
-                        } else {
-                            console.log('Database closed successfully');
-                        }
-                    })
+                // Check if the object store exists
+                if (!db.objectStoreNames.contains('items')) {
+                    var itemsStore = db.createObjectStore('items', { keyPath: 'id' });
+                    itemsStore.createIndex('nameIndex', 'name', { unique: false });
                 }
-                ).catch(error => {
-                    console.log("ERROR - "+error);
-                });
+            };
+
+            // Event handler for successful opening of database
+            dbRequest.onsuccess = function(event) {
+                // let db = 
+                // Database already exists and is successfully opened
+                console.log("Database opened successfully.");
+
+            };
+
+            // Event handler for errors
+            dbRequest.onerror = function(event) {
+                console.error("Error Accessing Database:", event.target.error);
+            };
+
             // Reset The Form
             this.resetForm();
         },
@@ -69,7 +72,7 @@ const appNewStreamer = Vue.createApp({
                     params: {
                         login: streamSearch
                     },
-                    headers: {
+                                        headers: {
                         'Client-Id': process.env.TWITCH_CLIENT_ID,
                         'Authorization': `Bearer ${process.env.TWITCH_ACCESS_TOKEN}`
                     }
