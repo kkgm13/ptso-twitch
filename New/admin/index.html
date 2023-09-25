@@ -7,7 +7,9 @@
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
     <link rel="mask-icon" href="assets/favicon/safari-pinned-tab.svg" color="#5bbad5">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <title>PTSO Admin 2.0</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
@@ -39,41 +41,55 @@
                 <!-- Database -->
                 <div class="tab-pane container active" id="streamDbTab">
                     <div class="row py-3">
-                        <div class="col-8">
+                        <div class="col-md-8">
                             <div id="streamerList">
-                                <div class="d-grid gap-2">
-                                    <button type="button" class="btn btn-info" @click="loadData">Force Update Streamer List</button>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <div class="d-grid gap-2">
+                                            <button type="button" class="btn btn-info" @click="loadData"><i class="bi bi-arrow-clockwise"></i> Force Update Streamer List</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-8">
+                                        <div class="input-group">
+                                            <div class="input-group mb-3">
+                                                <span class="input-group-text" id="search"><i class="bi bi-search"></i></span>
+                                                <input type="text" class="form-control" v-model="filteredSearch" placeholder="Search by Name">
+                                              </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <table class="table table-striped table-hover px-2">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Streamer</th>
-                                            <th scope="col">Personalized Streamer Details</th>
-                                            <th scope="col">Options</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <th scope="row">ptsoTwitch</td>
-                                            <td>Personal Shoutout for Twitch; Overlay System;This is a sample to see how this works;</td>
-                                            <td><div class="btn-group" role="group" aria-label="Basic example">
-                                                <button type="button" class="btn btn-warning" disabled><i class="bi bi-pencil-fill"></i></button>
-                                                <button type="button" class="btn btn-danger" disabled><i class="bi bi-trash-fill"></i></button>
-                                            </div></td>
-                                        </tr>
-                                        <tr v-for="item in items">
-                                            <th scope="row">{{item.streamerName}}</th>
-                                            <td>{{item.streamerDetails}}</td>
-                                            <td><div class="btn-group" role="group" aria-label="Basic example">
-                                                <button type="button" class="btn btn-warning" @click="editStreamer(item)"><i class="bi bi-pencil-fill"></i></button>
-                                                <button type="button" class="btn btn-danger" @click="deleteStreamer(item)"><i class="bi bi-trash-fill"></i></button>
-                                            </div></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <div class="fixed-head">
+                                    <table class="table table-responsive table-striped table-hover px-2">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th scope="col">Streamer</th>
+                                                <th scope="col">Personalized Streamer Details</th>
+                                                <th scope="col">Options</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-if="isDataEmpty">
+                                                <th scope="row">ptsoTwitch</td>
+                                                <td>Personal Shoutout for Twitch; Overlay System;This is a sample to see how this works;</td>
+                                                <td><div class="btn-group" role="group" aria-label="Basic example">
+                                                    <button type="button" class="btn btn-warning" disabled><i class="bi bi-pencil-fill"></i></button>
+                                                    <button type="button" class="btn btn-danger" disabled><i class="bi bi-trash-fill"></i></button>
+                                                </div></td>
+                                            </tr>
+                                            <tr v-else v-for="item in filteredStreamer">
+                                                <th scope="row">{{item.streamerName}}</th>
+                                                <td>{{item.streamerDetails}}</td>
+                                                <td><div class="btn-group" role="group" aria-label="Basic example">
+                                                    <button type="button" class="btn btn-warning" @click="editStreamer(item)"><i class="bi bi-pencil-fill"></i></button>
+                                                    <button type="button" class="btn btn-danger" @click="deleteStreamer(item)"><i class="bi bi-trash-fill"></i></button>
+                                                </div></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-4">
+                        <div class="col-md-4">
                             <div id="streamerForm">
                                 <h5 class=text-center>New Streamer Info</h5>
                                 <hr>
@@ -84,7 +100,7 @@
                 <!-- Browser Overlay -->
                 <div class="tab-pane container fade" id="urlGenTab">
                     <div class="row py-1">
-                        <div class="col-6">
+                        <div class="col-md-6">
                             <fieldset>
                                 <legend>General Info</legend>
                                 <div class="row">
@@ -119,7 +135,7 @@
                                 </div>
                             </fieldset>
                         </div>
-                        <div class="col-6">
+                        <div class="col-md-6">
                             <fieldset disabled="disabled">
                                 <legend>Channel Raids (Currently Unavaliable)</legend>
                                 <div class="form-check">
