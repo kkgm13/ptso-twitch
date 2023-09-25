@@ -1,9 +1,19 @@
+function linkToPHP(){
+   return axios.get('assets/php/db-get.php')
+            .then(response => response.data.data)
+            .catch(function (error) {
+                // Handle any errors here
+                console.error(error);
+            });
+}
 const appList = Vue.createApp({
     mounted(){
-        console.log("Streamer List Data mounted successfully")
+        linkToPHP()
+            .then(data => this.items = data);
+        console.log("Streamer List Data mounted successfully");
     },
     created() {
-        // Streamer Data Fetcher Handler here
+
     },
     methods: {
         editStreamer(item) {
@@ -20,13 +30,8 @@ const appList = Vue.createApp({
         getStreamer(item){
             // Locate 
         },
-        saveData() {
-            // Save Data
-            // Reload Data
-            this.loadData();
-        },
         loadData() {
-
+            
         },
         resetForm() {
             this.streamerName = '';
@@ -36,26 +41,8 @@ const appList = Vue.createApp({
     },
     data() {
         return {
-            fields: [
-                {
-                    key: 'streamerID',
-                    label: '#'
-                },
-                {
-                    key: 'streamerName',
-                    label: 'Streamer Name'
-                },
-                {
-                    key: 'streamerDetails',
-                    label: 'Details about Streamer'
-                },
-                {
-                    key: 'streamerColor',
-                    label: 'Associated Streamer Color'
-                }
-            ],
-            items: null
+            items: []
         }
-    }
+    }, 
 });
 appList.mount('#streamerList');
