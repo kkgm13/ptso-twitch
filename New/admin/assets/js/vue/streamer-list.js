@@ -8,12 +8,11 @@ function linkToPHP(){
 }
 const appList = Vue.createApp({
     mounted(){
-        linkToPHP()
-            .then(data => this.items = data);
+        this.loadData()
         console.log("Streamer List Data mounted successfully");
     },
     created() {
-
+        this.loadData()
     },
     methods: {
         editStreamer(item) {
@@ -31,7 +30,8 @@ const appList = Vue.createApp({
             // Locate 
         },
         loadData() {
-            
+            linkToPHP()
+                .then(data => this.items = data);
         },
         resetForm() {
             this.streamerName = '';
