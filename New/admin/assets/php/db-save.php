@@ -19,8 +19,8 @@
         $response = [
             "message" => "New record created successfully",
         ];
-        $conn = null;
         echo json_encode($response);
+        $conn = null;
     } catch (PDOException $e){
         $response = [
             "message" => "ERROR: " . $e->getMessage(),

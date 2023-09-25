@@ -1,5 +1,9 @@
 function linkToPHP(){
-   return axios.get('assets/php/db-get.php')
+   return axios.get('assets/php/db-get.php', {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
             .then(response => response.data.data)
             .catch(function (error) {
                 // Handle any errors here
@@ -20,10 +24,21 @@ const appList = Vue.createApp({
         },
         deleteStreamer(item){
             if(confirm("Do you wish to delete details about "+item['streamerName']+"?") === true){
-                //Get Streamer Details from data
-                this.getStreamer(item)
                 //Delete Streamer from Data list
-                // Save via saveData()
+                axios.get('assets/php/db-delete.php', {
+                    params: {
+                        twitchID: item.twitchID
+                    },
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }})
+                    .then(function(response){
+                        console.log(response.data.message)
+                    })
+                    .catch(function(error){
+                        console.error(error)
+                    });
+                this.loadData();
             }
         },
         getStreamer(item){
