@@ -7,7 +7,7 @@ const appNewStreamer = Vue.createApp({
     data() {
         return {
             streamer: {
-                twitchID: '', // Check how to store ASAP
+                twitchID: '',
                 streamerName: '',
                 streamerDetails: '',
                 streamerColor: '#666666',
@@ -27,21 +27,34 @@ const appNewStreamer = Vue.createApp({
             const response = await this.findStreamerID()                
             streamer.twitchID = response.id     
             console.log(streamer)
-            //Save to a Database???
+            // const dataPassed = 
+            // console.log(dataPassed)
+            //Save to a Database (MySQL or SQLite)???
+            axios.post("assets/db-handler.php", Object.assign({}, streamer), {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(function(response){
+                    // Handle the successful response here
+                    console.log(response.data);
+                })
+                .catch(function (error) {
+                    // Handle any errors here
+                    console.error(error);
+                });
 
-            // Event handler for database upgrade or creation
-            dbRequest.onupgradeneeded = function(event) {
-                // Database is being created or upgraded
-                console.log("Creating or upgrading database...");
-                
-                var db = event.target.result;
-
-                // Check if the object store exists
-                if (!db.objectStoreNames.contains('items')) {
-                    var itemsStore = db.createObjectStore('items', { keyPath: 'id' });
-                    itemsStore.createIndex('nameIndex', 'name', { unique: false });
-                }
-            };
+            // // Event handler for database upgrade or creation
+            // dbRequest.onupgradeneeded = function(event) {
+            //     // Database is being created or upgraded
+            //     console.log("Creating or upgrading database...");
+            //     var db = event.target.result;
+            //     // Check if the object store exists
+            //     if (!db.objectStoreNames.contains('items')) {
+            //         var itemsStore = db.createObjectStore('items', { keyPath: 'id' });
+            //         itemsStore.createIndex('nameIndex', 'name', { unique: false });
+            //     }
+            // };
 
             // Event handler for successful opening of database
             dbRequest.onsuccess = function(event) {
@@ -50,7 +63,6 @@ const appNewStreamer = Vue.createApp({
                 console.log("Database opened successfully.");
 
             };
-
             // Event handler for errors
             dbRequest.onerror = function(event) {
                 console.error("Error Accessing Database:", event.target.error);
@@ -72,10 +84,10 @@ const appNewStreamer = Vue.createApp({
                     params: {
                         login: streamSearch
                     },
-                                        headers: {
+                    headers: {
                         'Client-Id': process.env.TWITCH_CLIENT_ID,
                         'Authorization': `Bearer ${process.env.TWITCH_ACCESS_TOKEN}`
-                    }
+                    }  
                 })
                 return response.data.data[0]
             } catch (error){

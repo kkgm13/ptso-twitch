@@ -38,9 +38,8 @@ const appURL = Vue.createApp({
                 fullUrl += "&ref=";
                 // console.log("Final: "+fullUrl)
                 document.getElementById('browserURL').innerHTML = fullUrl
-                setTimeout(1000)
                 navigator.clipboard.writeText(fullUrl)
-                alert("Browser Overlay URL has been copied to clipboard.\nPlace this on a Browser Source in OBS Studios.")
+                alert("Browser Overlay URL has been copied.\nPaste the URL on a Browser Source in OBS Studios.")
             }
         },
     }

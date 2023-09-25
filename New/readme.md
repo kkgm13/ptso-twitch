@@ -8,7 +8,7 @@
 - [NodeJS](https://nodejs.org/en/download) (MacOS use [Homebrew](https://brew.sh)!) & [NodeJS Package Manager](https://npmjs.com)
     - Specifically For ```npm run setup```
 - [OBS Studio](https://obsproject.com) (Will work with StreamLabs [BUT Not Recommended])
-    - Ensure Twitch Account is connected and Linked! 
+    - Ensure Twitch Account is connected and linked! 
 ### Example usage:
 - [MAMP](https://www.mamp.info/)
     - If utilizing MAMP, ensure MAMP's Document Root folder calling a folder above this system (eg: DocRootFolder/ptso-twitch/)
@@ -26,15 +26,17 @@
 
 ## Notes 📝
 1) Please ensure to clear OBS Browser cache **before and after** stream for safety, especially with extensive data work with Admin Section
-3) To have unique lines for a streamer, load up the localhost server and checkout the Admin page on a browser to add unique statements about them.
+2) To have unique lines for a streamer, start up the localhost server and checkout the Admin page on a browser to add unique statements about them.
+    
+    - Required for the PHP DB File to run correctly 
 
 ## 🛠️ Future Updates to Fix
 |Task| Critcality |
 |------|-------|
 |SO.html: Single Line Carousel during activation| **CRITICAL FEATURE** | 
 |📌 Admin: Twitch API Integration |In Progress|
-|⭐️ System: Use Twitch ID instead as a reference system due to potential username changes over time|Final Testings|
+|⭐️ System: Use Twitch ID instead as a reference system due to potential username changes over time|Completed|
 |Admin: Automatic Front-end Saving|Mid|
-|Admin: Proper Database Calling via MongoDB/MySQL/SQLite|Mid|
+|Admin: Proper Database Calling via MongoDB/MySQL/SQLite|In Progress|
 |Admin?: User Customization under request of some Twitch Streamers (eg: Box Color, Font Family, etc...)|In progress|
 |Kick Streaming Implementation???? |???|

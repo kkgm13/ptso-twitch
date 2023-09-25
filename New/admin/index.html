@@ -23,13 +23,13 @@
             <div class="row">
                 <ul class="nav nav-tabs nav-fill">
                     <li class="nav-item">
-                      <a class="nav-link active" data-bs-toggle="tab" aria-current="page" data-bs-toggle="tab" href="#streamDbTab">Streamer DB List</a>
+                      <a class="nav-link active" data-bs-toggle="tab" aria-current="page" href="#streamDbTab">Streamer DB List</a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link" data-bs-toggle="tab" href="#urlGenTab">Browser Overlay Generator</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link disabled" aria-disabled="true">Version Log</a>
+                      <a class="nav-link" href="#versionLog" aria-disabled="tab" data-bs-toggle="tab">Version Log</a>
                     </li>
                 </ul>
             </div>
@@ -142,8 +142,27 @@
                           </div>
                     </div>
                 </div>
-                <!-- Extra -->
-                <div class="tab-pane container fade" id="menu2">...</div>
+                <!-- Version Log -->
+                <div class="tab-pane container fade" id="versionLog">
+                    <div class="row p-4">
+                        <ul class="list-group">Version 2.0
+                            <li class="list-group-item">Admin Page Revamp for Single-Page Application Streamline</li>
+                            <li class="list-group-item">Data I/O revamp via MySQL (SQLite support soon)</li>
+                        </ul>
+                        <ul class="list-group">Version 1.2
+                            <li class="list-group-item">Stream Color Parameter Added for Stream Uniqueness</li>
+                            <li class="list-group-item">Admin Refactoring</li>
+                        </ul>
+                        <ul class="list-group">Version 1.1
+                            <li class="list-group-item">SO html file timing fixes</li>
+                        </ul>
+                        <ul class="list-group">Version 1.0
+                            <li class="list-group-item">Initial Release</li>
+                            <li class="list-group-item">Dedicated SO html file used for OBS Studio Usage</li>
+                        </ul>
+                    </div>
+                    
+                </div>
             </div>
         </section>
         <footer>
@@ -160,7 +179,7 @@
             alert("Welcome to the Personal Textual Shoutout Overlay (PTSO) for Twitch!\nPlease note to utilize this browser at all times until an update for Import/Export can be provided due to the database's nature.");
         };
     </script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js" type="module"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js" type="module"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="./assets/js/vue/url-generator.js"></script>

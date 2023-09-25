@@ -26,7 +26,7 @@ readline.question('Your Twitch Username? > ', (twitchUser) => {
             // console.log(`You entered: ${clientSecret}`);
             clientsecret = clientSecret            
             setup()
-            dbCreation()
+            // dbCreation() // SQLite Creation
             readline.close();
         });
     });
@@ -88,7 +88,7 @@ function dbCreation(){
     })
 }
 
-function setToDotEnv( keyName, valueName){
+function setToDotEnv(keyName, valueName){
     // Read the content of the dotenv file
     const content = fs.readFileSync(dotenvPath, 'utf-8');
 

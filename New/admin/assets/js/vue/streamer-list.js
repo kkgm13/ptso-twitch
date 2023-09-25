@@ -12,13 +12,21 @@ const appList = Vue.createApp({
         deleteStreamer(item){
             if(confirm("Do you wish to delete details about "+item['streamerName']+"?") === true){
                 //Get Streamer Details from data
+                this.getStreamer(item)
                 //Delete Streamer from Data list
                 // Save via saveData()
             }
         },
+        getStreamer(item){
+            // Locate 
+        },
         saveData() {
             // Save Data
             // Reload Data
+            this.loadData();
+        },
+        loadData() {
+
         },
         resetForm() {
             this.streamerName = '';
