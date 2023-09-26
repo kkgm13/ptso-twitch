@@ -8,7 +8,7 @@
         $conn->query($sql);
         $conn->exec($sql);
         $response = [
-            "message" => "Streamer ID Record $twitchID Deleted",
+            "message" => "Streamer Record Deleted",
         ];
         echo json_encode($response);
         $conn = null;
