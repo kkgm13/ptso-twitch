@@ -1,0 +1,31 @@
+body {
+    background-color: rgba(0,0,0,0.8) !important;
+    color:white !important;
+}
+
+h1 {
+    font-size: 3.5rem !important;
+    font-weight: bolder !important;
+    text-shadow: 2px 2px 4px #000000;
+}
+
+img {
+    align-content: center;
+    border-radius: 40%;
+}
+
+p {
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+#streamerDetails {
+    height: 150px;
+    background-color: gray;
+}
+
+.texthold {
+    position:absolute;
+    top: 35%;
+}
