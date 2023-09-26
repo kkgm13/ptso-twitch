@@ -10,7 +10,7 @@
                 $sql = "SELECT * FROM streamers WHERE twitchID <> 0";
             } else if ($type === 'single') {
                 $twitchID = $_GET['twitchID'];
-                $sql = "SELECT * FROM streamers WHERE twitchID == $twitchID";
+                $sql = "SELECT * FROM streamers WHERE twitchID = $twitchID";
             } else {
                 $response = [
                     "error" => "Unknown 'type' parameter value",
@@ -20,7 +20,6 @@
                 exit();
             }
         } else {
-            // 'type' parameter is missing, return an error response
             $response = [
                 "error" => "Missing 'type' parameter",
             ];
@@ -28,14 +27,12 @@
             $conn = null;
             exit();
         }
-        // Prepare and execute the SQL statement
         $stmt = $conn->prepare($sql);
         $stmt->execute();
-        
         $stmt = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        // Fetch the data as an associative array
+        
         $response = [
-            "message" => "All Records Retrieved",
+            "message" => "Record(s) Retrieved",
             'data' => $stmt
         ];
         echo json_encode($response);

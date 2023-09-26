@@ -1,3 +1,5 @@
+// import appList from './streamer-list';
+
 const appNewStreamer = Vue.createApp({
     mounted() {
         console.log("Form Mounted Correctly");
@@ -12,6 +14,9 @@ const appNewStreamer = Vue.createApp({
             }
         }
     },
+    watch() {
+
+    },
     methods: {
         resetForm() {
             this.streamer.twitchID = '';
@@ -21,13 +26,17 @@ const appNewStreamer = Vue.createApp({
         },
         async submitForm(streamer) {
             console.log('Submitting form...');
-            // Get the Twitch ID of the Streamer
             const response = await this.findStreamerID()                
             streamer.twitchID = response.id
-            //Save to a Database (MySQL or SQLite)???
-            this.save2DB(streamer);
-            // Reset The Form
-            this.resetForm();
+            const validate = await this.findStreamerInRecord(streamer.twitchID);
+            if(validate.data.length == 1){
+                return alert("Duplicate streamer record found!")
+            } else {
+                this.save2DB(streamer);
+                this.resetForm();
+            }
+            // Update the table
+            // appList.loadData();
         },
         save2DB(streamer){
             axios.post("assets/php/db-save.php", Object.assign({}, streamer), {
@@ -36,17 +45,28 @@ const appNewStreamer = Vue.createApp({
                 },
             })
             .then(function(response){
-                // Handle the successful response here
-                console.log(response.data);
+                console.log(response.data.message);
             })
             .catch(function (error) {
-                // Handle any errors here
                 console.error(error);
             });
         },
-        findStreamerInRecord(streamerName){ // Change json to proper Database System
-            console.log('Searching for streamer:', this.streamer.streamerName);
-            // Find Streamer
+        async findStreamerInRecord(streamerID){
+            console.log('Searching for possible duplications');
+            try{
+                const response = await axios.get('assets/php/db-get.php', {
+                    params: {
+                        twitchID: streamerID,
+                        type: 'single'
+                    },
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+                return response.data;
+            } catch (error) {
+                console.log("Error: " + error)
+            }
         }, 
         async findStreamerID() {
             var streamSearch = (document.getElementById('streamerName').value).toLowerCase()
@@ -68,6 +88,6 @@ const appNewStreamer = Vue.createApp({
             }
         }
     }, 
-    template: '<form @reset.prevent=resetForm @submit.prevent=submitForm(streamer)><div class=mb-1><h5 class=text-center>New Streamer Info</h5></div><hr><fieldset><div class="input-group mb-3"><input class=form-control v-model=streamer.streamerName aria-describedby=streamerName aria-label="Streamer Name"id=streamerName name=streamerName placeholder="Streamer Name"></div><div class=form-floating><textarea class=form-control placeholder="Streamer Details"v-model=streamer.streamerDetails></textarea><label for=streamerDetails>Details of Streamer</label></div><div class=form-text>Please <strong>USE</strong> semicolons (;) to separate dedicated information.</div><div class="form-floating mt-2"><input class=form-control v-model=streamer.streamerColor title="Choose the Streamer Color"type=color><label for=streamerColor class=form-label>Color Association</label></div></fieldset><hr><div class="form-group row"><div class="col-6 pt-1"><div class="d-grid gap-2"><button class="btn btn-success"type=submit>Add/Update</button></div></div><div class="col-6 pt-1"><div class="d-grid gap-2"><button class="btn btn-danger"type=reset>Clear</button></div></div></div></form>'
+    template:'<form @reset.prevent=resetForm @submit.prevent=submitForm(streamer)><div class=mb-1><h5 class=text-center>New Streamer Info</h5></div><hr><fieldset><div class="input-group mb-3"><input class=form-control v-model=streamer.streamerName aria-describedby=streamerName aria-label="Streamer Name"id=streamerName name=streamerName placeholder="Streamer Name"></div><div class=form-floating><textarea class=form-control placeholder="Streamer Details"v-model=streamer.streamerDetails></textarea><label for=streamerDetails>Details of Streamer</label></div><div class=form-text>Please <strong>USE</strong> semicolons (;) to separate dedicated information.</div><div class="form-floating mt-2"><input class=form-control v-model=streamer.streamerColor title="Choose the Streamer Color"type=color><label for=streamerColor class=form-label>Color Association</label></div></fieldset><hr><div class="form-group row"><div class="col-6 pt-1"><div class="d-grid gap-2"><button class="btn btn-success"type=submit>Add/Update</button></div></div><div class="col-6 pt-1"><div class="d-grid gap-2"><button class="btn btn-danger"type=reset>Clear</button></div></div></div></form>'
 });
 appNewStreamer.mount('#streamerForm');
