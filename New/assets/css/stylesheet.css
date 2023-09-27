@@ -1,10 +1,10 @@
 body {
-    background-color: rgba(0,0,0,0.8) !important;
+    background-color: rgba(0,0,0,0) !important;
     color:white !important;
 }
 
 h1 {
-    font-size: 3.5rem !important;
+    font-size: 3.0rem !important;
     font-weight: bolder !important;
     text-shadow: 2px 2px 4px #000000;
 }
@@ -15,7 +15,7 @@ img {
 }
 
 p {
-    font-size: 1.8rem;
+    font-size: 1.3rem;
     font-weight: bold;
     text-align: center;
 }
@@ -34,8 +34,8 @@ p {
 }
 
 .texthold {
-    position:absolute;
-    top: 35%;
+    /* position:absolute; */
+    top: 25%;
 }
 
 .carousel-text {

@@ -24,11 +24,19 @@
 1) After running ```npm update``` on a Command Prompt/Terminal to start up dependencies, run ```npm run setup``` to get your information and Access Token. Some of these will need your specific Register App details via Twitch Dev
     - *Note: There maybe a scenario that you will need to rerun```npm run setup``` now and then if not working correctly.*
 
-## Notes 📝
+### Notes 📝
 1) Please ensure to clear OBS Browser cache **before and after** stream for safety, especially with extensive data work with Admin Section
 2) To have unique lines for a streamer, start up the localhost server and checkout the Admin page on a browser to add unique statements about them.
     
     - Required for the PHP DB File to run correctly 
+## Overlay Setup
+🚨Ensure that a localhost system is **running**
+
+Head over to /ptso-twitch/admin on your browser **running** the localhost system and head to the Browser Overlay URL Generator Tab
+
+❗Recommended OBS Browser Dimension Sizes❗
+- Width: 800
+- Height: 350
 
 ## 🛠️ Future Updates to Fix
 |Task| Critcality |
