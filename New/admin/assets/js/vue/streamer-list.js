@@ -32,42 +32,20 @@ const appList = Vue.createApp({
         editStreamer(item) {
             alert("This is still in Beta due to complexity of internal data passing.\nBut ensure to copy/paste requried info to edit to ensure it's captured.")
         },
-        deleteStreamer(item){
+        async deleteStreamer(item){
             if(confirm("Do you wish to delete details about "+item['streamerName']+"?") === true){
-                axios.get('assets/php/db-delete.php', {
+                await axios.get('assets/php/db-delete.php', {
                     params: {
                         twitchID: item.twitchID,
                     },
                     headers: {
                         'Content-Type': 'application/json',
                     }
-                })
-                    .then(function(response){
-                        console.log(response.data.message)
-                    })
-                    .catch(function(error){
-                        console.error(error)
-                    });
+                }).then(function(response){
+                    console.log(response.data.message)
+                });
                 this.loadData();
             }
-        },
-        getStreamer(item){
-            // // Locate
-            // axios.get('assets/php/db-get.php', {
-            //     params: {
-            //         twitchID: item.twitchID,
-            //         type: 'single'
-            //     },
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     }
-            // })
-            // .then(function(response){
-            //     console.log(response)
-            // })
-            // .catch(function(error){
-            //     console.error(error)
-            // });
         },
         loadData(){
             this.filteredSearch = "";

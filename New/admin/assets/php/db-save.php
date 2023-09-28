@@ -5,17 +5,14 @@
     try{
         $twid = $formData['twitchID'];
         $stNm = strtolower($formData['streamerName']);
-        $stDt = $formData['streamerDetails'];
+        $stDt = htmlspecialchars(strip_tags($formData['streamerDetails']), ENT_COMPAT);
         $stCl = $formData['streamerColor'];
-        // ----- Version 1
-        // $sql = "INSERT INTO $dbname (twitchID, streamerName, streamerDetails, streamerColor) VALUES (:key1, \":key2\", \":key3\", \":key4\")";
-        // $params = array(':key1' => $twid, ':key2' => $stNm, ':key3' => $stDt, ':key4' => $stCl);
-        // echo json_encode($params);
-        // $conn->prepare($sql);
-        // $conn->exec($params);
-        // ----- Version 2
-        $sql = "INSERT INTO $dbname (twitchID, streamerName, streamerDetails, streamerColor) VALUES ($twid , \"$stNm\", \"$stDt\" , \"$stCl\" )";         
-        $conn->exec($sql);
+        $stmt = $conn->prepare("INSERT INTO $dbname (twitchID, streamerName, streamerDetails, streamerColor) VALUES (:key1, :key2, :key3, :key4)");
+        $stmt->bindParam(':key1', $twid, PDO::PARAM_INT);
+        $stmt->bindParam(':key2', $stNm, PDO::PARAM_STR);
+        $stmt->bindParam(':key3', $stDt, PDO::PARAM_STR);
+        $stmt->bindParam(':key4', $stCl, PDO::PARAM_STR);
+        $stmt->execute();
         $response = [
             "message" => "New record created successfully",
         ];
