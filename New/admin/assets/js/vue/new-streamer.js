@@ -30,7 +30,9 @@ const appNewStreamer = Vue.createApp({
             streamer.twitchID = response.id
             const validate = await this.findStreamerInRecord(streamer.twitchID);
             if(validate.data.length == 1){
-                return alert("Duplicate streamer record found!")
+                if(confirm("Duplicate streamer record found!\nDo you wish to update this data?") === true){
+                    // this.update2DB(streamer)
+                }
             } else {
                 this.save2DB(streamer);
                 this.resetForm();
@@ -38,6 +40,19 @@ const appNewStreamer = Vue.createApp({
             // Update the table
             // appList.loadData();
         },
+        // update2DB(streamer){
+        //     axios.post("assets/php/db-update.php", Object.assign({}, streamer), {
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //     })
+        //     .then(function(response){
+        //         console.log(response.data.message);
+        //     })
+        //     .catch(function (error) {
+        //         console.error(error);
+        //     });
+        // },
         save2DB(streamer){
             axios.post("assets/php/db-save.php", Object.assign({}, streamer), {
                 headers: {
