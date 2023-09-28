@@ -92,9 +92,13 @@ const appNewStreamer = Vue.createApp({
                     params: {
                         login: streamSearch
                     },
+                    // headers: {
+                    //     'Client-Id': process.env.TWITCH_CLIENT_ID,
+                    //     'Authorization': `Bearer ${process.env.TWITCH_ACCESS_TOKEN}`
+                    // }
                     headers: {
-                        'Client-Id': process.env.TWITCH_CLIENT_ID,
-                        'Authorization': `Bearer ${process.env.TWITCH_ACCESS_TOKEN}`
+                        'Client-Id': '2evltyjhvps531kd1tcxxbjhsxtc23',
+                        'Authorization': `Bearer i90uoyr08ruawmp22msvhv0uk4brr4`
                     }
                 })
                 return response.data.data[0]
