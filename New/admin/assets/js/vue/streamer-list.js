@@ -31,6 +31,7 @@ const appList = Vue.createApp({
     methods: {
         editStreamer(item) {
             alert("This is still in Beta due to complexity of internal data passing.\nBut ensure to copy/paste requried info to edit to ensure it's captured.")
+            console.log(item);
         },
         async deleteStreamer(item){
             if(confirm("Do you wish to delete details about "+item['streamerName']+"?") === true){
