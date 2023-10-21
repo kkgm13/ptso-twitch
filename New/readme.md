@@ -9,26 +9,29 @@
     - Specifically For ```npm run setup```
 - [OBS Studio](https://obsproject.com) (Will work with StreamLabs [BUT Not Recommended])
     - Ensure Twitch Account is connected and linked! 
-### Example usage:
+<!-- ### Example usage:
 - [MAMP](https://www.mamp.info/)
     - If utilizing MAMP, ensure MAMP's Document Root folder calling a folder above this system (eg: DocRootFolder/ptso-twitch/)
 - [XAMPP](https://www.apachefriends.org/download.html)
-    - If utilizing XAMPP, ensure the ptso-twitch folder is stored in the htdocs folder inside XAMPP.    
+    - If utilizing XAMPP, ensure the ptso-twitch folder is stored in the htdocs folder inside XAMPP.
+- [Express] -->
 ## PTSO Dependencies 🤝
 - [Twitch Helix API](https://dev.twitch.tv/docs/api/)
 - [VueJS](https://vuejs.org)
 - [Axios-HTTP](http://axios-http.com)
+- [ExpressJS](https://expressjs.com)
+- [dotenv]()
 
 ## First Time Running
 0) ❗️Login to [Twitch Dev](https://dev.twitch.tv) and get your Client ID & Client Secret after creating your own Localhost Application
 ### If with knowledge with Terminals/Command Prompt
 1) Run ```npm update``` on a Command Prompt/Terminal to start up dependencies
     - Must be done to link/update internal dependencies
-2) Run ```npm run setup``` to get your information and Access Token. Some of these will need your specific Register App details via Twitch Dev
-    - *Note: There maybe a scenario that you will need to rerun ```npm run setup``` at different times, if not working correctly.*
+2) Run set up command...
+    - *❗️Note: There maybe a scenario that you will need to rerun ```npm run setup``` at different times, if not working correctly.*
 
 ### Notes 📝
-1) Please ensure to clear OBS Browser cache **BEFORE & AFTER** streaming for safety, especially for the Admin Page
+1) ❗️ Please ensure to clear OBS Browser cache **BEFORE & AFTER** streaming for safety, especially for the Admin Page
 2) To have unique lines for a streamer, start up the localhost server and checkout the Admin page on a browser to add unique statements about them.
     - Required for the PHP DB File to run correctly 
 ## Overlay Setup
