@@ -1,5 +1,3 @@
-// import appList from './streamer-list';
-
 const appNewStreamer = Vue.createApp({
     mounted() {
         console.log("Form Mounted Correctly");
@@ -92,9 +90,13 @@ const appNewStreamer = Vue.createApp({
                     params: {
                         login: streamSearch
                     },
+                    // headers: {
+                    //     'Client-Id': process.env.TWITCH_CLIENT_ID,
+                    //     'Authorization': `Bearer ${process.env.TWITCH_ACCESS_TOKEN}`
+                    // }
                     headers: {
-                        'Client-Id': process.env.TWITCH_CLIENT_ID,
-                        'Authorization': `Bearer ${process.env.TWITCH_ACCESS_TOKEN}`
+                        'Client-Id': 'qtm1zwf9mlaemlvrp3yrf453lhk48z',
+                        'Authorization': `Bearer rskxehoux0svz1op3qnxvak21j6otf`
                     }
                 })
                 return response.data.data[0]
