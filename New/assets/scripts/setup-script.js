@@ -1,5 +1,5 @@
 const path = require('path')
-const dotenvPath = path.join(__dirname, '../../../.env')
+const dotenvPath = path.join(__dirname, '../../.env')
 require('dotenv').config({path: dotenvPath})
 const fs = require('fs')
 const axios = require('axios').default
@@ -15,12 +15,15 @@ let access_token = null
 
 readline.question('Your Twitch Username? > ', (twitchUser) => {
     streamerUserName = twitchUser
+    setToDotEnv("TWITCH_USER", streamerUserName)
     // console.log(`You entered: ${twitchUser}`);
     readline.question('Add Your Twitch Client ID: >  ', (clientID) => {
         clientid = clientID
+        setToDotEnv("TWITCH_CLIENT_ID", clientid)
         // console.log(`You entered: ${clientID}`);
         readline.question('Add Your Twitch Client Secret >  ', (clientSecret) => {
-            clientsecret = clientSecret            
+            clientsecret = clientSecret
+            setToDotEnv("TWITCH_CLIENT_SECRET", clientSecret)
             // console.log(`You entered: ${clientSecret}`);
             setup()
             readline.close();
@@ -36,6 +39,7 @@ function setup(){
     })
     .then(function (response) {
         access_token = response.data.access_token
+        setToDotEnv("TWITCH_ACCESS_TOKEN", access_token)
     
         axios.get('https://api.twitch.tv/helix/users', {
             params: {
@@ -47,15 +51,20 @@ function setup(){
                 'Client-Id': clientid
             }
         })
-        .then(function (response) {      
+        .then(function (response) {  
             console.log("")  
             console.log("--------------------------")
             console.warn("Parameters for Twitch User: " + streamerUserName + ` (Twitch ID: ${response.data.data[0].id})`)
-            console.log("--------------------------")
-            console.warn("Please IMMEDIATELY populate assets/js/vue/new-streamer.js with the critical information below: ")
-            console.log("")  
+            setToDotEnv('TWITCH_STREAMER_ID', response.data.data[0].id)
+            console.log("--------------------------") 
+            console.log("Please keep this for your reference")
             console.log("Twitch Client Access Token: "+access_token)
             console.log("")  
+            console.warn("All Associated Twitch Data has been added to the .env file. Please keep this file safe at all times")
+            console.warn("Rerun this command if any of the following is required:")
+            console.warn("1) The Access Token requires to be renewed")
+            console.warn("2) The Client Secret is renewed via Twitch Dev Dashboard,OR")
+            console.warn("3) The entire Twitch Dev Application is rebuilt via the Twitch Dev Dashboard")
         })
         .catch(function (error) {
             console.log("ERROR - " + error);
@@ -85,5 +94,5 @@ function setToDotEnv(keyName, valueName){
     const updatedContent = updatedKeyValuePairs.map(item => `${item.key}=${item.value}`).join('\n');
     // Write the updated content back to the dotenv file
     fs.writeFileSync(dotenvPath, updatedContent);
-    console.log(keyName + ' updated successfully.');
+    // console.log(keyName + ' updated successfully with + valueName.');
 }

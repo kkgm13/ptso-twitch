@@ -3,7 +3,7 @@
   "version": "1.2.0",
   "description": "Personal Textual Shoutout Overlay System for Twitch",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"Error: no test specified\" && exit 1",    
     "launch": "node assets/scripts/express-setup.js",
     "twitch-setup": "node assets/scripts/setup-script.js",
     "setup": "echo \"Nothing as of yet\" && exit 1"
