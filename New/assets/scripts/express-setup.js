@@ -1,19 +1,23 @@
+// ExpressJS
 const express = require('express')
 const app = express()
 const hostname = "127.0.0.1";
 const port = 3000
+//File System
 const fs = require('fs')
+// Dir Path Usage
 const path = require('path')
-// const dotenvPath = path.join(__dirname, '../../../.env')
-// require('dotenv').config({path: dotenvPath})
-
+// DotEnv
+const dotenvPath = path.join(__dirname, '../../.env')
+require('dotenv').config({path: dotenvPath})
+// SQLite
 // const sqlite3 = require('sqlite3').verbose()
 // const db = sqlite3.Database('streamer.db')
 
 
 function dbCreation(){
     // Path file of db
-    const dbFile = path.join(__dirname, '../../streamers.db');
+    const dbFile = path.join(__dirname, '../../admin/streamers.db');
     fs.access(dbFile, fs.constants.F_OK, error => {
         if (error){
             console.log("Error Found: "+error)
@@ -29,14 +33,16 @@ function dbCreation(){
     })
 }
 
+// Use this to run Admin page
 app.use('/', express.static(path.join(__dirname, '../../admin')))
 
-// app.get('/', (req, res) => {    
-    // res.sendFile(path.join(__dirname, '../../admin/assets/css/stylesheets.css'))
-    // res.sendFile(path.join(__dirname, '../../admin/')) // Works but Vue & csS are broken
-// })
+app.use(function(req,res){
+    res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+});
 
+// Listen to system
 app.listen(port, () => {
     console.log('Accessing .env files')
-    console.log(`PTSO-Twitch is active on localhost, listening on ${hostname}:${port}`)
+    console.log(`PTSO-Twitch is active!. Listening on ${hostname}:${port}`)
 })
