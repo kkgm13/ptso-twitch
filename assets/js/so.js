@@ -74,12 +74,16 @@ $(document).ready(function(){
     //     xhrG.send();
     // };
 
-    // File Reader Call for local streamData.JSON file
-    let checkFileInAdmin = function (file, callback){
-        let folder = window.location.pathname.split("/")
-        let url = window.location.origin+"/"+folder[1]+"/admin/";
+    // File Reader Call for MySQL
+    let checkFileInAdmin = function (strNm, callback){        
+        let url = "http://localhost:8888/ptso-twitch/admin/assets/php/so-fetchUser.php"
         let xhrAdmin = new XMLHttpRequest();
-        xhrAdmin.open('GET', url+'streamData.json', true);
+        xhrAdmin.open('GET', url);
+        // Define the data to be sent in the request body
+        var param = "streamerName=" + strNm;
+        // Set the Content-Type header if sending data
+        xhrAdmin.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
         xhrAdmin.onreadystatechange = function () {
             if(xhrAdmin.readyState === 4){
                 callback(xhrAdmin.responseText)
@@ -88,7 +92,20 @@ $(document).ready(function(){
                 return false
             }
         }
-        xhrAdmin.send()
+
+        // xhrAdmin.onreadystatechange = function () {
+        //     if (xhrAdmin.readyState == 4 && xhrAdmin.status == 200) {
+        //         // Parse the JSON response
+        //         var data = JSON.parse(xhrAdmin.responseText);
+    
+        //         // Now 'data' contains the specific row of data
+        //         console.log(data);
+    
+        //         // You can manipulate the data as needed here
+        //     }
+        // };
+
+        xhrAdmin.send(param);
     };
 
     // Connect to the client
@@ -168,10 +185,12 @@ $(document).ready(function(){
         let strmName = data; // Direct Name
         checkFileInAdmin(strmName, function(info){
             var check = false;
+            console.log(info)
             info = JSON.parse(info)
             Object.keys(info).forEach(function(idx){
                 if(!check){
                     let dataTxt = info[idx]['streamerName']
+                    console.log(dataTxt)
                     if(dataTxt.toLowerCase() === strmName){
                         // Get streamer Details
                         let x = info[idx]['streamerDetails']
@@ -184,6 +203,7 @@ $(document).ready(function(){
                         } else {
                             returnData.push(["#676767"])
                         }
+                        
                     }
                 }
             })

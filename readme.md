@@ -36,12 +36,12 @@ In your respective Localhost system. Create a MySQL database, preferably named `
     - *❗️Note: There maybe a scenario that you will need to rerun ```npm run setup``` at different times, to reset correctly.*
     - 
 
-### Notes 📝
+### Notes when using 📝
 1) ❗️ Please ensure to clear OBS Browser cache **BEFORE & AFTER** streaming for safety, especially for the Admin Page
 2) To have unique lines for a streamer, start up the localhost server and checkout the Admin page on a browser to add unique statements about them.
     - Required for the PHP DB File to run correctly 
-## Overlay Setup
-🚨Ensure that a localhost system is **running**
+## OBS Overlay Setup
+🚨Ensure that a localhost system is **running**, otherwise it will not work
 
 Head over to /ptso-twitch/admin on your browser **running** the localhost system and head to the Browser Overlay URL Generator Tab
 
