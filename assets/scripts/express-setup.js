@@ -1,8 +1,3 @@
-// ExpressJS
-const express = require('express')
-const app = express()
-const hostname = "127.0.0.1";
-const port = 3000
 //File System
 const fs = require('fs')
 // Dir Path Usage
@@ -10,6 +5,11 @@ const path = require('path')
 // DotEnv
 const dotenvPath = path.join(__dirname, '../../.env')
 require('dotenv').config({path: dotenvPath})
+// ExpressJS
+const express = require('express')
+const app = express()
+const hostname = "127.0.0.1";
+const port = 3000
 // SQLite
 // const sqlite3 = require('sqlite3').verbose()
 // const db = sqlite3.Database('streamer.db')
@@ -37,7 +37,7 @@ function dbCreation(){
 app.use('/', express.static(path.join(__dirname, '../../admin')))
 
 app.use(function(req,res){
-    res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+    res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 });
 

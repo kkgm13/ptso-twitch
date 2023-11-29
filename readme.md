@@ -5,30 +5,36 @@
 
 ## Prerequisites❗
 - A LocalHost system running (LAMP/WAMP Stack)
+    - A MySQL Database is REQUIRED to be used correctly!
 - [NodeJS](https://nodejs.org/en/download) (MacOS use [Homebrew](https://brew.sh)!) & [NodeJS Package Manager](https://npmjs.com)
     - Specifically For ```npm run setup```
 - [OBS Studio](https://obsproject.com) (Will work with StreamLabs [BUT Not Recommended])
     - Ensure Twitch Account is connected and linked! 
-<!-- ### Example usage:
+### Example usage:
 - [MAMP](https://www.mamp.info/)
     - If utilizing MAMP, ensure MAMP's Document Root folder calling a folder above this system (eg: DocRootFolder/ptso-twitch/)
 - [XAMPP](https://www.apachefriends.org/download.html)
     - If utilizing XAMPP, ensure the ptso-twitch folder is stored in the htdocs folder inside XAMPP.
-- [Express] -->
+<!-- - [Express] -->
 ## PTSO Dependencies 🤝
 - [Twitch Helix API](https://dev.twitch.tv/docs/api/)
 - [VueJS](https://vuejs.org)
 - [Axios-HTTP](http://axios-http.com)
 - [ExpressJS](https://expressjs.com)
-- [dotenv]()
 
-## First Time Running
-0) ❗️Login to [Twitch Dev](https://dev.twitch.tv) and get your Client ID & Client Secret after creating your own Localhost Application
-### If with knowledge with Terminals/Command Prompt
+## ❗️ First Time Running
+### Twitch API Setup
+Login to [Twitch Dev](https://dev.twitch.tv) and get your Client ID & Client Secret after creating your own Localhost Application
+### Database Setup
+In your respective Localhost system. Create a MySQL database, preferably named `streamers` with the following names
+    - twitchID as an PRIMARY KEY INT not Autocrementing
+    - streamerName as an 
+### Terminals/Command Prompt
 1) Run ```npm update``` on a Command Prompt/Terminal to start up dependencies
     - Must be done to link/update internal dependencies
-2) Run set up command...
-    - *❗️Note: There maybe a scenario that you will need to rerun ```npm run setup``` at different times, if not working correctly.*
+2) Run the ```npm run setup``` command...
+    - *❗️Note: There maybe a scenario that you will need to rerun ```npm run setup``` at different times, to reset correctly.*
+    - 
 
 ### Notes 📝
 1) ❗️ Please ensure to clear OBS Browser cache **BEFORE & AFTER** streaming for safety, especially for the Admin Page
@@ -49,7 +55,6 @@ Head over to /ptso-twitch/admin on your browser **running** the localhost system
 |SO.html: Single Line Carousel during activation| **CRITICAL FEATURE** | 
 |⭐️ Admin: Twitch API Integration |Complete|
 |⭐️ System: Use Twitch ID instead as a reference system due to potential username changes over time|Completed|
-|Admin: Automatic Front-end Saving|In Progress|
-|📌Admin: Proper Database Calling via MongoDB/MySQL/SQLite|In Progress|
+|Admin: Automatic Front-end Saving|Pushed to ExpressJS Update|
+|📌Admin: Proper Database Calling via MongoDB/MySQL/SQLite|MySQl Integration done|
 |Admin/System?: User Customization under request of some Twitch Streamers (eg: Box Color, Font Family, etc...)|In progress|
-|Kick Streaming Implementation???? |???|
