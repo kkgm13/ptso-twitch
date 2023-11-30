@@ -3,7 +3,7 @@ const fs = require('fs')
 // Dir Path Usage
 const path = require('path')
 // DotEnv
-const dotenvPath = path.join(__dirname, '../../.env')
+const dotenvPath = path.join(__dirname, '../.env')
 require('dotenv').config({path: dotenvPath})
 // ExpressJS
 const express = require('express')
@@ -17,7 +17,7 @@ const port = 3000
 
 function dbCreation(){
     // Path file of db
-    const dbFile = path.join(__dirname, '../../admin/streamers.db');
+    const dbFile = path.join(__dirname, '../streamers.db');
     fs.access(dbFile, fs.constants.F_OK, error => {
         if (error){
             console.log("Error Found: "+error)
