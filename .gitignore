@@ -1,9 +1,2 @@
-notes.txt
 .env
-.vscode-test
-.DS_Store
-logs
-admin/streamData.json
-test.html
-admin/testData.json
-admin/node_modules
+node_modules
