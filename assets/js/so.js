@@ -78,33 +78,19 @@ $(document).ready(function(){
     let checkFileInAdmin = function (strNm, callback){        
         let url = "http://localhost:8888/ptso-twitch/admin/assets/php/so-fetchUser.php"
         let xhrAdmin = new XMLHttpRequest();
-        xhrAdmin.open('GET', url);
-        // Define the data to be sent in the request body
-        var param = "streamerName=" + strNm;
-        // Set the Content-Type header if sending data
-        xhrAdmin.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhrAdmin.open('POST', url, true);
+        xhrAdmin.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
         xhrAdmin.onreadystatechange = function () {
-            if(xhrAdmin.readyState === 4){
+            if(xhrAdmin.readyState === 4 && xhrAdmin.status === 200){
                 callback(xhrAdmin.responseText)
-                return true
-            } else { 
-                return false
+                return true;
+            } else {           
+                return false;
             }
         }
-
-        // xhrAdmin.onreadystatechange = function () {
-        //     if (xhrAdmin.readyState == 4 && xhrAdmin.status == 200) {
-        //         // Parse the JSON response
-        //         var data = JSON.parse(xhrAdmin.responseText);
-    
-        //         // Now 'data' contains the specific row of data
-        //         console.log(data);
-    
-        //         // You can manipulate the data as needed here
-        //     }
-        // };
-
+         // Define the data to be s;ent in the request body
+         var param = "name=" + encodeURIComponent(strNm);
         xhrAdmin.send(param);
     };
 
@@ -185,19 +171,17 @@ $(document).ready(function(){
         let strmName = data; // Direct Name
         checkFileInAdmin(strmName, function(info){
             var check = false;
-            console.log(info)
-            info = JSON.parse(info)
-            Object.keys(info).forEach(function(idx){
+            Object.keys(JSON.parse(info)).forEach(function(idx){
+                console.log(idx)
                 if(!check){
-                    let dataTxt = info[idx]['streamerName']
-                    console.log(dataTxt)
+                    let dataTxt = JSON.parse(info)[idx]['streamerName']
                     if(dataTxt.toLowerCase() === strmName){
                         // Get streamer Details
-                        let x = info[idx]['streamerDetails']
+                        let x = JSON.parse(info)[idx]['streamerDetails']
                         let x2 = x.split(';').filter(Boolean)
                         returnData.push(x2)
                         // Get Streamer Color
-                        let y = info[idx]['streamerColor']
+                        let y = JSON.parse(info)[idx]['streamerColor']
                         if (y != ''){
                             returnData.push([y])
                         } else {

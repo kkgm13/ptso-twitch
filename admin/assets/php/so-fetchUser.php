@@ -3,40 +3,24 @@
     include 'db-handler.php';
 
     try{
-        echo json_encode(isset($_GET['streamerName']));
-        if(isset($_GET['streamerName'])){
-            $twitchID = $_GET['streamerName'];
-            $sql = "SELECT * FROM streamers WHERE streamerName = $streamerName";
+        if(isset($_POST['name'])){ // False
+            $twitchName = $_POST['name'];
+            $sql = "SELECT * FROM streamers WHERE streamerName = $twitchName";
         } else {
-            // $response = [
-            //     "error" => "Unknown 'type' parameter value",
-            // ];
-            // echo json_encode($response);
+            $response = [
+                "error" => "Unknown parameter value",
+            ];
+            echo json_encode($response);
             $conn = null;
             exit();
         }
-        
 
-        $stmt = $conn->query($sql);
+        $stmt = $conn->prepare("SELECT * FROM streamers WHERE streamerName = :key1");
+        $stmt->bindParam(':key1', $twitchName, PDO::PARAM_STR);
         $stmt->execute();
         $stmt = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-//         $sql = "SELECT * FROM your_table WHERE id = $id";
-// $result = $conn->query($sql);
-
-// // Fetch data and encode it as JSON
-// $data = array();
-// while ($row = $result->fetch_assoc()) {
-//     $data[] = $row;
-// }
-
-        
-        $response = [
-            "message" => "Record Retrieved",
-            'data' => $stmt
-        ];
-
-        echo json_encode($response);
+        echo json_encode($stmt);
         $conn = null;
 
     } catch (PDOException $e){
@@ -44,4 +28,5 @@
             "message" => "ERROR: " . $e->getMessage(),
         ];
         echo json_encode($response);
+        $conn = null;
     }
