@@ -1,3 +1,4 @@
+// Packages Implementation
 const path = require('path')
 const dotenvPath = path.join(__dirname, '../.env')
 require('dotenv').config({path: dotenvPath})
@@ -8,30 +9,35 @@ const readline = require('readline').createInterface({
     output: process.stdout
 });
 
+//Strings for dotENVs
 let streamerUserName = null
 let clientid = null
 let clientsecret = null
 let access_token = null
 
+console.warn("Please Ensure that you have already created a Personal PTSO via Twitch Dev. (You can login with your usual account credentials, as the following questions require details of a created Twitch Dev Application.")
+
+// Validate information to be used
 readline.question('Your Twitch Username? > ', (twitchUser) => {
     streamerUserName = twitchUser
     setToDotEnv("TWITCH_USER", streamerUserName)
-    // console.log(`You entered: ${twitchUser}`);
     readline.question('Add Your Twitch Client ID: >  ', (clientID) => {
         clientid = clientID
         setToDotEnv("TWITCH_CLIENT_ID", clientid)
-        // console.log(`You entered: ${clientID}`);
         readline.question('Add Your Twitch Client Secret >  ', (clientSecret) => {
             clientsecret = clientSecret
             setToDotEnv("TWITCH_CLIENT_SECRET", clientSecret)
-            // console.log(`You entered: ${clientSecret}`);
-            setup()
+            setupTwitchSecret()
             readline.close();
         });
     });
 });
 
-function setup(){
+/**
+ * Connect with Twitch API and create access token
+ * @returns Access Token for Twitch User 
+ */
+function setupTwitchSecret(){
     axios.post('https://id.twitch.tv/oauth2/token', {
         client_id: clientid,
         client_secret: clientsecret,
@@ -60,7 +66,7 @@ function setup(){
             console.log("Please keep this for your reference")
             console.log("Twitch Client Access Token: "+access_token)
             console.log("")  
-            console.warn("All Associated Twitch Data has been added to the .env file. Please keep this file safe at all times")
+            console.warn("Associated Twitch Dev Data has been added to the .env file. Please keep this file safe at all times")
             console.warn("Rerun this command if any of the following is required:")
             console.warn("1) The Access Token requires to be renewed")
             console.warn("2) The Client Secret is renewed via Twitch Dev Dashboard,OR")
@@ -75,6 +81,11 @@ function setup(){
     });
 }
 
+/**
+ * Allow to set a Value based on a defined dotENV keyname
+ * @param {*} keyName       Key within the dotenv file
+ * @param {*} valueName     Value to be associated with the key
+ */
 function setToDotEnv(keyName, valueName){
     // Read the content of the dotenv file
     const content = fs.readFileSync(dotenvPath, 'utf-8');
@@ -85,14 +96,11 @@ function setToDotEnv(keyName, valueName){
     });
     // Find and update the value for the specified key
     const updatedKeyValuePairs = keyValuePairs.map(item => {
-        if (item.key === keyName) {
-            item.value = valueName;
-        }
+        if (item.key === keyName) {item.value = valueName};
         return item;
     });
     // Build the updated content
     const updatedContent = updatedKeyValuePairs.map(item => `${item.key}=${item.value}`).join('\n');
     // Write the updated content back to the dotenv file
     fs.writeFileSync(dotenvPath, updatedContent);
-    // console.log(keyName + ' updated successfully with + valueName.');
 }

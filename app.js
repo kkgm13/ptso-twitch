@@ -1,14 +1,10 @@
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const bodyParser = require('body-parser');
-const dotenv = require('dotenv');
-const axios = require('axios');
-const path = require('path');
 const cors = require ('cors');
 
 // Start System
 const app = express();
-
 //SQLite Database
 const db = new sqlite3.Database('./streamers.db', sqlite3.OPEN_READWRITE, (err) => {
     if (err && err.code == "SQLITE_CANTOPEN") {
@@ -20,16 +16,17 @@ const db = new sqlite3.Database('./streamers.db', sqlite3.OPEN_READWRITE, (err) 
         exit(1);
     }
 });
-
+// Check Database
 db.once('open', (stream) => {
     console.log("Streamer Database found!");
     console.log("Connected to Database");
 })
 
-//middleware
+// Middlewares
 app.use(cors());
 app.use(bodyParser.json());
 
+// Send immediately to Main Index
 app.get('/', (req,res) => {
     res.send("Hello World");
 });
@@ -42,7 +39,7 @@ app.use(function(req,res){
 });
 
 // Start the server
-app.listen(3000, console.log("Listening on Port 3000"));
+// app.listen(3030, console.log("Listening on Port 3030"));
 
 // SQL3 Functions to work
 function createDatabase() {
