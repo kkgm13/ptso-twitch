@@ -17,6 +17,7 @@ const db = new sqlite3.Database('./streamers.db', sqlite3.OPEN_READWRITE, (err) 
         exit(1);
     }
 });
+
 // Check Database
 db.once('open', (stream) => {
     console.log("Streamer Database found!");
