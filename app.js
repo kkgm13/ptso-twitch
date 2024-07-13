@@ -1,7 +1,8 @@
-const express = require('express');
-const sqlite3 = require('sqlite3').verbose();
-const bodyParser = require('body-parser');
-const cors = require ('cors');
+import express from 'express'
+import sqlite3 from 'sqlite3'
+import bodyParser from 'body-parser'
+import cors from 'cors'
+import open from 'open'
 
 // Start System
 const app = express();
@@ -28,7 +29,7 @@ app.use(bodyParser.json());
 
 // Send immediately to Main Index
 app.get('/', (req,res) => {
-    res.send("Hello World");
+    res.send("Hello World");    
 });
 
 // app.use('/', express.static(path.join(__dirname, '/admin')))
@@ -39,7 +40,12 @@ app.use(function(req,res){
 });
 
 // Start the server
-// app.listen(3030, console.log("Listening on Port 3030"));
+app.listen(3030, () => {
+    console.log("Listening on Port 3030");
+    // console.warn("Link is Ready: http://localhost:3030/")
+    open("http://localhost:3030/")
+});
+// app.
 
 // SQL3 Functions to work
 function createDatabase() {

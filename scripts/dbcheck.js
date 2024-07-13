@@ -28,6 +28,8 @@ const setupDatabase = () => {
 const checkAndSetupDatabase = () => {
   if (!dbExists) {
     setupDatabase();
+  } else {
+    console.log("Database is Found!")
   }
 };
 
