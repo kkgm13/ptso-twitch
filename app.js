@@ -3,6 +3,7 @@ import sqlite3 from 'sqlite3'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import open from 'open'
+import path from 'path'
 
 // Start System
 const app = express();
@@ -28,12 +29,9 @@ db.once('open', (stream) => {
 app.use(cors());
 app.use(bodyParser.json());
 
-// Send immediately to Main Index
-app.get('/', (req,res) => {
-    res.send("Hello World");    
-});
-
-// app.use('/', express.static(path.join(__dirname, '/admin')))
+// Send immediately to Admin
+const __dirname = import.meta.dirname;
+app.use('/admin', express.static(path.join(__dirname, '/public/admin')))
 
 app.use(function(req,res){
     res.header("Access-Control-Allow-Origin", "*");
@@ -43,10 +41,8 @@ app.use(function(req,res){
 // Start the server
 app.listen(3030, () => {
     console.log("Listening on Port 3030");
-    // console.warn("Link is Ready: http://localhost:3030/")
-    open("http://localhost:3030/")
+    open("http://localhost:3030/admin")
 });
-// app.
 
 // SQL3 Functions to work
 function createDatabase() {

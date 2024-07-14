@@ -1,13 +1,16 @@
 // Packages Implementation
-const path = require('path')
+import path from 'path'
+import dotenv from 'dotenv'
+const __dirname = import.meta.dirname;
 const dotenvPath = path.join(__dirname, '../.env')
-require('dotenv').config({path: dotenvPath})
-const fs = require('fs')
-const axios = require('axios').default
-const readline = require('readline').createInterface({
+dotenv.config({path: dotenvPath})
+import axios from 'axios'
+import fs from 'fs'
+import readline,  {createInterface} from 'readline'
+const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
-});
+})
 
 //Strings for dotENVs
 let streamerUserName = null
@@ -18,17 +21,17 @@ let access_token = null
 console.warn("Please Ensure that you have already created a Personal PTSO via Twitch Dev. (You can login with your usual account credentials, as the following questions require details of a created Twitch Dev Application.")
 
 // Validate information to be used
-readline.question('Your Twitch Username? > ', (twitchUser) => {
+rl.question('Your Twitch Username? > ', (twitchUser) => {
     streamerUserName = twitchUser
     setToDotEnv("TWITCH_USER", streamerUserName)
-    readline.question('Add Your Twitch Client ID: >  ', (clientID) => {
+    rl.question('Add Your Twitch Client ID: >  ', (clientID) => {
         clientid = clientID
         setToDotEnv("TWITCH_CLIENT_ID", clientid)
-        readline.question('Add Your Twitch Client Secret >  ', (clientSecret) => {
+        rl.question('Add Your Twitch Client Secret >  ', (clientSecret) => {
             clientsecret = clientSecret
             setToDotEnv("TWITCH_CLIENT_SECRET", clientSecret)
             setupTwitchSecret()
-            readline.close();
+            rl.close();
         });
     });
 });
