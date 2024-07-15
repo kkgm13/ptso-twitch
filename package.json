@@ -6,7 +6,8 @@
   "scripts": {
     "setup": "echo \"Nothing as of yet\" && exit 1",
     "start": "nodemon app.js",
-    "twitch-setup": "node scripts/setup-script.js"
+    "twitch-setup": "node scripts/setup-script.js",
+    "db-check": "node scripts/db-check.js"
   },
   "repository": {
     "type": "git",

@@ -3,7 +3,7 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 import open from 'open'
 import path from 'path'
-import {initDB} from './scripts/db-check.js'
+import {initDB} from './scripts/database.js'
 
 // Start System
 const app = express();
