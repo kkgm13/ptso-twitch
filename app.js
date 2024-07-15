@@ -1,35 +1,18 @@
 import express from 'express'
-import sqlite3 from 'sqlite3'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import open from 'open'
 import path from 'path'
+import {initDB} from './scripts/db-check.js'
 
 // Start System
 const app = express();
-//SQLite Database
-const db = new sqlite3.Database('./streamers.db', sqlite3.OPEN_READWRITE, (err) => {
-    if (err && err.code == "SQLITE_CANTOPEN") {
-        createDatabase();
-        console.log("Streamer Database Created!")
-        return;
-    } else if (err) {
-        console.log("Getting error " + err);
-        exit(1);
-    }
-});
-
-// Check Database
-db.once('open', (stream) => {
-    console.log("Streamer Database found!");
-    console.log("Connected to Database");
-})
 
 // Middlewares
 app.use(cors());
 app.use(bodyParser.json());
 
-// Send immediately to Admin
+// Redirect to Admin!
 const __dirname = import.meta.dirname;
 app.use('/admin', express.static(path.join(__dirname, '/public/admin')))
 
@@ -38,33 +21,18 @@ app.use(function(req,res){
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 });
 
-// Start the server
-app.listen(3030, () => {
-    console.log("Listening on Port 3030");
-    open("http://localhost:3030/admin")
-});
-
-// SQL3 Functions to work
-function createDatabase() {
-    var newdb = new sqlite3.Database('streamers.db', (err) => {
-        if (err) {
-            console.log("Getting error " + err);
-            exit(1);
-        }
-        createTables(newdb);
-    });
+async function startServer() {
+    try {
+        await initDB();
+        console.log("----------------------------")
+        app.listen(3030, () => {
+            console.log('Opening PTSO on localhost');
+            open('http://localhost:3030/admin');
+        });
+    } catch (error) {
+        console.error('Failed to initialize database: ', error);
+        process.exit(1);
+    }
 }
 
-function createTables(newdb) {
-    newdb.exec(`
-        CREATE TABLE streamers (
-            twitchID INT primary key NOT NULL,
-            streamerName TEXT NOT NULL,
-            streamerDetails TEXT NOT NULL,
-            streamerColor TEXT NOT NULL
-        );
-
-        INSERT INTO streamers (twitchID, streamerName, streamerDetails, streamerColor)
-            VALUES (0, 'ptso-twitch', 'personal Shoutout for Twitch; Overlay System;This is a sample to see how this works;', '#666666');
-    `);
-}
+startServer();
