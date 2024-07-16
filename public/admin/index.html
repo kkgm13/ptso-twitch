@@ -3,11 +3,204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="apple-touch-icon" sizes="76x76" href="assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
+    <link rel="mask-icon" href="assets/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>PTSO Admin 2.1</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/stylesheets.css">
 </head>
 <body>
-    <H1>
-    HELLO ADMIN WORLD
-</H1>
+    <div class="container">        
+        <header>
+            <h1 class="text-center">Personal Textual/Twitch ShoutOut (PTSO) Admin</h1>
+            <hr>
+        </header>
+        <nav>
+            <div class="row">
+                <ul class="nav nav-tabs nav-fill">
+                    <li class="nav-item">
+                      <a class="nav-link active" data-bs-toggle="tab" aria-current="page" href="#streamDbTab">Streamer DB List</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" data-bs-toggle="tab" href="#urlGenTab">Browser Overlay Generator</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#versionLog" aria-disabled="tab" data-bs-toggle="tab">Version Log</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <section>
+            <div class="tab-content">
+                <!-- Database -->
+                <div class="tab-pane container active" id="streamDbTab">
+                    <div class="row py-3">
+                        <div class="col-md-8">
+                            <div id="streamerList">
+                                <div class="row">
+                                    <div class="col-5">
+                                        <div class="d-grid gap-2">
+                                            <button type="button" class="btn btn-info" @click="loadData"><i class="bi bi-arrow-clockwise"></i> Force Update</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-7">
+                                        <div class="input-group">
+                                            <div class="input-group mb-3">
+                                                <span class="input-group-text" id="search"><i class="bi bi-search"></i></span>
+                                                <input type="text" class="form-control" v-model="filteredSearch" placeholder="Search by Name">
+                                              </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="fixed-head">
+                                    <table class="table table-responsive table-striped table-hover px-2">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th scope="col">Streamer</th>
+                                                <th scope="col">Personalized Streamer Details</th>
+                                                <th scope="col">Options</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">ptsoTwitch</th>
+                                                <td>Personal Shoutout for Twitch; Overlay System;This is a sample to see how this works;</td>
+                                                <td>
+                                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                                        <button type="button" class="btn btn-warning" disabled><i class="bi bi-pencil-fill"></i></button>
+                                                        <button type="button" class="btn btn-danger" disabled><i class="bi bi-trash-fill"></i></button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div id="streamerForm">
+                                <h5 class=text-center>New Streamer Info</h5>
+                                <hr>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Browser Overlay -->
+                <div class="tab-pane container fade" id="urlGenTab">
+                    <div class="row py-1">
+                        <div class="col-md-6">
+                            <fieldset>
+                                <legend>General Info</legend>
+                                <div class="row">
+                                    <div class="input-group mb-3">
+                                        <input type="text" class="form-control" 
+                                        id="mainAccount" name="mainAccount" placeholder="Streamer Channel Name"
+                                        aria-label="Recipient's username" aria-describedby="button-streamer">
+                                        <button class="btn btn-outline-secondary twitch" type="button" id="button-streamer" onclick="alert('Work In Progress')" disabled><i class="bi bi-twitch"></i></button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text">Alert Duration (sec)</span>
+                                            <input type="number" class="form-control" id="timeoutSize" aria-label="timeoutSize" aria-describedby="timeoutSize" step="1" min="0" value="10">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text" >SO Delay (sec)</span>
+                                            <input type="number" class="form-control" aria-label="delaySize" aria-describedby="delaySize" id="delaySize" step="1" min="0" value="10">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="input-group mb-1">
+                                    <span class="input-group-text">!</span>
+                                    <input type="text" class="form-control" placeholder="Custom SO Command" aria-label="commands" id="commands" aria-describedby="commands">
+                                    <div id="passwordHelpBlock" class="form-text">
+                                        Twitch's built-in shoutout command (/shoutout) is to be supported soon. (Currently In Development and Testing)
+                                      </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="col-md-6">
+                            <fieldset disabled="disabled">
+                                <legend>Channel Raids (Currently Unavaliable)</legend>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="isRaid" name="isRaid">
+                                    <label class="form-check-label" for="isRaid">
+                                      Activate During a Channel Raid
+                                    </label>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="raidNumber">Raid Size Activation</span>
+                                    <input type="number" class="form-control" aria-label="raidNumber" aria-describedby="raidNumber" min="0">
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>  
+                    <hr>              
+                    <div>
+                        <label for="browserURL" style="text-decoration: underline;">Your Browser Overlay Link: </label>
+                        <span class="p-1" id="browserURL"></span>
+                        <div class="d-grid gap-2 pt-2">
+                            <button class="btn btn-warning" type="button" onclick="alert('To Code Soon')">Generate Overlay Link</button>
+                          </div>
+                    </div>
+                </div>
+                <!-- Version Log -->
+                <div class="tab-pane container fade" id="versionLog">
+                    <div class="row p-4">
+                        <ul class="list-group">Version 0.3 - 
+                            <li class="list-group-item">
+                                <ul class="list-group">Admin Page Revamp for Single-Page Application
+                                    <li class="list-group-item">Database Search Functionality Enabled</li>
+                                    <li class="list-group-item">Dedicated Tabbed Content for Streamer List & Browser Overlay Settings</li>
+                                </ul>
+                            </li>
+                            <li class="list-group-item">Full Database Support with SQLite 3</li>
+                            <li class="list-group-item">Dropped MySQL Support</li>
+                        </ul>
+                        <ul class="list-group">Version 0.2.0 - October 2023
+                            <li class="list-group-item">Data I/O revamp via MySQL</li>
+                            <li class="list-group-item">Dropped JSON I/O Support</li>
+                        </ul>
+                        <ul class="list-group">Version 0.1.2 - June 2023
+                            <li class="list-group-item">Stream Color Parameter Added for Stream Uniqueness</li>
+                            <li class="list-group-item">Admin Refactoring</li>
+                        </ul>
+                        <ul class="list-group">Version 0.1.1 - June 2023
+                            <li class="list-group-item">SO html file timing fixes</li>
+                        </ul>
+                        <ul class="list-group">Version 0.1 - June 2023
+                            <li class="list-group-item">Initial Release</li>
+                            <li class="list-group-item">Dedicated SO html file used for OBS Studio Usage</li>
+                        </ul>
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
+        <footer>
+            <hr>
+            <div class="row">
+                <p class="text-center">Made with Care & Consideration - <a href="http://twitch.tv/kkgm13">@KKGM13</a></p>
+            </div>
+        </footer>
+    </div>
+    <script>
+        // This function will be executed when the page loads
+        window.onload = function() {
+            // Display an alert
+            alert("Welcome to the Personal Textual Shoutout Overlay (PTSO) for Twitch!\nPlease note some functionality is still being developed.");
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 </body>
 </html>
