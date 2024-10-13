@@ -44,12 +44,12 @@
                         <div class="col-md-8">
                             <div id="streamerList">
                                 <div class="row">
-                                    <div class="col-5">
+                                    <div class="col-3">
                                         <div class="d-grid gap-2">
                                             <button type="button" class="btn btn-info" @click="loadData"><i class="bi bi-arrow-clockwise"></i> Force Update</button>
                                         </div>
                                     </div>
-                                    <div class="col-7">
+                                    <div class="col-9">
                                         <div class="input-group">
                                             <div class="input-group mb-3">
                                                 <span class="input-group-text" id="search"><i class="bi bi-search"></i></span>
@@ -87,7 +87,7 @@
                             <div id="streamerForm">
                                 <h5 class=text-center>New Streamer Info</h5>
                                 <hr>
-                                <form>
+                                <form method="post">
                                     <fieldset>
                                         <div class="input-group mb-3">
                                             <input class=form-control v-model=streamer.streamerName aria-describedby=streamerName aria-label="Streamer Name" id=streamerName name=streamerName placeholder="Streamer Name">
