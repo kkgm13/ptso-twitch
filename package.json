@@ -7,7 +7,9 @@
     "setup": "echo \"Nothing as of yet\" && exit 1",
     "start": "nodemon app.js",
     "twitch-setup": "node scripts/setup-script.js",
-    "db-check": "node scripts/db-check.js"
+    "db-check": "node scripts/db-check.js",
+    "build": "npx tailwindcss -i ./public/admin/assets/css/input.css -o ./public/admin/assets/css/stylesheet-tailwindcss.css  ",
+    "dev": "npx tailwindcss -i ./public/admin/assets/css/input.css -o ./public/admin/assets/css/stylesheet-tailwindcss.css --watch"
   },
   "repository": {
     "type": "git",
@@ -20,15 +22,17 @@
   },
   "homepage": "https://github.com/kkgm13/ptso-twitch#readme",
   "dependencies": {
+    "@tailwindcss/cli": "^4.0.3",
     "axios": "^1.6.2",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "sqlite3": "^5.1.6"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1",
+    "body-parser": "^1.20.2",
     "cors": "^2.8.5",
+    "nodemon": "^3.0.1",
     "open": "^10.1.0",
-    "body-parser": "^1.20.2"
+    "tailwindcss": "^4.0.3"
   }
 }
