@@ -15,52 +15,75 @@
 </head>
 <body class="bg-gray-50 text-gray-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      
+
       <!-- Header -->
       <header class="py-8">
         <h1 class="text-3xl font-bold text-center">Personal Textual/Twitch ShoutOut (PTSO) Admin</h1>
         <hr class="my-4 border-gray-300">
       </header>
-  
+
       <!-- Navigation Tabs -->
-      <!-- <nav class="mb-6">
-        <ul class="flex border-b text-center">
-          <li class="flex-1">
-            <a data-tab="#streamDbTab" class="block py-3 px-4 border-b-2 border-blue-600 font-semibold text-blue-600">Streamer DB List</a>
-          </li>
-          <li class="flex-1">
-            <a data-tab="#urlGenTab" class="block py-3 px-4 hover:text-blue-500">Browser Overlay Generator</a>
-          </li>
-          <li class="flex-1">
-            <a data-tab="#versionLog" class="block py-3 px-4 hover:text-blue-500">Version Log</a>
-          </li>
-        </ul>
-      </nav> -->
-      <nav class="border-b border-gray-200 mb-4">
+      <!-- <nav class="border-b border-gray-200 mb-4">
         <ul class="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500">
           <li class="mr-2">
-            <button data-tab="streamDbTab"
-                    class="tab-link inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active"
-                    type="button">
+            <button data-tab="streamDbTab" class="tab-link inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active" type="button">
               Streamer DB List
             </button>
           </li>
           <li class="mr-2">
-            <button data-tab="urlGenTab"
-                    class="tab-link inline-block p-4 rounded-t-lg hover:text-blue-600 hover:border-blue-600"
-                    type="button">
+            <button data-tab="urlGenTab" class="tab-link inline-block p-4 rounded-t-lg hover:text-blue-600 hover:border-blue-600" type="button">
               Browser Overlay Generator
             </button>
           </li>
           <li class="mr-2">
-            <button data-tab="versionLog"
-                    class="tab-link inline-block p-4 rounded-t-lg hover:text-blue-600 hover:border-blue-600"
-                    type="button">
+            <button data-tab="versionLog" class="tab-link inline-block p-4 rounded-t-lg hover:text-blue-600 hover:border-blue-600" type="button">
               Version Log
             </button>
           </li>
         </ul>
-      </nav>
+      </nav> -->
+	  <!-- <nav class="my-4">
+		<ul class="grid grid-cols-3 text-justify border-b border-gray-300">
+		  <li class="col-span-2">
+			<button class="tab-link w-full py-2 border-b-2 text-gray-500 border-transparent hover:text-blue-600" data-tab="streamDbTab">
+			  Streamer DB List
+			</button>
+		  </li>
+		  <li>
+			<button class="tab-link w-full py-2 border-b-2 text-gray-500 border-transparent hover:text-blue-600" data-tab="urlGenTab">
+			  Overlay Generator
+			</button>
+		  </li>
+		  <li>
+			<button class="tab-link w-full py-2 border-b-2 text-gray-500 border-transparent hover:text-blue-600" data-tab="versionLog">
+			  Version Log
+			</button>
+		  </li>
+		</ul>
+	  </nav> -->
+
+	  <nav class="my-4">
+		<ul class="grid grid-cols-2 md:grid-cols-3 grid-rows-2 sm:grid-rows-1 gap-px border-b border-gray-300 rounded-t overflow-hidden">
+			<li class="col-span-2 md:col-span-1">
+				<button class="tab-link w-full py-2 px-4 text-center text-gray-700 border-b-4 hover:border-blue-500 transition-all text-blue-600 border-blue-600" data-tab="streamDbTab">
+					Streamer DB List
+				</button>
+			</li>
+			<!-- Row 2: Two side-by-side tabs -->
+			<li class="col-span-1">
+				<button class="tab-link w-full py-2 px-4 text-center text-gray-700 border-b-4 border-transparent hover:border-blue-500 transition-all" data-tab="urlGenTab">
+					Overlay Generator
+				</button>
+			</li>
+			<li class="col-span-1">
+				<button class="tab-link w-full py-2 px-4 text-center text-gray-700 border-b-4 border-transparent hover:border-blue-500 transition-all" data-tab="versionLog">
+					Version Log
+				</button>
+			</li>
+		</ul>
+	  </nav>
+	  
+	  
 
       <!-- Tab Content Container -->
       <section>
@@ -69,70 +92,66 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <!-- Streamer List -->
                 <div class="md:col-span-2 space-y-4">
-                  <div class="flex items-center justify-between">
-                    <button @click="loadData" class="bg-cyan-600 text-white px-4 py-2 rounded hover:bg-cyan-700 flex items-center gap-2">
-                      <i class="bi bi-arrow-clockwise"></i> Force Update
-                    </button>
-                    <div class="relative w-full max-w-md">
-                      <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <i class="bi bi-search text-gray-500"></i>
-                      </div>
-                      <input v-model="filteredSearch" type="text" placeholder="Search by Name"
-                             class="w-full pl-10 pr-4 py-2 border rounded shadow-sm focus:ring focus:outline-none">
-                    </div>
-                  </div>
-        
-                  <!-- Table -->
-                  <div class="overflow-x-auto">
-                    <table class="min-w-full table-auto border-collapse text-left">
-                      <thead class="bg-gray-800 text-white">
-                        <tr>
-                          <th class="px-4 py-2">Streamer</th>
-                          <th class="px-4 py-2">Personalized Streamer Details</th>
-                          <th class="px-4 py-2">Options</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr class="hover:bg-gray-100">
-                          <td class="px-4 py-2 font-medium">ptsoTwitch</td>
-                          <td class="px-4 py-2">Personal Shoutout for Twitch; Overlay System;This is a sample to see how this works;</td>
-                          <td class="px-4 py-2">
-                            <div class="flex gap-2">
-                              <button disabled class="bg-yellow-500 text-white px-3 py-1 rounded"><i class="bi bi-pencil-fill"></i></button>
-                              <button disabled class="bg-red-600 text-white px-3 py-1 rounded"><i class="bi bi-trash-fill"></i></button>
-                            </div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
+					<div class="flex items-center justify-between">
+						<button @click="loadData" class="bg-cyan-600 text-white px-4 py-2 rounded hover:bg-cyan-700 flex items-center gap-2">
+							<i data-lucide="refresh-cw"></i> Update
+						</button>
+						<div class="relative w-full max-w-md">
+							<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+								<i data-lucide="search" class="text-gray-500"></i>
+							</div>
+							<input v-model="filteredSearch" type="text" placeholder="Search by Name" class="w-full pl-10 pr-4 py-2 border rounded shadow-sm focus:ring focus:outline-none">
+						</div>
+					</div>
+
+				<!-- Table -->
+					<div class="overflow-x-auto">
+						<table class="min-w-full table-auto border-collapse text-left">
+							<thead class="bg-gray-800 text-white">
+								<tr>
+									<th class="px-4 py-2">Streamer</th>
+									<th class="px-4 py-2">Personalized Streamer Details</th>
+									<th class="px-4 py-2">Options</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="hover:bg-gray-100">
+									<td class="px-4 py-2 font-medium">ptsoTwitch</td>
+									<td class="px-4 py-2">Personal Shoutout for Twitch; Overlay System;This is a sample to see how this works;</td>
+									<td class="px-4 py-2">
+										<div class="flex gap-2">
+											<button disabled class="bg-yellow-500 text-white px-3 py-1 rounded"><i data-lucide="pencil-line"></i></button>
+											<button disabled class="bg-red-600 text-white px-3 py-1 rounded"><i data-lucide="trash-2"></i></button>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+                  	</div>
                 </div>
-        
+
                 <!-- Streamer Form -->
                 <div>
-                  <div class="bg-white shadow rounded-lg p-6">
-                    <h5 class="text-center text-lg font-semibold">New Streamer Info</h5>
-                    <hr class="my-4">
-                    <form method="post" class="space-y-4">
-                      <input v-model="streamer.streamerName" id="streamerName" name="streamerName"
-                             class="w-full border rounded px-3 py-2" placeholder="Streamer Name">
-                      <div>
-                        <label for="streamerDetails" class="block text-sm font-medium">Details of Streamer</label>
-                        <textarea v-model="streamer.streamerDetails" id="streamerDetails"
-                                  class="w-full border rounded px-3 py-2" placeholder="Streamer Details"></textarea>
-                      </div>
-                      <p class="text-sm text-gray-600">Please <strong>USE</strong> semicolons (;) to separate dedicated information.</p>
-                      <div>
-                        <label for="streamerColor" class="block text-sm font-medium">Color Association</label>
-                        <input type="color" value="#666666" id="streamerColor"
-                               class="w-full h-10 border rounded">
-                      </div>
-                      <div class="grid grid-cols-2 gap-4">
-                        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Add/Update</button>
-                        <button type="reset" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Clear</button>
-                      </div>
-                    </form>
-                  </div>
+                  	<div class="bg-white shadow rounded-lg p-6">
+						<h5 class="text-center text-lg font-semibold">New Streamer Info</h5>
+						<hr class="my-4">
+						<form method="post" class="space-y-4">
+							<input v-model="streamer.streamerName" id="streamerName" name="streamerName" class="w-full border rounded px-3 py-2" placeholder="Streamer Name">
+							<div>
+								<label for="streamerDetails" class="block text-sm font-medium">Details of Streamer</label>
+								<textarea v-model="streamer.streamerDetails" id="streamerDetails" class="w-full border rounded px-3 py-2" placeholder="Streamer Details"></textarea>
+								<p class="text-xs italic text-gray-600">Please <strong>USE</strong> semicolons (;) to separate dedicated information.</p>
+							</div>
+							<div>
+								<label for="streamerColor" class="block text-sm font-medium">Color Association</label>
+								<input type="color" value="#666666" id="streamerColor" class="w-full h-10 border rounded">
+							</div>
+							<div class="grid grid-cols-2 gap-4">
+								<button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Add/Update</button>
+								<button type="reset" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Clear</button>
+							</div>
+						</form>
+					</div>
                 </div>
             </div>
         </div>
@@ -141,47 +160,58 @@
         <div id="urlGenTab" class="tab-content hidden">
             <div class="grid md:grid-cols-2 gap-6">
                 <!-- General Info -->
-                <fieldset class="p-4 bg-white rounded-lg shadow">
-                    <legend class="text-lg font-semibold mb-4">General Info</legend>
-            
+                <fieldset class="p-4 rounded-lg shadow">
+                    <legend class="text-lg font-semibold mb-4">Channel Info</legend>
+
                     <div class="space-y-4">
                         <!-- Streamer Channel Name -->
                         <div class="flex">
                             <input type="text" id="mainAccount" name="mainAccount" placeholder="Streamer Channel Name" class="flex-grow border rounded-l px-3 py-2" aria-label="Streamer Channel Name">
                             <button class="bg-gray-300 text-gray-600 px-4 py-2 rounded-r cursor-not-allowed" disabled onclick="alert('Work In Progress')">
-                                <i class="bi bi-twitch"></i> TWITCH
+                                <i data-lucide="twitch"></i>
                             </button>
                         </div>
-                
+
                         <!-- Alert & Delay -->
                         <div class="grid grid-cols-2 gap-4">
-                            <div class="flex items-center space-x-2">
-                                <span class="text-sm w-40">Alert Duration (sec)</span>
-                                <input type="number" value="10" min="0" step="1" class="flex-grow border rounded px-3 py-2">
+                            <div class="flex">
+								<div>
+									<label for="timeoutSize" class="block text-sm/6 font-medium text-gray-900">Alert Duration (sec)</label>
+									<div class="mt-2">
+										<div class="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
+											<input type="number" name="timeoutSize" id="timeoutSize" class="block min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" placeholder="Alert Duration (sec)" value="10" min="0" step="1">
+										</div>
+									</div>
+								</div>
                             </div>
-                            <div class="flex items-center space-x-2">
-                                <span class="text-sm w-32">SO Delay (sec)</span>
-                                <input type="number" value="10" min="0" step="1" class="flex-grow border rounded px-3 py-2">
+                            <div class="flex">
+								<div>
+									<label for="delaySize" class="block text-sm/6 font-medium text-gray-900">Shoutout Delay (sec)</label>
+									<div class="mt-2">
+										<div class="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
+											<input type="number" name="delaySize" id="delaySize" class="block min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" placeholder="Shoutout Delay (sec)" value="10" min="0" step="1">
+										</div>
+									</div>
+								</div>
                             </div>
                         </div>
-                
+
                         <!-- Custom Command -->
-                        <div>
-                            <label class="block text-sm mb-1">Custom SO Command</label>
-                            <div class="flex items-center">
-                                <span class="inline-flex items-center px-3 bg-gray-100 border border-r-0 rounded-l">!</span>
-                                <input type="text" id="commands" placeholder="Custom SO Command"
-                                        class="flex-grow border rounded-r px-3 py-2">
-                            </div>
-                            <p class="text-xs text-gray-600 mt-1">
-                            Twitch's built-in <code>/shoutout</code> command is to be supported soon. (In Development)
-                            </p>
-                        </div>
+						<div class="sm:col-span-4">
+							<label for="commands" class="block text-sm/6 font-medium text-gray-900">Custom SO Command</label>
+							<div class="mt-2">
+							  <div class="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
+								<div class="shrink-0 text-base text-gray-500 select-none sm:text-sm">!</div>
+								<input type="text" name="commands" id="commands" class="block min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" placeholder="Custom SO Command">
+							  </div>
+							</div>
+							<p class="text-xs text-gray-600">Twitch's built-in <code>/shoutout</code> command is to be supported soon. (In Development)</p>
+						</div>
                     </div>
                 </fieldset>
-            
+
                 <!-- Channel Raids -->
-                <fieldset class="p-4 bg-gray-100 rounded-lg shadow" disabled>
+                <fieldset class="p-4 rounded-lg shadow" disabled>
                     <legend class="text-lg font-semibold mb-4">Channel Raids (Currently Unavailable)</legend>
                     <div class="space-y-4">
                         <div class="flex items-center space-x-2">
@@ -189,13 +219,20 @@
                             <label for="isRaid" class="text-sm">Activate During a Channel Raid</label>
                         </div>
                         <div class="flex items-center space-x-2">
-                            <span class="text-sm w-40">Raid Size Activation</span>
-                            <input type="number" min="0" class="flex-grow border rounded px-3 py-2" disabled>
+							<div>
+								<label for="raidNumber" class="block text-sm/6 font-medium text-gray-900">Raid Size Activation</label>
+								<div class="mt-2">
+									<div class="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
+										<input type="number" name="raidNumber" id="raidNumber" class="block min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" placeholder="" min="0" step="1" disabled>
+									</div>
+								</div>
+								<p class="text-xs text-gray-600">Number of people in the Twitch Raid to trigger the Shoutout</p>
+							</div>
                         </div>
                     </div>
                 </fieldset>
             </div>
-        
+
             <!-- Generated URL -->
             <hr class="my-6">
             <div>
@@ -209,70 +246,78 @@
                     </button>
                 </div>
             </div>
-        </div> 
-        
+        </div>
+
         <!-- PTSO Twitch Version Log -->
         <div id="versionLog" class="tab-content hidden">
             <!-- Version 0.3 -->
-            <div class="bg-white p-4 rounded-lg shadow">
+            <div class="p-4 rounded-lg shadow">
                 <span class="text-lg font-semibold text-indigo-700">Version 0.3 - <strong>Current</strong></span>
                 <ul class="mt-2 list-disc list-inside text-sm text-gray-700">
                 <li>Admin Page Revamp for Single-Page Application
                     <ul class="list-disc list-inside ml-6">
                         <li>Database Search Functionality Enabled</li>
-                        <li>Dedicated Tabbed Content for Streamer List & Browser Overlay Settings</li>
+                        <li>Dedicated Tabbed Content
+							<ul class="list-disc list-inside ml-6">
+								<li>Streamer List & Form</li>
+								<li>Browser Overlay Settings</li>
+								<li>Version Log (This page)</li>
+							</ul>
+						</li>
                     </ul>
                 </li>
-                    <li>Full Database Support with SQLite 3</li>
-                    <li>Dropped MySQL Support</li>
+				<li>Visual Overhaul to <a class="underline" href="https://tailwindcss.com">TailwindCSS</a> & <a class="underline" href="https://lucide.dev">Lucide</a></li>
+				<li>Full Database Support with SQLite</li>
+				<li>Dropped MySQL Support</li>
                 </ul>
             </div>
-        
+
             <!-- Version 0.2.0 -->
-            <div class="bg-white p-4 rounded-lg shadow">
+            <div class="p-4 rounded-lg shadow">
                 <span class="text-lg font-semibold">Version 0.2.0 - October 2023</span>
                 <ul class="mt-2 list-disc list-inside text-sm text-gray-700">
                     <li>Data I/O revamp via MySQL</li>
                     <li>Dropped JSON I/O Support</li>
                 </ul>
             </div>
-        
+
             <!-- Version 0.1.2 -->
-            <div class="bg-white p-4 rounded-lg shadow">
+            <div class="p-4 rounded-lg shadow">
                 <span class="text-lg font-semibold">Version 0.1.2 - June 2023</span>
                 <ul class="mt-2 list-disc list-inside text-sm text-gray-700">
                     <li>Stream Color Parameter Added for Stream Uniqueness</li>
                     <li>Admin Refactoring</li>
                 </ul>
             </div>
-        
+
             <!-- Version 0.1.1 -->
-            <div class="bg-white p-4 rounded-lg shadow">
+            <div class="p-4 rounded-lg shadow">
                 <span class="text-lg font-semibold">Version 0.1.1 - June 2023</span>
                 <ul class="mt-2 list-disc list-inside text-sm text-gray-700">
-                    <li>SO html file timing fixes</li>
+                    <li>SO Overlay Timing fixes</li>
                 </ul>
             </div>
-        
+
             <!-- Version 0.1 -->
-            <div class="bg-white p-4 rounded-lg shadow">
+            <div class="p-4 rounded-lg shadow">
                 <span class="text-lg font-semibold">Version 0.1 - June 2023</span>
                 <ul class="mt-2 list-disc list-inside text-sm text-gray-700">
                 <li>Initial Release</li>
-                    <li>Dedicated SO html file used for OBS Studio Usage</li>
+                    <li>Dedicated SO Overlay file used for OBS Studio Usage</li>
                 </ul>
             </div>
         </div>
-      </section>  
-  
+      </section>
+
       <!-- Footer -->
       <footer class="text-center py-6">
         <hr class="my-4 border-gray-300">
         <p>Made with Care & Consideration ♡ <a class="text-blue-600 hover:underline" href="http://twitch.tv/kkgm13">@KKGM13</a></p>
       </footer>
     </div>
-  
+
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script src="assets/js/script.js"></script>
   </body>
-  
+
 </html>
