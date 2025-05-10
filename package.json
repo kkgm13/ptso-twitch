@@ -8,8 +8,8 @@
     "start": "nodemon app.js",
     "twitch-setup": "node scripts/setup-script.js",
     "db-check": "node scripts/db-check.js",
-    "build": "npx tailwindcss -i ./public/admin/assets/css/input.css -o ./public/admin/assets/css/stylesheet-tailwindcss.css  ",
-    "dev": "npx tailwindcss -i ./public/admin/assets/css/input.css -o ./public/admin/assets/css/stylesheet-tailwindcss.css --watch"
+    "build": "npx tailwindcss -i ./public/admin/assets/css/input.css -o ./public/admin/assets/css/stylesheet.css  ",
+    "dev": "npx tailwindcss -i ./public/admin/assets/css/input.css -o ./public/admin/assets/css/stylesheet.css --watch"
   },
   "repository": {
     "type": "git",
@@ -26,6 +26,7 @@
     "axios": "^1.6.2",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "node-fetch": "^3.3.2",
     "sqlite3": "^5.1.6"
   },
   "devDependencies": {

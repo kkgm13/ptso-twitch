@@ -31,3 +31,89 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+const { createApp, reactive, ref } = Vue;
+
+createApp({
+    setup() {
+        const streamer = reactive({
+            id: null,
+            twitchId: '',
+            streamerName: '',
+            streamerDetails: '',
+            streamerColor: '#666666',
+        });
+
+        const streamerList = reactive([]);
+        const formError = ref('');
+
+        // const TWITCH_CLIENT_ID = 'YOUR_CLIENT_ID';
+        // const TWITCH_ACCESS_TOKEN = 'YOUR_ACCESS_TOKEN';
+
+        const TWITCH_CLIENT_ID = 'wrn9wrhih9aa5miji8a0wd4ko4hs88';
+        const TWITCH_ACCESS_TOKEN = 'sh83qlcpz0imoes60t5c415unt3b2d';
+
+        // const TWITCH_CLIENT_ID = process.env.TWITCH_CLIENT_ID;
+        // const TWITCH_ACCESS_TOKEN = process.env.TWITCH_ACCESS_TOKEN;
+
+        const fetchTwitchUser = async (username) => {
+            try {
+                let res = await fetch(`https://api.twitch.tv/helix/users?login=${username}`, {
+                    method: 'GET',
+                    headers: {
+                        'Client-ID': TWITCH_CLIENT_ID,
+                        'Authorization': `Bearer ${TWITCH_ACCESS_TOKEN}`,
+                    },
+                });
+
+                let data = res.json();
+
+                if (!data.data || data.data.length === 0) {
+                    throw new Error('Streamer not found on Twitch.');
+                }
+
+                return data.data[0].id; // Twitch User ID
+            } catch (err) {
+                throw err;
+            }
+        };
+
+        const submitStreamer = async () => {
+            formError.value = '';
+            try {
+                const twitchId = await fetchTwitchUser(streamer.streamerName);
+                console.log('HIT')
+                streamer.twitchId = twitchId;
+
+                if (streamer.id) {
+                    const index = streamerList.findIndex(s => s.id === streamer.id);
+                if (index !== -1) {
+                    streamerList[index] = { ...streamer };
+                }
+                } else {
+                    streamerList.push({ ...streamer, id: Date.now() });
+                }
+                resetForm();
+            } catch (err) {
+                formError.value = err.message;
+            }
+        };
+
+        const resetForm = () => {
+            streamer.id = null;
+            streamer.twitchId = '';
+            streamer.streamerName = '';
+            streamer.streamerDetails = '';
+            streamer.streamerColor = '#666666';
+            formError.value = '';
+        };
+
+        return {
+            streamer,
+            streamerList,
+            submitStreamer,
+            resetForm,
+            formError,
+        };
+    }
+}).mount('#app');

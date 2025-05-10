@@ -3,23 +3,31 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 import open from 'open'
 import path from 'path'
-import {initDB} from './scripts/database.js'
+import { initDB } from './scripts/database.js'
+import twitchRouter from './scripts/twitch.js'
+import dotenv from 'dotenv'
+
+// Load in dotenv
+dotenv.config();
 
 // Start System
 const app = express();
+const __dirname = import.meta.dirname;
 
 // Middlewares
 app.use(cors());
 app.use(bodyParser.json());
 
 // Redirect to Admin!
-const __dirname = import.meta.dirname;
-app.use('/admin', express.static(path.join(__dirname, '/public/admin')))
+app.use('/admin', express.static(path.join(__dirname, '/public/admin')));
+app.use('/api/twitch', twitchRouter);
 
 app.use(function(req,res){
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 });
+
+let browserOpened = false;
 
 async function startServer() {
     try {
@@ -28,6 +36,7 @@ async function startServer() {
         app.listen(3030, () => {
             console.log('Opening PTSO on localhost');
             open('http://localhost:3030/admin');
+            browserOpened = true;
         });
     } catch (error) {
         console.error('Failed to initialize database: ', error);

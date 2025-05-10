@@ -18,7 +18,8 @@ let clientid = null
 let clientsecret = null
 let access_token = null
 
-console.warn("Please Ensure that you have already created a Personal PTSO via Twitch Dev. (You can login with your usual account credentials, as the following questions require details of a created Twitch Dev Application.")
+console.warn("Please ensure that you have already created a Personal PTSO Credential via Twitch Dev Console")
+console.warn("You can login with your usual account credentials, as the following questions require details of a created Twitch Dev Application.")
 
 // Validate information to be used
 rl.question('Your Twitch Username? > ', (twitchUser) => {
