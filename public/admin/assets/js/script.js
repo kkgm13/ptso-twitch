@@ -50,17 +50,11 @@ createApp({
         // const TWITCH_CLIENT_ID = 'YOUR_CLIENT_ID';
         // const TWITCH_ACCESS_TOKEN = 'YOUR_ACCESS_TOKEN';
 
-        const TWITCH_CLIENT_ID = 'wrn9wrhih9aa5miji8a0wd4ko4hs88';
-        const TWITCH_ACCESS_TOKEN = 'sh83qlcpz0imoes60t5c415unt3b2d';
-
-        // const TWITCH_CLIENT_ID = process.env.TWITCH_CLIENT_ID;
-        // const TWITCH_ACCESS_TOKEN = process.env.TWITCH_ACCESS_TOKEN;
-
         const fetchTwitchUser = async (username) => {
             try {
                 let res = await fetch(`https://api.twitch.tv/helix/users?login=${username}`, {
-                    method: 'GET',
                     headers: {
+                        'Content-Type': 'application/json',
                         'Client-ID': TWITCH_CLIENT_ID,
                         'Authorization': `Bearer ${TWITCH_ACCESS_TOKEN}`,
                     },

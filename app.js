@@ -12,13 +12,13 @@ dotenv.config();
 
 // Start System
 const app = express();
-const __dirname = import.meta.dirname;
 
 // Middlewares
 app.use(cors());
 app.use(bodyParser.json());
 
 // Redirect to Admin!
+const __dirname = import.meta.dirname;
 app.use('/admin', express.static(path.join(__dirname, '/public/admin')));
 app.use('/api/twitch', twitchRouter);
 
