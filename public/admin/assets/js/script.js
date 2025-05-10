@@ -33,7 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const { createApp, reactive, ref } = Vue;
-
 createApp({
     setup() {
         const streamer = reactive({
@@ -47,48 +46,60 @@ createApp({
         const streamerList = reactive([]);
         const formError = ref('');
 
-        // const TWITCH_CLIENT_ID = 'YOUR_CLIENT_ID';
-        // const TWITCH_ACCESS_TOKEN = 'YOUR_ACCESS_TOKEN';
-
-        const fetchTwitchUser = async (username) => {
-            try {
-                let res = await fetch(`https://api.twitch.tv/helix/users?login=${username}`, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Client-ID': TWITCH_CLIENT_ID,
-                        'Authorization': `Bearer ${TWITCH_ACCESS_TOKEN}`,
-                    },
-                });
-
-                let data = res.json();
-
-                if (!data.data || data.data.length === 0) {
-                    throw new Error('Streamer not found on Twitch.');
-                }
-
-                return data.data[0].id; // Twitch User ID
-            } catch (err) {
-                throw err;
-            }
-        };
-
         const submitStreamer = async () => {
+            console.log(streamer)
             formError.value = '';
             try {
-                const twitchId = await fetchTwitchUser(streamer.streamerName);
-                console.log('HIT')
-                streamer.twitchId = twitchId;
+                // console.log('HIT')    
+                // return fetch('http://localhost:3030/api/streamer?username=${encodeURIComponent(username)}')
+                // .then(res => res.json())
+                // .then(data => console.log('Twitch ID:', data.twitchId))
+                // .catch(err => console.error('Vue Fetch Error:', err));
 
-                if (streamer.id) {
-                    const index = streamerList.findIndex(s => s.id === streamer.id);
-                if (index !== -1) {
-                    streamerList[index] = { ...streamer };
-                }
-                } else {
-                    streamerList.push({ ...streamer, id: Date.now() });
-                }
-                resetForm();
+                const res = await fetch(`/api/streamer?username=${encodeURIComponent(streamer.streamerName)}`);
+                console.log('SUCCESS')
+                // if (!res.ok) {
+                //     const errorData = await res.json();
+                //     throw new Error(errorData.error || 'Unknown error');
+                // }
+                // const data = await res.json();
+                // return data.twitchId;
+            
+                // if (!response.ok) {
+                //     const errorData = await response.json();
+                //     throw new Error(errorData.error || 'Failed to fetch Twitch user');
+                // }
+            
+                // const { twitchId } = await response.json();
+                // streamer.twitchId = twitchId;
+            
+                // // Handle insert or update
+                // if (streamer.id) {
+                //     const index = streamerList.findIndex(s => s.id === streamer.id);
+                //     if (index !== -1) {
+                //         streamerList[index] = { ...streamer };
+                //     }
+                // } else {
+                //     streamerList.push({ ...streamer, id: Date.now() });
+                // }
+            
+                // resetForm();
+                // console.log('Streamer saved successfully');
+            
+            
+            // streamer.twitchId = twitchId;
+            
+            // if (streamer.id) {
+                //     const index = streamerList.findIndex(s => s.id === streamer.id);
+                //     if (index !== -1) {
+                    //         streamerList[index] = { ...streamer };
+                    //     }
+                    // } else {
+                        //     streamerList.push({ ...streamer, id: Date.now() });
+                        // }
+                        // resetForm();
             } catch (err) {
+                console.error('Submit error:', err.message);
                 formError.value = err.message;
             }
         };

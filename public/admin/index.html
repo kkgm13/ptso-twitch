@@ -7,6 +7,13 @@
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
     <link rel="mask-icon" href="assets/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <!-- Fourth script-src is Unsafe in production -->
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self';
+        script-src 'self' https://unpkg.com 'unsafe-inline' 'unsafe-eval'; 
+        style-src 'self' 'unsafe-inline';
+        connect-src 'self' https://api.twitch.tv;
+    ">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
@@ -106,7 +113,7 @@
 						<div v-if="formError">
 							<p class=" mb-4 text-red-600 font-semibold italic text-xs">{{ formError }}</p>
 						</div>
-						<form method="post" class="space-y-4">
+						<form method="post" @submit.prevent="submitStreamer" class="space-y-4">
 							<input v-model="streamer.streamerName" id="streamerName" name="streamerName" class="w-full border rounded px-3 py-2" placeholder="Streamer Name">
 							<div>
 								<label for="streamerDetails" class="block text-sm font-medium">Details of Streamer</label>

@@ -58,7 +58,7 @@ function createTables(newdb) {
             );
 
             INSERT INTO streamers (twitchID, streamerName, streamerDetails, streamerColor)
-                VALUES (0, 'ptso-twitch', 'personal Shoutout for Twitch; Overlay System;This is a sample to see how this works;', '#666666');
+                VALUES (0, 'ptso-twitch', 'Personal Shoutout for Twitch; Overlay System;This is a sample to see how this works;', '#666666');
         `, (error) => {
             if (error) {
                 console.warn("CANNOT CREATE DB TABLE! ".error)
