@@ -36,7 +36,6 @@ const { createApp, reactive, ref, onMounted, nextTick} = Vue;
 createApp({
     setup() {
         const streamer = reactive({
-            id: null,
             twitchId: '',
             streamerName: '',
             streamerDetails: '',
@@ -47,7 +46,6 @@ createApp({
         const formError = ref('');
 
         const submitStreamer = async () => {
-            // console.log(streamer)
             formError.value = '';
             try {
                 const method = streamer.twitchId ? 'PUT' : 'POST';
@@ -88,7 +86,6 @@ createApp({
         };
 
         const editStreamer = (streamerData) => {
-            streamer.id = streamerData.id;
             streamer.twitchId = streamerData.twitchId;
             streamer.streamerName = streamerData.streamerName;
             streamer.streamerDetails = streamerData.streamerDetails;
@@ -122,8 +119,7 @@ createApp({
                 const res = await fetch('/api/streamers');
                 const data = await res.json();
                 if (res.ok) {
-                    streamerList.splice(1, streamerList.length, ...data.streamers);
-                    // 🛠 Trigger Lucide to re-render icons
+                    streamerList.splice(0, streamerList.length, ...data.streamers);
                     nextTick(() => {
                         lucide.createIcons();
                     });

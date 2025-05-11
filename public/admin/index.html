@@ -126,7 +126,7 @@
 							</div>
 							<div>
 								<label for="streamerColor" class="block text-sm font-medium">Color Association</label>
-								<input type="color" value="#666666" id="streamerColor" name="streamerColor" class="w-full h-10 border rounded">
+								<input v-model="streamer.streamerColor" type="color" id="streamerColor" name="streamerColor" class="w-full h-10 border rounded">
 							</div>
 							<div class="grid grid-cols-2 gap-4">
 								<button @click="submitStreamer" type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Add/Update</button>
