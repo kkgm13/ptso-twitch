@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-const { createApp, reactive, ref } = Vue;
+const { createApp, reactive, ref, onMounted, nextTick} = Vue;
 createApp({
     setup() {
         const streamer = reactive({
@@ -47,60 +47,91 @@ createApp({
         const formError = ref('');
 
         const submitStreamer = async () => {
-            console.log(streamer)
+            // console.log(streamer)
             formError.value = '';
             try {
-                // console.log('HIT')    
-                // return fetch('http://localhost:3030/api/streamer?username=${encodeURIComponent(username)}')
-                // .then(res => res.json())
-                // .then(data => console.log('Twitch ID:', data.twitchId))
-                // .catch(err => console.error('Vue Fetch Error:', err));
-
-                const res = await fetch(`/api/streamer?username=${encodeURIComponent(streamer.streamerName)}`);
-                console.log('SUCCESS')
-                // if (!res.ok) {
-                //     const errorData = await res.json();
-                //     throw new Error(errorData.error || 'Unknown error');
-                // }
-                // const data = await res.json();
-                // return data.twitchId;
-            
-                // if (!response.ok) {
-                //     const errorData = await response.json();
-                //     throw new Error(errorData.error || 'Failed to fetch Twitch user');
-                // }
-            
-                // const { twitchId } = await response.json();
-                // streamer.twitchId = twitchId;
-            
-                // // Handle insert or update
-                // if (streamer.id) {
-                //     const index = streamerList.findIndex(s => s.id === streamer.id);
-                //     if (index !== -1) {
-                //         streamerList[index] = { ...streamer };
-                //     }
-                // } else {
-                //     streamerList.push({ ...streamer, id: Date.now() });
-                // }
-            
-                // resetForm();
-                // console.log('Streamer saved successfully');
-            
-            
-            // streamer.twitchId = twitchId;
-            
-            // if (streamer.id) {
-                //     const index = streamerList.findIndex(s => s.id === streamer.id);
-                //     if (index !== -1) {
-                    //         streamerList[index] = { ...streamer };
-                    //     }
-                    // } else {
-                        //     streamerList.push({ ...streamer, id: Date.now() });
-                        // }
-                        // resetForm();
+                const method = streamer.twitchId ? 'PUT' : 'POST';
+                if (!streamer.twitchId) {
+                    const res = await fetch(`/api/streamer?username=${encodeURIComponent(streamer.streamerName)}`);
+                    const data = await res.json();
+                    streamer.twitchId = data.twitchId;
+                }
+                const url = streamer.twitchId ? `/api/streamer/${streamer.twitchId}` : '/api/streamer';
+        
+                const res = await fetch(url, {
+                    method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        streamerName: streamer.streamerName,
+                        streamerDetails: streamer.streamerDetails,
+                        streamerColor: streamer.streamerColor
+                    })
+                });
+        
+                if (!res.ok) throw new Error('Failed to save streamer');
+        
+                if (!streamer.id) {
+                    const newEntry = await res.json();
+                    streamerList.push({ ...streamer, id: newEntry.id });
+                } else {
+                    const index = streamerList.findIndex(s => s.id === streamer.id);
+                    if (index !== -1) {
+                        streamerList[index] = { ...streamer };
+                    }
+                }
+        
+                resetForm();
             } catch (err) {
                 console.error('Submit error:', err.message);
                 formError.value = err.message;
+            }
+        };
+
+        const editStreamer = (streamerData) => {
+            streamer.id = streamerData.id;
+            streamer.twitchId = streamerData.twitchId;
+            streamer.streamerName = streamerData.streamerName;
+            streamer.streamerDetails = streamerData.streamerDetails;
+            streamer.streamerColor = streamerData.streamerColor;
+        };
+
+        const deleteStreamer = async (id) => {
+            if (!confirm('Are you sure you want to delete this streamer?')) return;
+        console.log(id)
+            try {
+                const res = await fetch(`/api/streamer/${id}`, {
+                    method: 'DELETE'
+                });
+        
+                if (!res.ok) {
+                    const errData = await res.json();
+                    throw new Error(errData.error || 'Unknown delete error');
+                }
+        
+                // Remove from frontend list after successful DB delete
+                await fetchStreamers();
+            } catch (err) {
+                console.error('Delete error:', err.message);
+                formError.value = err.message;
+            }
+        };
+        
+
+        const fetchStreamers = async () => {
+            try {
+                const res = await fetch('/api/streamers');
+                const data = await res.json();
+                if (res.ok) {
+                    streamerList.splice(1, streamerList.length, ...data.streamers);
+                    // 🛠 Trigger Lucide to re-render icons
+                    nextTick(() => {
+                        lucide.createIcons();
+                    });
+                } else {
+                    throw new Error(data.error || 'Could not fetch streamers');
+                }
+            } catch (err) {
+                console.error('Fetch error:', err.message);
             }
         };
 
@@ -113,12 +144,18 @@ createApp({
             formError.value = '';
         };
 
+        onMounted(() => {
+            fetchStreamers();
+        });
+
         return {
             streamer,
             streamerList,
             submitStreamer,
             resetForm,
             formError,
+            editStreamer,
+            deleteStreamer
         };
     }
 }).mount('#app');

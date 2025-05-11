@@ -1,6 +1,10 @@
 import sqlite3 from 'sqlite3';
 
+let dbInstance = null;
+
 async function initDB() {
+    if (dbInstance) return dbInstance;
+
     try {
         const db = await connectDatabase();
         console.log('Connected to Database');
@@ -72,4 +76,37 @@ function createTables(newdb) {
     });
 }
 
-export { initDB };
+async function insertStreamer({ twitchId, streamerName, streamerDetails, streamerColor }) {
+    const db = await initDB();
+
+    return new Promise((resolve, reject) => {
+        db.run(
+            `INSERT INTO streamers (twitchID, streamerName, streamerDetails, streamerColor)
+             VALUES (?, ?, ?, ?)`,
+            [twitchId, streamerName, streamerDetails, streamerColor],
+            function (err) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve({ success: true });
+                }
+            }
+        );
+    });
+}
+
+async function getAllStreamers() {
+    const db = await initDB();
+
+    return new Promise((resolve, reject) => {
+        db.all(`SELECT * FROM streamers`, [], (err, rows) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(rows);
+            }
+        });
+    });
+}
+
+export { initDB, insertStreamer, getAllStreamers };

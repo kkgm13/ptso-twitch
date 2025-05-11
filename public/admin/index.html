@@ -79,28 +79,32 @@
 									<th class="px-4 py-2">Options</th>
 								</tr>
 							</thead>
-							<tbody>
-								<tr class="hover:bg-gray-100 text-sm">
-									<td class="px-4 py-2 font-medium">ptsoTwitch</td>
-									<td class="px-4 py-2">Personal Shoutout for Twitch; Overlay System;This is a sample to see how this works;</td>
-									<td class="px-4 py-2">
-										<div class="flex gap-2">
-											<button disabled class="bg-yellow-500 text-white px-3 py-1 rounded"><i data-lucide="pencil-line"></i></button>
-											<button disabled class="bg-red-600 text-white px-3 py-1 rounded"><i data-lucide="trash-2"></i></button>
-										</div>
-									</td>
-								</tr>
-								<tr class="hover:bg-gray-100 text-sm" v-for="item in streamerList.slice(1)" :key="streamer.id">
-									<td class="px-4 py-2 font-medium">{{streamer.streamerName}}</td>
-									<td class="px-4 py-2">{{ streamer.streamerDetails}}</td>
-									<td class="px-4 py-2">
-										<div class="flex gap-2">
-											<button @click="editStreamer(streamer)" class="bg-yellow-500 text-white px-3 py-1 rounded"><i data-lucide="pencil-line"></i></button>
-											<button @click="deleteStreamer(streamer.id)" class="bg-red-600 text-white px-3 py-1 rounded"><i data-lucide="trash-2"></i></button>
-										</div>
-									</td>
-								</tr>
-							</tbody>
+                            <tbody>                            
+                                <!-- Show this row for the first static entry if streamerList has items -->
+                                <tr v-if="streamerList.length === 0" class="hover:bg-gray-100 text-sm">
+                                    <td class="px-4 py-2 font-medium">ptsoTwitch</td>
+                                    <td class="px-4 py-2">Personal Shoutout for Twitch; Overlay System;This is a sample to see how this works;</td>
+                                    <td class="px-4 py-2">
+                                        <div class="flex gap-2">
+                                            <button disabled class="bg-yellow-500 text-white px-3 py-1 rounded"><i data-lucide="pencil-line"></i></button>
+                                            <button disabled class="bg-red-600 text-white px-3 py-1 rounded"><i data-lucide="trash-2"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            
+                                <!-- Dynamically render additional streamers -->
+                                <tr v-for="streamer in streamerList.slice(1)" :key="streamer.twitchID" class="hover:bg-gray-100 text-sm">
+                                    <td class="px-4 py-2 font-medium">{{ streamer.streamerName }}</td>
+                                    <td class="px-4 py-2">{{ streamer.streamerDetails }}</td>
+                                    <td class="px-4 py-2">
+                                        <div class="flex gap-2">
+                                            <button @click="editStreamer(streamer)" class="bg-yellow-500 text-white px-3 py-1 rounded"><i data-lucide="pencil-line"></i></button>
+                                            <button @click="deleteStreamer(streamer.twitchID)" class="bg-red-600 text-white px-3 py-1 rounded"><i data-lucide="trash-2"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            
 						</table>
                   	</div>
                 </div>

@@ -3,8 +3,7 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 import open from 'open'
 import path from 'path'
-import { initDB } from './scripts/database.js'
-import twitchRouter from './scripts/twitch.js'
+import { initDB, insertStreamer, getAllStreamers } from './scripts/database.js'
 import dotenv from 'dotenv'
 
 // Load in dotenv
@@ -29,6 +28,8 @@ app.use(cors({
 app.use(express.json());
 app.use(bodyParser.json());
 
+// Twitch API User Fetching
+// Will need refactoring to make it streamlined
 app.get('/api/streamer', async (req, res) =>{
     const username = req.query.username;
     if (!username) return res.status(400).json({ error: 'Username is required' });
@@ -54,26 +55,99 @@ app.get('/api/streamer', async (req, res) =>{
     }
 });
 
-// Redirect to Admin!
-const __dirname = import.meta.dirname;
-app.use('/admin', express.static(path.join(__dirname, '/public/admin')));
-// app.use(function(req,res){
-    // res.header("Access-Control-Allow-Origin", "*");
-//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+app.get('/api/streamers', async (req, res) => {
+    try {
+        const streamers = await getAllStreamers();
+        return res.json({ streamers });
+    } catch (err) {
+        console.error('Failed to fetch streamers:', err.message);
+        return res.status(500).json({ error: 'Failed to fetch streamers' });
+    }
+});
+
+app.post('/api/streamers', async (req, res) => {
+    const { twitchId, streamerName, streamerDetails, streamerColor } = req.body;
+
+    if (!twitchId || !streamerName || !streamerDetails || !streamerColor) {
+        return res.status(400).json({ error: 'All fields are required' });
+    }
+
+    try {
+        await insertStreamer({ twitchId, streamerName, streamerDetails, streamerColor });
+        return res.json({ success: true });
+    } catch (err) {
+        console.error('DB insert failed:', err.message);
+        return res.status(500).json({ error: 'Database error' });
+    }
+});
+
+// app.put('/api/streamer/:id', async (req, res) => {
+//     const { id } = req.params;
+//     const { streamerName, streamerDetails, streamerColor } = req.body;
+
+//     try {
+//         const db = await initDB();
+//         db.run(
+//             `UPDATE streamers 
+//              SET streamerName = ?, streamerDetails = ?, streamerColor = ? 
+//              WHERE twitchID = ?`,
+//             [streamerName, streamerDetails, streamerColor, id],
+//             function (err) {
+//                 if (err) {
+//                     console.error('DB update error:', err);
+//                     return res.status(500).json({ error: 'Failed to update streamer' });
+//                 }
+//                 res.json({ success: true });
+//             }
+//         );
+//     } catch (err) {
+//         res.status(500).json({ error: 'Database error' });
+//     }
 // });
-// app.use('/api/twitch', twitchRouter);
 
 
-let browserOpened = false;
+app.delete('/api/streamer/:id', async (req, res) => {
+    const id = req.params.id;
+    console.log(id)
+    try {
+        const db = await initDB();
+        db.run(`DELETE FROM streamers WHERE twitchID = ?`, [id], function (err) {
+            if (err) {
+                console.error('DB Delete Error:', err);
+                return res.status(500).json({ error: 'Failed to delete streamer' });
+            }
 
+            if (this.changes === 0) {
+                return res.status(404).json({ error: 'Streamer not found' });
+            }
+
+            return res.status(200).json({ message: 'Streamer deleted' });
+        });
+    } catch (err) {
+        console.error('Server Delete Error:', err);
+        return res.status(500).json({ error: 'Server error' });
+    }
+});
+
+
+const __dirname = import.meta.dirname;
+// Redirect to Admin!
+app.use('/admin', express.static(path.join(__dirname, '/public/admin')));
+// Allow the SO.html to be recognized by the system
+app.use('/so.html', express.static(path.join(__dirname, '/public/so.html')));
+
+// let browserOpened = false;
 async function startServer() {
     try {
         await initDB();
         console.log("----------------------------")
         app.listen(3030, () => {
-            console.log('Opening PTSO on localhost');
-            open('http://localhost:3030/admin');
-            browserOpened = true;
+            // console.log(browserOpened)
+            // if(browserOpened === false){
+                console.log('Opening PTSO Admin');
+                open('http://localhost:3030/admin');
+                // browserOpened = true;
+            // }
         });
     } catch (error) {
         console.error('Failed to initialize database: ', error);
