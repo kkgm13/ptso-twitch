@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-const { createApp, reactive, ref, onMounted, nextTick} = Vue;
+const { createApp, reactive, ref, onMounted, nextTick, computed, watch} = Vue;
 createApp({
     setup() {
         const streamer = reactive({
@@ -44,40 +44,35 @@ createApp({
 
         const streamerList = reactive([]);
         const formError = ref('');
+        const filteredSearch = ref('');
 
         const submitStreamer = async () => {
             formError.value = '';
             try {
-                const method = streamer.twitchId ? 'PUT' : 'POST';
+                // If Id is not filled
                 if (!streamer.twitchId) {
+                    // Find Streamer in Twitch API
                     const res = await fetch(`/api/streamer?username=${encodeURIComponent(streamer.streamerName)}`);
                     const data = await res.json();
+                    // Set Twitch ID
                     streamer.twitchId = data.twitchId;
                 }
-                const url = streamer.twitchId ? `/api/streamer/${streamer.twitchId}` : '/api/streamer';
-        
+
+                const url = streamer.twitchId ? `/api/streamers` : '/api/streamer';
+                const method = streamer.twitchId ? 'PUT' : 'POST';
+
                 const res = await fetch(url, {
                     method,
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        streamerName: streamer.streamerName,
-                        streamerDetails: streamer.streamerDetails,
-                        streamerColor: streamer.streamerColor
-                    })
+                    body: JSON.stringify({ ...streamer })
                 });
         
-                if (!res.ok) throw new Error('Failed to save streamer');
-        
-                if (!streamer.id) {
-                    const newEntry = await res.json();
-                    streamerList.push({ ...streamer, id: newEntry.id });
-                } else {
-                    const index = streamerList.findIndex(s => s.id === streamer.id);
-                    if (index !== -1) {
-                        streamerList[index] = { ...streamer };
-                    }
+                if (!res.ok){
+                    console.log(res.err);
+                    throw new Error('Failed to save streamer');
                 }
         
+                await fetchStreamers();
                 resetForm();
             } catch (err) {
                 console.error('Submit error:', err.message);
@@ -86,15 +81,12 @@ createApp({
         };
 
         const editStreamer = (streamerData) => {
-            streamer.twitchId = streamerData.twitchId;
-            streamer.streamerName = streamerData.streamerName;
-            streamer.streamerDetails = streamerData.streamerDetails;
-            streamer.streamerColor = streamerData.streamerColor;
+            Object.assign(streamer, { ...streamerData });
         };
 
         const deleteStreamer = async (id) => {
             if (!confirm('Are you sure you want to delete this streamer?')) return;
-        console.log(id)
+            console.log(id)
             try {
                 const res = await fetch(`/api/streamer/${id}`, {
                     method: 'DELETE'
@@ -112,7 +104,13 @@ createApp({
                 formError.value = err.message;
             }
         };
-        
+
+        const filteredStreamers = computed(() => {
+            let query = filteredSearch.value.toLowerCase();
+            return streamerList.filter(streamer =>
+                streamer.streamerName.toLowerCase().includes(query)
+            );
+        }); 
 
         const fetchStreamers = async () => {
             try {
@@ -120,19 +118,17 @@ createApp({
                 const data = await res.json();
                 if (res.ok) {
                     streamerList.splice(0, streamerList.length, ...data.streamers);
-                    nextTick(() => {
-                        lucide.createIcons();
-                    });
                 } else {
                     throw new Error(data.error || 'Could not fetch streamers');
                 }
+                await nextTick();
+                lucide.createIcons(); // Refresh icons after DOM updates
             } catch (err) {
                 console.error('Fetch error:', err.message);
             }
         };
 
         const resetForm = () => {
-            streamer.id = null;
             streamer.twitchId = '';
             streamer.streamerName = '';
             streamer.streamerDetails = '';
@@ -140,8 +136,53 @@ createApp({
             formError.value = '';
         };
 
+        const urlGenerate = () => {
+            let fullUrl = ''
+            if (!document.getElementById('mainAccount').value) {
+                alert('Your Twitch Username is not set');
+            } else {
+                let timeout = document.getElementById('timeoutSize').value
+                let delay = document.getElementById('delaySize').value
+                let command = document.getElementById('commands').value
+                let raided = document.getElementById('isRaid').value
+                let raidCount = document.getElementById('raidNumber').value
+
+                fullUrl += window.location.protocol + "//" + window.location.host + window.location.pathname.split('admin/')[0] + "so.html?channel=" + document.getElementById('mainAccount').value.toLowerCase()+ "&showMsg=false&modsOnly=true"
+                // console.log("1: "+fullUrl)
+                if(parseInt(delay) != 0){
+                    fullUrl += "&delay=" + delay
+                    // console.log("2: "+fullUrl)
+                }
+                if(parseInt(timeout) != 0){
+                    fullUrl += "&timeOut=" + timeout
+                    // console.log("3: "+fullUrl)
+                }
+                // If other command for SO is used
+                    // TODO: Figure out /shoutout ASAP
+                if(command.includes("so") || !command === ""){
+                    fullUrl += "&command=" + command;
+                    // console.log("4: "+fullUrl)
+                }
+                // If Channel Raiding Is considered
+                if(raided === true){
+                    fullUrl += "&raided=" + raided + "&raidCount=" + raidCount
+                    // console.log("5: "+fullUrl)
+                }
+                fullUrl += "&ref=";
+                // console.log("Final: "+fullUrl)
+                document.getElementById('browserURL').innerHTML = fullUrl
+                navigator.clipboard.writeText(fullUrl)
+                alert("Browser Overlay URL has been copied.\nPaste the URL on a Browser Source in OBS Studios.")
+            }
+        };
+
         onMounted(() => {
             fetchStreamers();
+        });
+
+        watch(filteredSearch, async () => {
+            await nextTick();
+            lucide.createIcons();
         });
 
         return {
@@ -151,7 +192,10 @@ createApp({
             resetForm,
             formError,
             editStreamer,
-            deleteStreamer
+            deleteStreamer,
+            filteredSearch,
+            filteredStreamers,
+            urlGenerate
         };
     }
 }).mount('#app');

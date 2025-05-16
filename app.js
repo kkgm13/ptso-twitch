@@ -25,11 +25,20 @@ app.use(cors({
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
 app.use(express.json());
 app.use(bodyParser.json());
 
-// Twitch API User Fetching
-// Will need refactoring to make it streamlined
+app.get('/api/streamers', async (req, res) => {
+    try {
+        const streamers = await getAllStreamers();
+        return res.json({ streamers });
+    } catch (err) {
+        console.error('Failed to fetch streamers:', err.message);
+        return res.status(500).json({ error: 'Failed to fetch streamers' });
+    }
+});
+
 app.get('/api/streamer', async (req, res) =>{
     const username = req.query.username;
     if (!username) return res.status(400).json({ error: 'Username is required' });
@@ -55,16 +64,6 @@ app.get('/api/streamer', async (req, res) =>{
     }
 });
 
-app.get('/api/streamers', async (req, res) => {
-    try {
-        const streamers = await getAllStreamers();
-        return res.json({ streamers });
-    } catch (err) {
-        console.error('Failed to fetch streamers:', err.message);
-        return res.status(500).json({ error: 'Failed to fetch streamers' });
-    }
-});
-
 app.post('/api/streamers', async (req, res) => {
     const { twitchId, streamerName, streamerDetails, streamerColor } = req.body;
 
@@ -81,30 +80,36 @@ app.post('/api/streamers', async (req, res) => {
     }
 });
 
-// app.put('/api/streamer/:id', async (req, res) => {
-//     const { id } = req.params;
-//     const { streamerName, streamerDetails, streamerColor } = req.body;
+app.put('/api/streamers', async (req, res) => {
+    const { twitchId, streamerName, streamerDetails, streamerColor } = req.body;
 
-//     try {
-//         const db = await initDB();
-//         db.run(
-//             `UPDATE streamers 
-//              SET streamerName = ?, streamerDetails = ?, streamerColor = ? 
-//              WHERE twitchID = ?`,
-//             [streamerName, streamerDetails, streamerColor, id],
-//             function (err) {
-//                 if (err) {
-//                     console.error('DB update error:', err);
-//                     return res.status(500).json({ error: 'Failed to update streamer' });
-//                 }
-//                 res.json({ success: true });
-//             }
-//         );
-//     } catch (err) {
-//         res.status(500).json({ error: 'Database error' });
-//     }
-// });
+    if (!twitchId || !streamerName || !streamerDetails || !streamerColor) {
+        return res.status(400).json({ error: 'Missing fields for update' });
+    }
 
+    try {
+        const db = await initDB();
+        
+        const stmt = db.prepare(`
+            UPDATE streamers
+            SET streamerName = ?, streamerDetails = ?, streamerColor = ?
+            WHERE twitchID = ?
+        `);
+
+        stmt.run(streamerName, streamerDetails, streamerColor, twitchId, function (err) {
+            if (err) {
+                console.error('Update Error:', err);
+                return res.status(500).json({ error: 'Update failed' });
+            }
+            res.json({ success: true });
+        });
+
+        stmt.finalize();
+    } catch (err) {
+        res.status(500).json({ error: 'Database error' });
+
+    }
+});
 
 app.delete('/api/streamer/:id', async (req, res) => {
     const id = req.params.id;

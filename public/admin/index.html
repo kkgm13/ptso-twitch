@@ -58,7 +58,7 @@
                 <!-- Streamer List -->
                 <div class="md:col-span-2 space-y-4">
 					<div class="flex items-center justify-between">
-						<button @click="loadData" class="bg-cyan-600 text-white px-4 py-2 rounded hover:bg-cyan-700 flex items-center gap-2">
+						<button @click="fetchStreamers" class="bg-cyan-600 text-white px-4 py-2 rounded hover:bg-cyan-700 flex items-center gap-2">
 							<i data-lucide="refresh-cw"></i>
 						</button>
 						<div class="relative w-full max-w-md">
@@ -91,9 +91,8 @@
                                         </div>
                                     </td>
                                 </tr>
-                            
                                 <!-- Dynamically render additional streamers -->
-                                <tr v-for="streamer in streamerList.slice(1)" :key="streamer.twitchID" class="hover:bg-gray-100 text-sm">
+                                <tr v-for="streamer in filteredStreamers" :key="streamer.twitchID" class="hover:bg-gray-100 text-sm">
                                     <td class="px-4 py-2 font-medium">{{ streamer.streamerName }}</td>
                                     <td class="px-4 py-2">{{ streamer.streamerDetails }}</td>
                                     <td class="px-4 py-2">
@@ -220,7 +219,7 @@
                 <label for="browserURL" class="underline font-medium">Your Browser Overlay Link:</label>
                 <span class="inline-block bg-gray-100 px-3 py-1 rounded" id="browserURL"></span>
                 <div class="mt-4">
-                    <button type="button" onclick="alert('To Code Soon')" class="w-full bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">
+                    <button type="button" @click="urlGenerate" class="w-full bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">
                     	Generate Overlay Link
                     </button>
                 </div>
