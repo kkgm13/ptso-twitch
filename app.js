@@ -71,43 +71,17 @@ app.post('/api/streamers', async (req, res) => {
         return res.status(400).json({ error: 'All fields are required' });
     }
 
+    // if (!streamer.twitchId || !streamer.streamerName?.trim() || !streamer.streamerDetails?.trim() || !streamer.streamerColor?.trim()) {
+    //     formError.value = 'All fields are required.';
+    //     return;
+    // }
+
     try {
         await insertStreamer({ twitchId, streamerName, streamerDetails, streamerColor });
         return res.json({ success: true });
     } catch (err) {
         console.error('DB insert failed:', err.message);
         return res.status(500).json({ error: 'Database error' });
-    }
-});
-
-app.put('/api/streamers', async (req, res) => {
-    const { twitchId, streamerName, streamerDetails, streamerColor } = req.body;
-
-    if (!twitchId || !streamerName || !streamerDetails || !streamerColor) {
-        return res.status(400).json({ error: 'Missing fields for update' });
-    }
-
-    try {
-        const db = await initDB();
-        
-        const stmt = db.prepare(`
-            UPDATE streamers
-            SET streamerName = ?, streamerDetails = ?, streamerColor = ?
-            WHERE twitchID = ?
-        `);
-
-        stmt.run(streamerName, streamerDetails, streamerColor, twitchId, function (err) {
-            if (err) {
-                console.error('Update Error:', err);
-                return res.status(500).json({ error: 'Update failed' });
-            }
-            res.json({ success: true });
-        });
-
-        stmt.finalize();
-    } catch (err) {
-        res.status(500).json({ error: 'Database error' });
-
     }
 });
 
@@ -134,25 +108,18 @@ app.delete('/api/streamer/:id', async (req, res) => {
     }
 });
 
-
 const __dirname = import.meta.dirname;
-// Redirect to Admin!
 app.use('/admin', express.static(path.join(__dirname, '/public/admin')));
-// Allow the SO.html to be recognized by the system
 app.use('/so.html', express.static(path.join(__dirname, '/public/so.html')));
 
-// let browserOpened = false;
 async function startServer() {
     try {
         await initDB();
         console.log("----------------------------")
         app.listen(3030, () => {
-            // console.log(browserOpened)
-            // if(browserOpened === false){
-                console.log('Opening PTSO Admin');
-                open('http://localhost:3030/admin');
-                // browserOpened = true;
-            // }
+            console.log('Opening PTSO Admin');
+            console.log('Opening to http://localhost:3030/admin')
+            open('http://localhost:3030/admin');
         });
     } catch (error) {
         console.error('Failed to initialize database: ', error);

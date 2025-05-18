@@ -49,31 +49,36 @@ createApp({
         const submitStreamer = async () => {
             formError.value = '';
             try {
-                // If Id is not filled
                 if (!streamer.twitchId) {
-                    // Find Streamer in Twitch API
+                    console.log("Starting Twitch API Fetch...");
                     const res = await fetch(`/api/streamer?username=${encodeURIComponent(streamer.streamerName)}`);
+                    if (!res.ok) {
+                        const errorData = await res.json().catch(() => ({}));
+                        throw new Error(errorData.error || 'Failed to fetch Twitch ID');
+                    }
                     const data = await res.json();
-                    // Set Twitch ID
                     streamer.twitchId = data.twitchId;
                 }
 
-                const url = streamer.twitchId ? `/api/streamers` : '/api/streamer';
-                const method = streamer.twitchId ? 'PUT' : 'POST';
-
-                const res = await fetch(url, {
-                    method,
+                const res = await fetch('/api/streamers', {
+                    method: "POST",
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ ...streamer })
+                    body: JSON.stringify({ 
+                        twitchId: streamer.twitchId,
+                        streamerName: streamer.streamerName,
+                        streamerDetails: streamer.streamerDetails,
+                        streamerColor: streamer.streamerColor
+                     })
                 });
-        
-                if (!res.ok){
-                    console.log(res.err);
-                    throw new Error('Failed to save streamer');
+
+                if (!res.ok) {
+                    const errorData = await res.json().catch(() => ({}));
+                    throw new Error(errorData.error || 'Failed to save streamer to database');
+                } else {
+                    console.log("Streamer Info saved/updated for "+streamer.streamerName)
+                    await fetchStreamers();
+                    resetForm();
                 }
-        
-                await fetchStreamers();
-                resetForm();
             } catch (err) {
                 console.error('Submit error:', err.message);
                 formError.value = err.message;
@@ -85,8 +90,7 @@ createApp({
         };
 
         const deleteStreamer = async (id) => {
-            if (!confirm('Are you sure you want to delete this streamer?')) return;
-            console.log(id)
+            if (!confirm('Are you sure you want to delete this streamer?\nWarning: THIS IS IRREVERSABLE AND WILL REQUIRE RE-ENTERING THIS STREAMER\'S INFO AGAIN!')) return;
             try {
                 const res = await fetch(`/api/streamer/${id}`, {
                     method: 'DELETE'
@@ -96,7 +100,9 @@ createApp({
                     const errData = await res.json();
                     throw new Error(errData.error || 'Unknown delete error');
                 }
+                console.log()
         
+                console.log("Streamer ID "+id+" was removed from the database")
                 // Remove from frontend list after successful DB delete
                 await fetchStreamers();
             } catch (err) {
@@ -134,6 +140,10 @@ createApp({
             streamer.streamerDetails = '';
             streamer.streamerColor = '#666666';
             formError.value = '';
+
+            document.getElementById('streamerName').value = '';
+            document.getElementById('streamerDetails').value = '';
+            document.getElementById('streamerColor').value = '#666666';
         };
 
         const urlGenerate = () => {

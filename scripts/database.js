@@ -1,6 +1,6 @@
 import sqlite3 from 'sqlite3';
 
-let dbInstance = null;
+const dbInstance = null;
 
 async function initDB() {
     if (dbInstance) return dbInstance;
@@ -81,15 +81,23 @@ async function insertStreamer({ twitchId, streamerName, streamerDetails, streame
 
     return new Promise((resolve, reject) => {
         db.run(
-            `INSERT INTO streamers (twitchID, streamerName, streamerDetails, streamerColor)
+            `INSERT OR REPLACE INTO streamers (twitchID, streamerName, streamerDetails, streamerColor)
              VALUES (?, ?, ?, ?)`,
             [twitchId, streamerName, streamerDetails, streamerColor],
+            // function (err) {
+            //     if (err) {
+            //         reject(err);
+            //     } else {
+            //         resolve({ success: true });
+            //     }
+            // }
             function (err) {
                 if (err) {
-                    reject(err);
-                } else {
-                    resolve({ success: true });
+                    console.error('DB insert failed:', err);
+                    return res.status(500).json({ error: 'Database insert failed' });
                 }
+                // return res.json({ success: true });
+                resolve({ success: true });
             }
         );
     });
