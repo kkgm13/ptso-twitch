@@ -38,7 +38,6 @@ app.get('/api/streamers', async (req, res) => {
         return res.status(500).json({ error: 'Failed to fetch streamers' });
     }
 });
-
 app.get('/api/streamer', async (req, res) =>{
     const username = req.query.username;
     if (!username) return res.status(400).json({ error: 'Username is required' });
@@ -57,13 +56,34 @@ app.get('/api/streamer', async (req, res) =>{
             return res.status(404).json({ error: 'Twitch User Not Found' });
         }
 
-        return res.json({ twitchId: data.data[0].id });
+        return res.json({ twitchId: data.data[0].id, "profile-image": data.data[0].profile_image_url });
     } catch (err) {
         console.error('Twitch fetch failed:', err);
         return res.status(500).json({ error: 'Failed to fetch Twitch user.' });
     }
 });
+app.get('/api/streamer-last-game', async (req,res) => {
+    const twitchId = req.query.twitchId;
+    if (!twitchId) return res.status(400).json({ error: 'Twitch ID is required' });
+    try {
+        const response = await fetch(`https://api.twitch.tv/helix/channels?broadcaster_id=${twitchId}`, {
+            headers: {
+                'Client-ID': process.env.TWITCH_CLIENT_ID,
+                'Authorization': `Bearer ${process.env.TWITCH_ACCESS_TOKEN}`,
+            }
+        });
+        const data = await response.json();
 
+        if (!data.data || data.data.length === 0) {
+            return res.status(404).json({ error: 'Twitch User Information Not Found' });
+        }
+
+        return res.json({ twitchId: data.data[0].broadcaster_id, broadcaster_login: data.data[0].broadcaster_login, game_id: data.data[0].game_id, "last-played":data.data[0].game_name });
+    } catch (error) {
+        console.log("Error: " +error);
+        return res.status(500).json({ error: 'Failed to fetch Twitch Channel Info.' });
+    }
+});
 app.post('/api/streamers', async (req, res) => {
     const { twitchId, streamerName, streamerDetails, streamerColor } = req.body;
 
@@ -84,7 +104,6 @@ app.post('/api/streamers', async (req, res) => {
         return res.status(500).json({ error: 'Database error' });
     }
 });
-
 app.delete('/api/streamer/:id', async (req, res) => {
     const id = req.params.id;
     console.log(id)
@@ -109,6 +128,7 @@ app.delete('/api/streamer/:id', async (req, res) => {
 });
 
 const __dirname = import.meta.dirname;
+// app.use('',express.static(path.join(__dirname,'/public/index.html')));
 app.use('/admin', express.static(path.join(__dirname, '/public/admin')));
 app.use('/so.html', express.static(path.join(__dirname, '/public/so.html')));
 
@@ -119,7 +139,7 @@ async function startServer() {
         app.listen(3030, () => {
             console.log('Opening PTSO Admin');
             console.log('Opening to http://localhost:3030/admin')
-            open('http://localhost:3030/admin');
+            // open('http://localhost:3030/admin');
         });
     } catch (error) {
         console.error('Failed to initialize database: ', error);

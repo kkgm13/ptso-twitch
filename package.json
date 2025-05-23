@@ -1,14 +1,14 @@
 {
   "name": "ptso-twitch",
-  "version": "2.1.0",
+  "version": "3.0",
   "description": "Personal Textual Shoutout Overlay System with Twitch",
   "type": "module",
   "scripts": {
     "setup": "echo \"Nothing as of yet\" && exit 1",
     "start": "nodemon app.js",
     "twitch-setup": "node scripts/setup-script.js",
-    "db-check": "node scripts/db-check.js",
-    "css-build": "npx tailwindcss -i ./public/admin/assets/css/input.css -o ./public/admin/assets/css/stylesheet.css  ",
+    "db": "node scripts/db-check.js",
+    "css-build": "npx tailwindcss -i ./public/admin/assets/css/input.css -o ./public/admin/assets/css/stylesheet.css",
     "css-dev": "npx tailwindcss -i ./public/admin/assets/css/input.css -o ./public/admin/assets/css/stylesheet.css --watch"
   },
   "repository": {

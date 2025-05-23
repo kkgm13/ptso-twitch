@@ -84,13 +84,6 @@ async function insertStreamer({ twitchId, streamerName, streamerDetails, streame
             `INSERT OR REPLACE INTO streamers (twitchID, streamerName, streamerDetails, streamerColor)
              VALUES (?, ?, ?, ?)`,
             [twitchId, streamerName, streamerDetails, streamerColor],
-            // function (err) {
-            //     if (err) {
-            //         reject(err);
-            //     } else {
-            //         resolve({ success: true });
-            //     }
-            // }
             function (err) {
                 if (err) {
                     console.error('DB insert failed:', err);
