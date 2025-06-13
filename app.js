@@ -3,7 +3,7 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 import open from 'open'
 import path from 'path'
-import { initDB, insertStreamer, getAllStreamers } from './scripts/database.js'
+import { initDB, insertStreamer, getAllStreamers, deleteStreamer} from './scripts/database.js'
 import dotenv from 'dotenv'
 
 // Load in dotenv
@@ -22,7 +22,7 @@ app.use(cors({
             callback(new Error('Not allowed by CORS'));
         }
     },
-    methods: ['GET', 'POST'],
+    methods: ['GET', 'POST', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
@@ -108,19 +108,8 @@ app.delete('/api/streamer/:id', async (req, res) => {
     const id = req.params.id;
     console.log(id)
     try {
-        const db = await initDB();
-        db.run(`DELETE FROM streamers WHERE twitchID = ?`, [id], function (err) {
-            if (err) {
-                console.error('DB Delete Error:', err);
-                return res.status(500).json({ error: 'Failed to delete streamer' });
-            }
-
-            if (this.changes === 0) {
-                return res.status(404).json({ error: 'Streamer not found' });
-            }
-
-            return res.status(200).json({ message: 'Streamer deleted' });
-        });
+        await deleteStreamer(id);
+        return res.json({ success: true , message: 'Streamer Deleted'});
     } catch (err) {
         console.error('Server Delete Error:', err);
         return res.status(500).json({ error: 'Server error' });

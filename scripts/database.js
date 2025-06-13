@@ -110,4 +110,26 @@ async function getAllStreamers() {
     });
 }
 
-export { initDB, insertStreamer, getAllStreamers };
+async function deleteStreamer(twitchId) {
+    const db = await initDB();
+
+    return new Promise((resolve, reject) => {
+        db.run(
+            `DELETE FROM streamers WHERE twitchID = ?`,
+            [twitchId],
+            function (err) {
+                if (err) {
+                    console.error('DB Delete Error:', err);
+                    return res.status(500).json({ error: 'Failed to delete streamer' });
+                }
+    
+                if (this.changes === 0) {
+                    return res.status(404).json({ error: 'Streamer not found' });
+                }
+    
+                resolve({success: true})
+            });
+    });
+}
+
+export { initDB, insertStreamer, getAllStreamers, deleteStreamer};
