@@ -2,7 +2,12 @@ import sqlite3 from 'sqlite3';
 
 const dbInstance = null;
 
+/**
+ * Database Initalizer
+ * @returns Database Instance
+ */
 async function initDB() {
+    // If exists, use the existing instance;
     if (dbInstance) return dbInstance;
 
     try {
@@ -22,6 +27,10 @@ async function initDB() {
     }
 }
 
+/**
+ * Connect to the Database if it exists
+ * @returns Database Connection
+ */
 function connectDatabase() {
     return new Promise((resolve, reject) => {
         const db = new sqlite3.Database('./streamers.db', sqlite3.OPEN_READWRITE, (error) => {
@@ -29,13 +38,18 @@ function connectDatabase() {
                 console.warn("CANNOT CONNECT TO DB! ".error)
                 reject(error);
             } else {
-                resolve(db);
                 console.log("Database Found!")
+                resolve(db);
             }
         });
+        console.log('---------------------')
     });
 }
 
+/**
+ * Create the Database
+ * @returns Database Instance
+ */
 async function createDatabase() {
     const newdb = await new Promise((resolve, reject) => {
         const db = new sqlite3.Database('streamers.db', (error) => {
@@ -51,6 +65,11 @@ async function createDatabase() {
     return newdb;
 }
 
+/**
+ * Create the Tables for the Database Instance
+ * @param {*} newdb Database Instance
+ * @returns Database Instance
+ */
 function createTables(newdb) {
     return new Promise((resolve, reject) => {
         newdb.exec(`
@@ -76,6 +95,11 @@ function createTables(newdb) {
     });
 }
 
+/**
+ * Insert / Update New Streamer from Form to Database
+ * @param {*} param0 Streamer Object
+ * @returns Database Instance 
+ */
 async function insertStreamer({ twitchId, streamerName, streamerDetails, streamerColor }) {
     const db = await initDB();
 
@@ -96,11 +120,15 @@ async function insertStreamer({ twitchId, streamerName, streamerDetails, streame
     });
 }
 
+/**
+ * Get all the Streamers from the Database
+ * @returns Database Instance
+ */
 async function getAllStreamers() {
     const db = await initDB();
 
     return new Promise((resolve, reject) => {
-        db.all(`SELECT * FROM streamers`, [], (err, rows) => {
+        db.all(`SELECT * FROM streamers ORDER BY twitchID`, [], (err, rows) => {
             if (err) {
                 reject(err);
             } else {
@@ -110,6 +138,11 @@ async function getAllStreamers() {
     });
 }
 
+/**
+ * Delete Streamer from the Database
+ * @param {*} twitchId 
+ * @returns Database 
+ */
 async function deleteStreamer(twitchId) {
     const db = await initDB();
 

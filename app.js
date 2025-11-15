@@ -1,7 +1,7 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
-import open from 'open'
+// import open from 'open'
 import path from 'path'
 import { initDB, insertStreamer, getAllStreamers, deleteStreamer} from './scripts/database.js'
 import dotenv from 'dotenv'
@@ -9,7 +9,9 @@ import dotenv from 'dotenv'
 // Load in dotenv
 dotenv.config();
 
-// Start System
+/*******************************
+ * Start ExpressJS Environment *
+ *******************************/
 const app = express();
 
 const allowedOrigins = ['http://localhost:3030'];
@@ -29,6 +31,10 @@ app.use(cors({
 app.use(express.json());
 app.use(bodyParser.json());
 
+/***************
+ * API CALLERS *
+ ***************/
+// Get all the Streamers on the Database
 app.get('/api/streamers', async (req, res) => {
     try {
         const streamers = await getAllStreamers();
@@ -38,6 +44,7 @@ app.get('/api/streamers', async (req, res) => {
         return res.status(500).json({ error: 'Failed to fetch streamers' });
     }
 });
+// Get the Streamer Information
 app.get('/api/streamer', async (req, res) =>{
     const username = req.query.username;
     if (!username) return res.status(400).json({ error: 'Username is required' });
@@ -62,6 +69,7 @@ app.get('/api/streamer', async (req, res) =>{
         return res.status(500).json({ error: 'Failed to fetch Twitch user.' });
     }
 });
+// Get the last stremer's Streamed Game
 app.get('/api/streamer-last-game', async (req,res) => {
     const twitchId = req.query.twitchId;
     if (!twitchId) return res.status(400).json({ error: 'Twitch ID is required' });
@@ -84,6 +92,7 @@ app.get('/api/streamer-last-game', async (req,res) => {
         return res.status(500).json({ error: 'Failed to fetch Twitch Channel Info.' });
     }
 });
+// Update the Streamer Information
 app.post('/api/streamers', async (req, res) => {
     const { twitchId, streamerName, streamerDetails, streamerColor } = req.body;
 
@@ -104,9 +113,9 @@ app.post('/api/streamers', async (req, res) => {
         return res.status(500).json({ error: 'Database error' });
     }
 });
+// Delete Streamer by ID
 app.delete('/api/streamer/:id', async (req, res) => {
     const id = req.params.id;
-    console.log(id)
     try {
         await deleteStreamer(id);
         return res.json({ success: true , message: 'Streamer Deleted'});
@@ -116,6 +125,9 @@ app.delete('/api/streamer/:id', async (req, res) => {
     }
 });
 
+/************************
+ *   General Startup    *
+ ************************/
 const __dirname = import.meta.dirname;
 // app.use('',express.static(path.join(__dirname,'/public/index.html')));
 app.use('/admin', express.static(path.join(__dirname, '/public/admin')));
@@ -131,7 +143,7 @@ async function startServer() {
             // open('http://localhost:3030/admin');
         });
     } catch (error) {
-        console.error('Failed to initialize database: ', error);
+        console.error('Failed to Start System - ', error);
         process.exit(1);
     }
 }

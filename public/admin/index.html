@@ -58,14 +58,14 @@
                 <!-- Streamer List -->
                 <div class="md:col-span-2 space-y-4">
 					<div class="flex items-center justify-between">
-						<button @click="fetchStreamers" class="bg-cyan-600 text-white px-4 py-2 rounded hover:bg-cyan-700 flex items-center gap-2">
+						<!-- <button @click="fetchStreamers" class="bg-cyan-600 text-white px-4 py-2 rounded hover:bg-cyan-700 flex items-center gap-2">
 							<i data-lucide="refresh-cw"></i>
-						</button>
-						<div class="relative w-full max-w-md">
+						</button> -->
+						<div class="relative w-full">
 							<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
 								<i data-lucide="search" class="text-gray-500"></i>
 							</div>
-							<input v-model="filteredSearch" type="text" placeholder="Search by Name" class="w-full pl-10 pr-4 py-2 border rounded shadow-sm focus:ring focus:outline-none">
+							<input v-model="filteredSearch" type="text" placeholder="Search by Streamer Name" class="w-full pl-10 pr-4 py-2 border rounded shadow-sm focus:ring focus:outline-none">
 						</div>
 					</div>
 
@@ -103,7 +103,6 @@
                                     </td>
                                 </tr>
                             </tbody>
-                            
 						</table>
                   	</div>
                 </div>
@@ -117,7 +116,10 @@
 							<p class=" mb-4 text-red-600 font-semibold italic text-xs">{{ formError }}</p>
 						</div>
 						<form method="post" @submit.prevent="submitStreamer" class="space-y-4">
-							<input v-model="streamer.streamerName" id="streamerName" name="streamerName" class="w-full border rounded px-3 py-2" placeholder="Streamer Name">
+                            <div>
+                                <input v-model="streamer.streamerName" id="streamerName" name="streamerName" class="w-full border rounded px-3 py-2" placeholder="Twitch Streamer Name">
+                                <p class="text-xs italic text-gray-600">Please use the Twitch Streamer Username, not by how they call themselves on stream.</p>
+                            </div>
 							<div>
 								<label for="streamerDetails" class="block text-sm font-medium">Details of Streamer</label>
 								<textarea v-model="streamer.streamerDetails" name="streamerDetails" id="streamerDetails" class="w-full border rounded px-3 py-2" placeholder="Streamer Details"></textarea>
@@ -292,9 +294,10 @@
         <p class="text-xs">Made with Care & Consideration ♡ <a class="text-blue-600 hover:underline" href="http://twitch.tv/kkgm13">@KKGM13</a></p>
       </footer>
     </div>
-
+    <!-- Change this version to a more on project version -->
     <script src="https://unpkg.com/lucide@latest"></script>
 	<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+
     <script src="assets/js/script.js"></script>
 </body>
 </html>

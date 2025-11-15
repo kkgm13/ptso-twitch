@@ -1,11 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store" />
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <h1>Hello World - I am the SO</h1>
+<body class="bg-black text-white">
+  <div class="max-w-4xl mx-auto p-4">
+    <div id="streamName" class="w-full">
+      <h1 class="text-6xl font-bold text-center mb-6">Check Out: <span id="streamerName">STREAMER NAME</span></h1>
+    </div>
+    <div class="flex flex-col md:flex-row items-center gap-6 rounded">
+      <div id="streamImg" class="w-full md:w-1/3 text-center">
+        <img class="w-full h-auto rounded-full shadow-md" id="strmAvtr" src="admin/assets/default.jpeg" alt="Twitch User">
+      </div>
+      <div class="w-full md:w-2/3 relative">
+        <div id="streamerDetails" class="overflow-hidden relative h-32">
+          <div id="carouselInner" class="transition-all duration-500 ease-in-out">
+            <div class="carousel-slide">
+              <p class="text-2xl">Lorem ipsum dolor sit amet consectetur, adipisicing elit.</p>
+            </div>
+            <div class="carousel-slide hidden">
+              <p class="text-2xl">Sit obcaecati dolorem quasi voluptate fugit nihil nisi ex iste, molestias iusto ipsa.</p>
+            </div>
+            <div class="carousel-slide hidden">
+              <p class="text-2xl">Consequuntur delectus laborum nulla non similique molestiae quidem ex?</p>
+            </div>
+            <div class="carousel-slide hidden">
+              <p class="text-2xl">Last streaming: CATEGORY</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Simple JS carousel
+    const slides = document.querySelectorAll('.carousel-slide');
+    let currentSlide = 0;
+
+    setInterval(() => {
+      slides[currentSlide].classList.add('hidden');
+      currentSlide = (currentSlide + 1) % slides.length;
+      slides[currentSlide].classList.remove('hidden');
+    }, 3000);
+  </script>
 </body>
 </html>

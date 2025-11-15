@@ -136,10 +136,14 @@ createApp({
 
         const resetForm = () => {
             streamer.twitchId = '';
+            twitchId = '';
             streamer.streamerName = '';
             streamer.streamerDetails = '';
             streamer.streamerColor = '#666666';
             formError.value = '';
+
+            console.log("Streamer ID1: " + streamer.twitchId)
+            console.log("Streamer ID2 " + twitchId)
 
             document.getElementById('streamerName').value = '';
             document.getElementById('streamerDetails').value = '';
