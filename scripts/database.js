@@ -4,52 +4,34 @@ import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-// Resolve the database relative to the project root.
-const DATABASE_PATH = path.resolve(__dirname, '../streamers.db');
+const projectRoot = path.resolve(__dirname, '..');
+const configuredDatabasePath = process.env.PTSO_DATABASE_PATH;
+const DATABASE_PATH = configuredDatabasePath
+    ? path.resolve(projectRoot, configuredDatabasePath)
+    : path.join(projectRoot, 'streamers.db');
 
 let dbInstance = null;
 
-/**
- * Initialise the database and return the shared connection.
- *
- * better-sqlite3 creates the database file if it does not exist.
- * Existing databases and their streamer records are preserved.
- *
- * @returns {Database.Database}
- */
+/** Open the shared SQLite connection and ensure the schema exists. */
 function initDB() {
-    if (dbInstance) {
-        return dbInstance;
-    }
+    if (dbInstance) return dbInstance;
+
+    const db = new Database(DATABASE_PATH);
 
     try {
-        const db = new Database(DATABASE_PATH);
-
-        // Apply sensible connection settings.
         db.pragma('foreign_keys = ON');
         db.pragma('journal_mode = WAL');
-
         createTables(db);
-
         dbInstance = db;
 
-        console.log('Database connected:', DATABASE_PATH);
-
+        console.log(`Connected to SQLite database: ${DATABASE_PATH}`);
         return dbInstance;
     } catch (error) {
-        console.error('Failed to initialise database:', error);
+        db.close();
         throw error;
     }
 }
 
-/**
- * Create the required tables if they do not already exist.
- *
- * Existing streamer records are not overwritten.
- *
- * @param {Database.Database} db
- */
 function createTables(db) {
     db.exec(`
         CREATE TABLE IF NOT EXISTS streamers (
@@ -60,98 +42,49 @@ function createTables(db) {
         );
     `);
 
-    // Add the example record only when the table is empty.
-    const result = db
-        .prepare('SELECT COUNT(*) AS count FROM streamers')
-        .get();
+    const row = db.prepare('SELECT COUNT(*) AS count FROM streamers').get();
 
-    if (result.count === 0) {
+    // Preserve existing records. Seed only a genuinely empty table.
+    if (row.count === 0) {
         db.prepare(`
             INSERT INTO streamers (
-                twitchID,
-                streamerName,
-                streamerDetails,
-                streamerColor
-            )
-            VALUES (?, ?, ?, ?)
+                twitchID, streamerName, streamerDetails, streamerColor
+            ) VALUES (?, ?, ?, ?)
         `).run(
             0,
             'ptso-twitch',
             'Personal Shoutout for Twitch; Overlay System;This is a sample to see how this works;',
             '#666666'
         );
-
-        console.log('Default streamer record created.');
     }
 }
 
-/**
- * Insert or replace a streamer.
- *
- * @param {object} streamer
- * @param {string|number} streamer.twitchId
- * @param {string} streamer.streamerName
- * @param {string} streamer.streamerDetails
- * @param {string} streamer.streamerColor
- * @returns {{ success: boolean }}
- */
-function insertStreamer({
-    twitchId,
-    streamerName,
-    streamerDetails,
-    streamerColor
-}) {
-    const db = initDB();
-
-    const statement = db.prepare(`
-        INSERT OR REPLACE INTO streamers (
-            twitchID,
-            streamerName,
-            streamerDetails,
-            streamerColor
-        )
-        VALUES (?, ?, ?, ?)
-    `);
-
-    statement.run(
-        twitchId,
-        streamerName,
-        streamerDetails,
-        streamerColor
-    );
-
-    return { success: true };
-}
-
-/**
- * Return all streamers ordered by Twitch ID.
- *
- * @returns {Array<object>}
- */
-function getAllStreamers() {
+function insertStreamer({ twitchId, streamerName, streamerDetails, streamerColor }) {
     const db = initDB();
 
     return db.prepare(`
-        SELECT *
+        INSERT INTO streamers (
+            twitchID, streamerName, streamerDetails, streamerColor
+        ) VALUES (?, ?, ?, ?)
+        ON CONFLICT(twitchID) DO UPDATE SET
+            streamerName = excluded.streamerName,
+            streamerDetails = excluded.streamerDetails,
+            streamerColor = excluded.streamerColor
+    `).run(twitchId, streamerName, streamerDetails, streamerColor);
+}
+
+function getAllStreamers() {
+    return initDB().prepare(`
+        SELECT twitchID, streamerName, streamerDetails, streamerColor
         FROM streamers
         ORDER BY twitchID
     `).all();
 }
 
-/**
- * Delete a streamer by Twitch ID.
- *
- * @param {string|number} twitchId
- * @returns {{ success: boolean }}
- * @throws {Error} If the streamer does not exist.
- */
 function deleteStreamer(twitchId) {
-    const db = initDB();
-
-    const result = db.prepare(`
-        DELETE FROM streamers
-        WHERE twitchID = ?
-    `).run(twitchId);
+    const result = initDB().prepare(
+        'DELETE FROM streamers WHERE twitchID = ?'
+    ).run(twitchId);
 
     if (result.changes === 0) {
         const error = new Error('Streamer not found');
@@ -162,9 +95,18 @@ function deleteStreamer(twitchId) {
     return { success: true };
 }
 
+function closeDB() {
+    if (dbInstance) {
+        dbInstance.close();
+        dbInstance = null;
+    }
+}
+
 export {
     initDB,
+    closeDB,
     insertStreamer,
     getAllStreamers,
-    deleteStreamer
+    deleteStreamer,
+    DATABASE_PATH
 };

@@ -1,115 +1,133 @@
-// Packages Implementation
-import path from 'path'
-import dotenv from 'dotenv'
-const __dirname = import.meta.dirname;
-const dotenvPath = path.join(__dirname, '../.env')
-dotenv.config({path: dotenvPath})
-import axios from 'axios'
-import fs from 'fs'
-import readline,  {createInterface} from 'readline'
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-})
+import 'dotenv/config';
 
-//Strings for dotENVs
-let streamerUserName = null
-let clientid = null
-let clientsecret = null
-let access_token = null
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { createInterface } from 'node:readline/promises';
+import { stdin as input, stdout as output } from 'node:process';
 
-console.warn("Please ensure that you have already created a Personal PTSO Credential via Twitch Dev Console")
-console.warn("You can login with your usual account credentials, as the following questions require details of a created Twitch Dev Application.")
+import {
+    requestAppAccessToken,
+    getTwitchUserWithToken
+} from '../src/services/twitch-api.js';
 
-// Validate information to be used
-rl.question('Your Twitch Username? > ', (twitchUser) => {
-    streamerUserName = twitchUser
-    setToDotEnv("TWITCH_USER", streamerUserName)
-    rl.question('Add Your Twitch Client ID: >  ', (clientID) => {
-        clientid = clientID
-        setToDotEnv("TWITCH_CLIENT_ID", clientid)
-        rl.question('Add Your Twitch Client Secret >  ', (clientSecret) => {
-            clientsecret = clientSecret
-            setToDotEnv("TWITCH_CLIENT_SECRET", clientSecret)
-            setupTwitchSecret()
-            rl.close();
-        });
-    });
-});
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const dotenvPath = path.resolve(__dirname, '../.env');
 
-/**
- * Connect with Twitch API and create access token
- * @returns Access Token for Twitch User 
+function serializeEnvValue(value) {
+    return JSON.stringify(String(value));
+}
+
+/** 
+ * Update only requested keys while preserving unrelated .env lines.
  */
-function setupTwitchSecret(){
-    axios.post('https://id.twitch.tv/oauth2/token',
-        null,
-        {
-            params: {
-                client_id: clientid,
-                client_secret: clientsecret,
-                grant_type: 'client_credentials'
+async function updateEnvFile(updates) {
+    let content;
+
+    try {
+        content = await fs.readFile(dotenvPath, 'utf8');
+    } catch (error) {
+        if (error.code !== 'ENOENT') throw error;
+        content = '';
+    }
+
+    const lines = content ? content.split(/\r?\n/) : [];
+
+    for (const [key, value] of Object.entries(updates)) {
+        const replacement = `${key}=${serializeEnvValue(value)}`;
+        const keyPattern = new RegExp(`^\\s*${key}\\s*=`);
+        const matchingIndexes = [];
+
+        lines.forEach((line, index) => {
+            if (keyPattern.test(line)) matchingIndexes.push(index);
+        });
+
+        if (matchingIndexes.length === 0) {
+            lines.push(replacement);
+        } else {
+            lines[matchingIndexes[0]] = replacement;
+            // Remove duplicate definitions for this key, if present.
+            for (const index of matchingIndexes.slice(1).reverse()) {
+                lines.splice(index, 1);
             }
         }
-)
-    .then(function (response) {
-        access_token = response.data.access_token
-        setToDotEnv("TWITCH_ACCESS_TOKEN", access_token)
-    
-        axios.get('https://api.twitch.tv/helix/users', {
-            params: {
-                login: streamerUserName
-            },
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Authorization': `Bearer ${access_token}`,
-                'Client-Id': clientid
-            }
-        })
-        .then(function (response) {  
-            console.log("")  
-            console.log("--------------------------")
-            console.warn("Parameters for Twitch User: " + streamerUserName + ` (Twitch ID: ${response.data.data[0].id})`)
-            setToDotEnv('TWITCH_STREAMER_ID', response.data.data[0].id)
-            console.log("--------------------------") 
-            console.log("Please keep this for your reference")
-            console.log("Twitch Client Access Token: "+access_token)
-            console.log("")  
-            console.warn("Associated Twitch Dev Data has been added to the .env file. Please keep this file safe at all times")
-            console.warn("Rerun this command if any of the following is required:")
-            console.warn("1) The Access Token requires to be renewed")
-            console.warn("2) The Client Secret is renewed via Twitch Dev Dashboard,OR")
-            console.warn("3) The entire Twitch Dev Application is rebuilt via the Twitch Dev Dashboard")
-        })
-        .catch(function (error) {
-            console.log("ERROR - " + error);
-        });
-    })
-    .catch(function(error) {
-        console.log("Error! - " + error)
-    });
+    }
+
+    while (lines.length && lines[lines.length - 1] === '') lines.pop();
+    const updatedContent = `${lines.join('\n')}\n`;
+    const temporaryPath = `${dotenvPath}.tmp`;
+
+    await fs.writeFile(temporaryPath, updatedContent, { mode: 0o600 });
+    await fs.rename(temporaryPath, dotenvPath);
 }
 
 /**
- * Allow to set a Value based on a defined dotENV keyname
- * @param {*} keyName       Key within the dotenv file
- * @param {*} valueName     Value to be associated with the key
+ * 
+ * @param {*} rl 
+ * @param {*} label 
+ * @param {*} param2 
+ * @returns 
  */
-function setToDotEnv(keyName, valueName){
-    // Read the content of the dotenv file
-    const content = fs.readFileSync(dotenvPath, 'utf-8');
-    // Parse the content into key-value pairs
-    const keyValuePairs = content.split('\n').map(line => {
-        const [key, value] = line.split('=');
-        return { key, value };
-    });
-    // Find and update the value for the specified key
-    const updatedKeyValuePairs = keyValuePairs.map(item => {
-        if (item.key === keyName) {item.value = valueName};
-        return item;
-    });
-    // Build the updated content
-    const updatedContent = updatedKeyValuePairs.map(item => `${item.key}=${item.value}`).join('\n');
-    // Write the updated content back to the dotenv file
-    fs.writeFileSync(dotenvPath, updatedContent);
+async function promptRequired(rl, label, { secret = false } = {}) {
+    const value = (await rl.question(label)).trim();
+
+    if (!value) throw new Error(`${label.replace(/\s*>\s*$/, '')} is required`);
+    if (secret) console.log('');
+    return value;
 }
+
+async function main() {
+    const rl = createInterface({ input, output });
+
+    try {
+        console.log('PTSO Twitch setup');
+        console.log('Create a Twitch application in the Twitch Developer Console first.');
+        console.log('The client secret and access token will not be printed.');
+        console.log('');
+
+        const twitchUser = await promptRequired(rl, 'Your Twitch username > ');
+        const clientId = await promptRequired(rl, 'Twitch Client ID > ');
+        const clientSecret = await promptRequired(rl, 'Twitch Client Secret (input may be visible) > ', {
+            secret: true
+        });
+
+        const tokenResponse = await requestAppAccessToken(clientId, clientSecret);
+        if (!tokenResponse.access_token) {
+            throw new Error('Twitch did not return an access token');
+        }
+
+        const user = await getTwitchUserWithToken(
+            twitchUser,
+            clientId,
+            tokenResponse.access_token
+        );
+
+        if (!user) {
+            throw new Error(`Twitch user "${twitchUser}" was not found. No credentials were saved.`);
+        }
+
+        await updateEnvFile({
+            TWITCH_USER: twitchUser,
+            TWITCH_STREAMER_ID: user.id,
+            TWITCH_CLIENT_ID: clientId,
+            TWITCH_CLIENT_SECRET: clientSecret,
+            TWITCH_ACCESS_TOKEN: tokenResponse.access_token
+        });
+
+        console.log('');
+        console.log('Twitch setup completed successfully.');
+        console.log(`Twitch user: ${user.login} (ID: ${user.id})`);
+        console.log(`Updated environment file: ${dotenvPath}`);
+        console.log('Keep .env private. Rerun npm run twitch-setup to renew the app token.');
+    } catch (error) {
+        console.error('Twitch setup failed:', error.status
+            ? `${error.message} (HTTP ${error.status})`
+            : error.message);
+        process.exitCode = 1;
+    } finally {
+        rl.close();
+    }
+}
+
+main();

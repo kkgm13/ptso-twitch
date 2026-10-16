@@ -49,17 +49,13 @@ createApp({
         const submitStreamer = async () => {
             formError.value = '';
             try {
-                
                 if (!streamer.twitchId) {
                     console.log("Starting Twitch API Fetch...");
                     const res = await fetch(`/api/streamer?username=${encodeURIComponent(streamer.streamerName)}`);
-
                     if (!res.ok) {
                         const errorData = await res.json().catch(() => ({}));
-                        console.log("Twitch API Fetch Failed: " + (errorData.error || 'Unknown error'));
                         throw new Error(errorData.error || 'Failed to fetch Twitch ID');
                     }
-                    console.log("Twitch API Fetch Succeeded");
                     const data = await res.json();
                     streamer.twitchId = data.twitchId;
                 }
@@ -140,14 +136,10 @@ createApp({
 
         const resetForm = () => {
             streamer.twitchId = '';
-            twitchId = '';
             streamer.streamerName = '';
             streamer.streamerDetails = '';
             streamer.streamerColor = '#666666';
             formError.value = '';
-
-            // console.log("Streamer ID1: " + streamer.twitchId)
-            // console.log("Streamer ID2 " + twitchId)
 
             document.getElementById('streamerName').value = '';
             document.getElementById('streamerDetails').value = '';

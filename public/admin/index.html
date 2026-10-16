@@ -113,7 +113,7 @@
 						<h5 class="text-center text-lg font-semibold">New Streamer Info</h5>
 						<hr class="my-4">
 						<div v-if="formError">
-							<p class=" mb-4 text-red-600 font-semibold italic text-xs">{{ formError }}</p>
+							<p class="mb-4 text-red-600 font-semibold italic text-xs">{{ formError }}</p>
 						</div>
 						<form method="post" @submit.prevent="submitStreamer" class="space-y-4">
                             <div>
@@ -148,7 +148,7 @@
                     <div class="space-y-4">
                         <!-- Streamer Channel Name -->
                         <div class="flex">
-                            <input type="text" id="mainAccount" name="mainAccount" placeholder="Streamer Channel Name" class="flex-grow border rounded-l px-3 py-2" aria-label="Streamer Channel Name">
+                            <input type="text" id="mainAccount" name="mainAccount" placeholder="Streamer Channel Name" class="grow border rounded-l px-3 py-2" aria-label="Streamer Channel Name">
                             <button class="bg-gray-300 text-gray-600 px-4 py-2 rounded-r cursor-not-allowed" disabled onclick="alert('Work In Progress')">
                                 <i data-lucide="twitch"></i>
                             </button>

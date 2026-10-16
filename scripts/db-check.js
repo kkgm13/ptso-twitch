@@ -1,14 +1,20 @@
-import { initDB } from './database.js';
+import 'dotenv/config';
+import { initDB, closeDB, DATABASE_PATH } from './database.js';
 
-async function checkAndInitializeDatabase() {
+function checkDatabase() {
     try {
-        await initDB();
-        console.log('Database initialized successfully.');
-        process.exit(0);
-    } catch (err) {
-        console.error('Failed to initialize database:', err);
-        process.exit(1);
+        const db = initDB();
+        const result = db.prepare('SELECT COUNT(*) AS count FROM streamers').get();
+
+        console.log('Database check passed.');
+        console.log(`Database file: ${DATABASE_PATH}`);
+        console.log(`Streamer records: ${result.count}`);
+    } catch (error) {
+        console.error('Database check failed:', error.message);
+        process.exitCode = 1;
+    } finally {
+        closeDB();
     }
 }
 
-checkAndInitializeDatabase();
+checkDatabase();
