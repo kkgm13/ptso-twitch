@@ -42,11 +42,16 @@ rl.question('Your Twitch Username? > ', (twitchUser) => {
  * @returns Access Token for Twitch User 
  */
 function setupTwitchSecret(){
-    axios.post('https://id.twitch.tv/oauth2/token', {
-        client_id: clientid,
-        client_secret: clientsecret,
-        grant_type: 'client_credentials'
-    })
+    axios.post('https://id.twitch.tv/oauth2/token',
+        null,
+        {
+            params: {
+                client_id: clientid,
+                client_secret: clientsecret,
+                grant_type: 'client_credentials'
+            }
+        }
+)
     .then(function (response) {
         access_token = response.data.access_token
         setToDotEnv("TWITCH_ACCESS_TOKEN", access_token)

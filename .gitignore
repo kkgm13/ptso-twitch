@@ -1,5 +1,15 @@
+# Standard Ignore Files
 .env
 node_modules
-streamers.db
-streamers.db.zip
+
+# Database
+*.db
+*.db.zip
+
+#CSS
 public/admin/assets/css/input.css
+
+# SQLite runtime files
+*-wal
+*-shm
+*-journal
