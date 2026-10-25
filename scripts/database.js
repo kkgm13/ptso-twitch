@@ -73,6 +73,15 @@ function insertStreamer({ twitchId, streamerName, streamerDetails, streamerColor
     `).run(twitchId, streamerName, streamerDetails, streamerColor);
 }
 
+function getStreamerByTwitchId(twitchId) {
+    return initDB().prepare(`
+        SELECT twitchID, streamerName, streamerDetails, streamerColor
+        FROM streamers
+        WHERE twitchID = ?
+        LIMIT 1
+    `).get(String(twitchId)) ?? null;
+}
+
 function getAllStreamers() {
     return initDB().prepare(`
         SELECT twitchID, streamerName, streamerDetails, streamerColor
@@ -107,6 +116,7 @@ export {
     closeDB,
     insertStreamer,
     getAllStreamers,
+    getStreamerByTwitchId,
     deleteStreamer,
     DATABASE_PATH
 };

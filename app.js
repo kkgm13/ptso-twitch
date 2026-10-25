@@ -9,6 +9,7 @@ import {
     initDB,
     closeDB,
     insertStreamer,
+    getStreamerByTwitchId,
     getAllStreamers,
     deleteStreamer
 } from './scripts/database.js';
@@ -17,6 +18,16 @@ import { getTwitchUser, getTwitchChannel } from './src/services/twitch-api.js';
 const app = express();
 const PORT = Number.parseInt(process.env.PORT ?? '3030', 10);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// Each connected browser source receives live shoutout events over Server-Sent Events.
+const overlayClients = new Set();
+
+function publishShoutout(payload) {
+    const message = `data: ${JSON.stringify(payload)}\\n\\n`;
+    for (const client of overlayClients) {
+        client.write(message);
+    }
+}
 
 const allowedOrigins = new Set([
     `http://localhost:${PORT}`,
@@ -38,6 +49,7 @@ app.use(cors({
 
 app.use(express.json({ limit: '100kb' }));
 
+// Provide Twitch Errors 
 function sendTwitchError(res, error, operation) {
     console.error(`${operation} failed:`, {
         status: error.status ?? 'NETWORK_OR_PARSE_ERROR',
@@ -171,8 +183,83 @@ app.delete('/api/streamer/:id', (req, res) => {
     }
 });
 
+// Browser-source connection: events are pushed only when a shoutout is triggered.
+app.get('/api/shoutout/events', (req, res) => {
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache, no-transform');
+    res.setHeader('Connection', 'keep-alive');
+    res.flushHeaders?.();
+    res.write(': PTSO overlay connected');
+    overlayClients.add(res);
+
+    const heartbeat = setInterval(() => res.write(': heartbeat'), 20_000);
+    req.on('close', () => {
+        clearInterval(heartbeat);
+        overlayClients.delete(res);
+    });
+});
+
+// Trigger this endpoint from the Twitch chat command handler.
+// Example body: { "username": "target_login" }
+app.post('/api/shoutout', async (req, res) => {
+    const username = typeof req.body?.username === 'string'
+        ? req.body.username.trim().replace(/^@/, '').toLowerCase()
+        : '';
+
+    if (!/^[a-z0-9_]{1,25}$/.test(username)) {
+        return res.status(400).json({ error: 'A valid Twitch username is required' });
+    }
+
+    try {
+        const user = await getTwitchUser(username);
+        if (!user) {
+            return res.status(404).json({ error: 'Twitch user not found' });
+        }
+
+        // The database is keyed by Twitch ID, so username changes do not break matching.
+        const [savedStreamer, channel] = await Promise.all([
+            Promise.resolve(getStreamerByTwitchId(user.id)),
+            getTwitchChannel(user.id)
+        ]);
+
+        const descriptions = (savedStreamer?.streamerDetails ?? '')
+            .split(';')
+            .map((item) => item.trim())
+            .filter(Boolean);
+
+        const payload = {
+            type: 'shoutout',
+            twitchId: user.id,
+            username: user.login,
+            displayName: user.display_name || user.login,
+            profileImage: user.profile_image_url || '/admin/assets/default.jpeg',
+            streamerColor: savedStreamer?.streamerColor || '#666666',
+            descriptions: descriptions.length
+                ? descriptions
+                : [`Check out ${user.display_name || user.login} and give them a follow!`],
+            lastGame: channel?.game_name?.trim() || 'a variety of games',
+            createdAt: Date.now()
+        };
+
+        publishShoutout(payload);
+        return res.status(202).json({ success: true, queued: true, twitchId: user.id });
+    } catch (error) {
+        return sendTwitchError(res, error, 'Shoutout preparation');
+    }
+});
+
+// Serve static files for the admin interface and the Overlay page.
 app.use('/admin', express.static(path.join(__dirname, 'public/admin')));
-app.use('/so.html', express.static(path.join(__dirname, 'public/so.html')));
+// app.use('/', (req, res) => res.redirect('/admin'));
+app.use("/so.html", express.static(path.join(__dirname,  'public/so')));
+// Minature health check
+app.use('/health', (req, res) => res.json(
+    {
+        version: "a3.0.0",
+        status: res.statusCode === 200 ? 'Healthy' : res.statusCode , 
+        message: req.statusMessage ?? "Operational", has_db: initDB() ? true : false, twitch_cred: process.env 
+    }
+));
 
 async function startServer() {
     try {

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store">
+  <title>PTSO Shoutout Overlay</title>
+  <link rel="stylesheet" href="assets/css/overlay.css">
+</head>
+<body>
+  <main id="overlay" aria-hidden="true">
+    <header class="heading">
+      <h1 id="streamer-title">Check out: <span id="streamer-name"></span></h1>
+    </header>
+    <div class="main-row">
+      <section class="profile" aria-label="Streamer profile">
+        <img id="avatar" src="/admin/assets/default.jpeg" alt="Twitch profile picture">
+        <!-- <p id="profile-label"></p> -->
+      </section>
+      <section class="details" aria-label="Shoutout details">
+        <div id="carousel-viewport" aria-live="polite">
+          <p id="carousel-text"></p>
+        </div>
+      </section>
+    </div>
+  </main>
+  <p id="status" aria-live="polite">Waiting for shoutout</p>
+
+  <script type="module" src="assets/js/overlay.js"></script>
+</body>
+</html>
