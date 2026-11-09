@@ -257,7 +257,8 @@ app.use('/health', (req, res) => res.json(
     {
         version: "a3.0.0",
         status: res.statusCode === 200 ? 'Healthy' : res.statusCode , 
-        message: req.statusMessage ?? "Operational", has_db: initDB() ? true : false, twitch_cred: process.env 
+        message: req.statusMessage ?? "Operational",
+        has_db: initDB() ?? "Database not recognized",
     }
 ));
 
